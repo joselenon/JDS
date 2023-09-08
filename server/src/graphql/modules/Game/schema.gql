@@ -1,0 +1,43 @@
+type Player {
+  userDocId: String
+  username: String
+  avatar: String
+}
+
+type BetRedis {
+  docId: String
+  intervals: [Int]
+  amount: Int
+  createdAt: String
+  gameId: String
+  userInfo: Player
+}
+
+type GameData {
+  docId: String
+  bets: [BetRedis]
+  type: String
+  winningBetRef: BetRedis
+  prizePool: Int
+  status: String
+  createdAt: String
+  startedAt: String
+  updatedAt: String
+  finishedAt: String
+  jackpotDuration: Int
+  jackpotAnimationDuration: Int
+}
+
+type Game {
+  success: Boolean!
+  message: String!
+  data: GameData!
+}
+
+type Query {
+  getJackpot: Game!
+}
+
+type Subscription {
+  getLiveJackpot: Game!
+}

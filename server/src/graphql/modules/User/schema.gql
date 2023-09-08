@@ -1,0 +1,32 @@
+type UserData {
+  username: String
+  steamid: String
+  avatar: String
+  balance: Int
+  tradeLink: String
+  email: String
+}
+type User {
+  success: Boolean!
+  message: String!
+  data: UserData
+}
+
+type BalanceData {
+  balance: Int
+}
+type Balance {
+  success: Boolean!
+  message: String!
+  data: BalanceData
+}
+
+
+type Query {
+  getUser(steamid: String): User!
+  getBalance: Balance!
+}
+
+type Subscription {
+  getLiveBalance: Balance!
+}

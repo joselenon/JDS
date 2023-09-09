@@ -460,7 +460,6 @@ class YoutubeAPIService {
         { inJSON: true },
         VIDEOS_IN_CACHE_EXPIRATION,
       );
-      console.log(videosFromAPI);
       return videosFromAPI;
     }
     return videosInCache;

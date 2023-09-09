@@ -22,7 +22,6 @@ export default function YoutubeVideoItem(props: Props) {
       href={`${urlvideo}${item.id.videoId}`}
       target="_blank"
       rel="noreferrer"
-      style={{ height: '100%' }}
     >
       <HoverAnimatedElement>
         <styles.CarouselItem>

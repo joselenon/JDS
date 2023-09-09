@@ -25,7 +25,6 @@ export default function Jackpot() {
 
   useEffect(() => {
     refetch();
-    console.log('jack aqui', jackpotInfo);
   }, []);
 
   return (

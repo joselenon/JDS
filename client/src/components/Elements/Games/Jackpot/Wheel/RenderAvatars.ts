@@ -4,7 +4,7 @@ import { IBet } from '../../../../../config/interfaces/IBet';
 interface IPlayers {
   username: string;
   avatar: string;
-  amount: number;
+  amountBet: number;
 }
 
 function seedShuffler(array: string[]) {
@@ -34,20 +34,20 @@ class RenderAvatars {
         (user) => user.username === bet.userInfo.username,
       );
       if (userFound) {
-        userFound.amount += bet.amount;
+        userFound.amountBet += bet.amountBet;
       } else {
-        const { userInfo, amount } = bet;
+        const { userInfo, amountBet } = bet;
         uniquePlayers.push({
           username: userInfo.username,
           avatar: userInfo.avatar,
-          amount,
+          amountBet,
         });
       }
     });
 
     const order: string[] = [];
     uniquePlayers.forEach((player) => {
-      const chanceOfWinning = player.amount / this.prizePool;
+      const chanceOfWinning = player.amountBet / this.prizePool;
       const amountOfAvatars = Math.round(this.totalAvatars * chanceOfWinning);
       for (let count = 0; count < amountOfAvatars; count++) {
         order.push(player.avatar);
@@ -59,13 +59,26 @@ class RenderAvatars {
   }
 
   winnerRender(winningBetRef: IBet) {
-    this.normalRender();
-    const winningBet = this.bets.find((bet) => bet.docId === winningBetRef.docId);
-    if (!winningBet) throw new Error('Algo deu errado.');
-    const { avatar } = winningBet.userInfo;
+    try {
+      this.normalRender();
+      console.log('winningbetREF', winningBetRef);
+      const winningBet = this.bets.find((bet) => {
+        console.log('bet aqui', bet);
+        return bet.docId === winningBetRef.docId;
+      });
+      if (!winningBet) throw new Error('Algo deu errado.');
+      console.log('winningbet', winningBet);
+      const { avatar } = winningBet.userInfo;
 
-    this.order.splice(91, 1, avatar);
-    return this.order;
+      console.log('winner avatar', avatar);
+
+      this.order.splice(91, 1, avatar);
+      console.log('substituido aqui', this.order[91]);
+      return this.order;
+    } catch (err: any) {
+      console.log(err);
+      throw new Error(err);
+    }
   }
 }
 

@@ -34,7 +34,7 @@ export default class RedisService {
     expirationInSeconds: number | null = null,
     calledBy?: string,
   ) {
-    calledBy && console.log(`Called by ${calledBy}.\n Value: ${value.bets}`);
+    // calledBy && console.log(`Called by ${calledBy}.\n Value: ${value.bets}`);
     const syncSet = RedisService.promisifyCommand('set');
     const args = [key, options?.inJSON ? JSON.stringify(value) : value];
     if (expirationInSeconds) {

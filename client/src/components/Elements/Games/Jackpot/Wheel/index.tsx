@@ -40,11 +40,11 @@ export default function Wheel(props: IWheelProps) {
   };
 
   useEffect(() => {
+    renderAvatars();
     if (status === 'FINISHED') {
       wheelRef.current.classList.add('start');
     } else {
       wheelRef.current.classList.remove('start');
-      if (bets) renderAvatars();
     }
   }, [status, bets]);
 
@@ -53,14 +53,14 @@ export default function Wheel(props: IWheelProps) {
       {jackpotInfo &&
       (jackpotInfo.status === 'FINISHED' || jackpotInfo.status === 'CLOSED') ? (
         <styles.WheelPointer
-          jackpotFinished={jackpotInfo.status === 'FINISHED' ? true : false}
+          $jackpotFinished={jackpotInfo.status === 'FINISHED' ? true : false}
         />
       ) : (
         <></>
       )}
       <styles.AvatarsContainer ref={wheelRef}>{renderedAvatars}</styles.AvatarsContainer>
       <styles.AbsoluteContainer
-        jackpotStarted={jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false}
+        $jackpotStarted={jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false}
       >
         {jackpotInfo && jackpotInfo.startedAt && (
           <Timer
@@ -71,7 +71,7 @@ export default function Wheel(props: IWheelProps) {
 
         {jackpotInfo && jackpotInfo.bets.length === 0 && (
           <styles.AguardandoApostasText
-            jackpotStarted={
+            $jackpotStarted={
               jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false
             }
           >

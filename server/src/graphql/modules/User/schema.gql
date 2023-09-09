@@ -2,7 +2,7 @@ type UserData {
   username: String
   steamid: String
   avatar: String
-  balance: Int
+  balance: Float
   tradeLink: String
   email: String
 }
@@ -13,7 +13,7 @@ type User {
 }
 
 type BalanceData {
-  balance: Int
+  balance: Float
 }
 type Balance {
   success: Boolean!

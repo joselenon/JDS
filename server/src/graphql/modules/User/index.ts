@@ -1,9 +1,10 @@
 import IGQLContext from '../../../config/interfaces/IGQLContext';
-import UserService from '../../../services/UserService';
 import validateAndCaptureError from '../../../common/validateAndCaptureError';
 import { successResponse } from '../../../helpers/responseHelpers';
 import { PSub, PUBSUB_EVENTS } from '../../pubSubConfig';
+
 import pSubEventHelper from '../../../helpers/pSubEventHelper';
+import BalanceService from '../../../services/BalanceService';
 
 const resolvers = {
   Query: {
@@ -21,7 +22,7 @@ const resolvers = {
       try {
         const { validateAuth, jwtToken } = context;
         const { userDocId } = await validateAuth(jwtToken);
-        const balance = await UserService.getBalanceFromCache(userDocId);
+        const balance = await BalanceService.getBalance(userDocId);
         await pSubEventHelper(
           'GET_LIVE_BALANCE',
           'getLiveBalance',

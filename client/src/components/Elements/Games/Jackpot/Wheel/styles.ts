@@ -45,7 +45,7 @@ export const AvatarItemContainer = styled.div`
 `;
 
 interface IWheelPointerProps {
-  jackpotFinished: boolean;
+  $jackpotFinished: boolean;
 }
 
 export const WheelPointer = styled.div<IWheelPointerProps>`
@@ -57,11 +57,11 @@ export const WheelPointer = styled.div<IWheelPointerProps>`
   height: 100%;
   background-color: red;
   transition: opacity 0.5ms;
-  opacity: ${(props) => (props.jackpotFinished ? 1 : 0)};
+  opacity: ${(props) => (props.$jackpotFinished ? 1 : 0)};
 `;
 
 interface IAbsoluteContainerProps {
-  jackpotStarted: boolean;
+  $jackpotStarted: boolean;
 }
 
 export const AbsoluteContainer = styled.div<IAbsoluteContainerProps>`
@@ -77,8 +77,8 @@ export const AbsoluteContainer = styled.div<IAbsoluteContainerProps>`
   justify-content: center;
   align-items: center;
   transition: all 0.5s ease-in-out;
-  background-color: ${(props) => (props.jackpotStarted ? 'none' : 'rgb(0, 0, 0, 0.4)')};
-  opacity: ${(props) => (props.jackpotStarted ? 0 : 1)};
+  background-color: ${(props) => (props.$jackpotStarted ? 'none' : 'rgb(0, 0, 0, 0.4)')};
+  opacity: ${(props) => (props.$jackpotStarted ? 0 : 1)};
 
   span {
     font-size: 48px;
@@ -92,6 +92,6 @@ export const AguardandoApostasText = styled.span<IAbsoluteContainerProps>`
   font-size: 14px !important;
   letter-spacing: 3px;
   transition: opacity 0.5s ease-in-out;
-  opacity: ${(props) => (props.jackpotStarted ? 0 : 0.75)};
+  opacity: ${(props) => (props.$jackpotStarted ? 0 : 0.75)};
   font-family: var(--bai-font);
 `;

@@ -53,11 +53,12 @@ function gqlSubscription<DataType, GQLType extends string>(props: IGQL['subscrip
     context: GraphQLOptionsConfig(token).context,
   });
 
+  if (error) toast.error(error.message);
+
   return {
     data: data as {
       [key in GQLType]: { success: boolean; message: string; data: DataType };
     },
-    error,
   };
 }
 

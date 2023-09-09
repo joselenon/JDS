@@ -14,7 +14,7 @@ function Balance() {
       <styles.BalanceDisplayContainer>
         <styles.BalanceAndIcon>
           <img src={logo} width={18} height={18} />
-          <span>{balance}</span>
+          <span>{balance ? balance : 0}</span>
         </styles.BalanceAndIcon>
         <RedeemCode />
       </styles.BalanceDisplayContainer>

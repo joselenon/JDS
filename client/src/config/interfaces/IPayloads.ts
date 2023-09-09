@@ -10,5 +10,5 @@ export interface IRedeemCodePayload {
 }
 
 export interface IMakeBetPayload {
-  amount: number;
+  amountBet: number;
 }

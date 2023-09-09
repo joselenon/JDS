@@ -4,13 +4,20 @@ import {
 } from '../../config/interfaces/IBet';
 import { IJWTPayload } from '../../config/interfaces/IJWT';
 import { IJackpotBetPayload } from '../../config/interfaces/IPayloads';
+
 import getRedisKeyHelper from '../../helpers/redisHelper';
+import BalanceService from '../../services/BalanceService';
 import JackpotService from '../../services/GamesServices/JackpotService';
 import RedisService from '../../services/RedisService';
 
 class BetControllerGQL implements IBetControllerGQL {
   async makeBetOnJackpot(userInfo: IJWTPayload, payload: IJackpotBetPayload) {
-    const { amount: betAmount } = payload;
+    const { amountBet } = payload;
+    const { userDocId } = userInfo;
+    const { balance: userBalance } = await BalanceService.getBalance(userDocId);
+
+    if (userBalance < amountBet) throw new Error('Saldo insuficiente');
+
     const jackpotInRedis = await JackpotService.getJackpotInRedis();
     if (!jackpotInRedis) throw new Error('Aguarde a prox...'); // Criar erros dos tipos
 
@@ -18,16 +25,15 @@ class BetControllerGQL implements IBetControllerGQL {
 
     // Set ticket intervals (assists DrawWinner.jackpot)
     const startInterval = jackpotPrizePool === 0 ? 0 : jackpotPrizePool + 1;
-    const endInterval = startInterval + betAmount - 1;
+    const endInterval = startInterval + amountBet - 1;
 
     const betDBCreatePayload: IBetRedisCreate = {
       userInfo,
       intervals: [startInterval, endInterval],
-      amount: betAmount,
+      amountBet,
       gameId: jackpotDocId,
       createdAt: Date.now(),
     };
-    console.log('Payload bet: ', betDBCreatePayload);
 
     // Create a new task on Redis queue
     const cacheKey = getRedisKeyHelper('jackpot_bets_queue');

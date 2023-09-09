@@ -1,5 +1,5 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 
 import Carousel from '../../Elements/Carousel';
 import YoutubeVideoItem from './YoutubeVideoItem';
@@ -16,7 +16,7 @@ export default function LastVideos() {
     ));
   } else {
     for (let i = 0; i < 6; i++) {
-      items.push(<YoutubeVideoSkeleton key={uuidv4()} />);
+      items.push(<YoutubeVideoSkeleton key={v4()} />);
     }
   }
 

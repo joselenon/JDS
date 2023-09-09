@@ -21,16 +21,16 @@ export default class FirebaseService {
     return docRef.id;
   }
 
-  static async updateDocument<T extends { [x: string]: any }, Q>(
+  static async updateDocument<T>(
     collection: TDBCollections,
     docId: string,
-    payload: T,
-  ): Promise<IFirebaseQueryResponse<Q>> {
+    payload: any,
+  ): Promise<IFirebaseQueryResponse<T>> {
     const docRef = await firestore.collection(collection).doc(docId);
     const docSnapshotData = (await docRef.get()).data();
     if (!docSnapshotData) throw new DocumentNotFound();
     await docRef.update(payload);
-    return { docId, body: { ...docSnapshotData, ...payload } as Q };
+    return { docId, body: { ...docSnapshotData, ...payload } as T };
   }
 
   static async getDocumentRef(collection: TDBCollections, docId: string) {

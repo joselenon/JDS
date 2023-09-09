@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { toast } from 'react-toastify';
 
 import { gqlQuery, gqlSubscription } from './useGraphQLService';
 import { TGetBalanceResponse } from '../config/interfaces/IGQLResponses';
@@ -28,10 +27,8 @@ export default function useGetBalance() {
 
   useEffect(() => {
     try {
-      console.log(fetchLiveBalanceData);
       // Get balance
       if (fetchBalanceData.error && !errorMessageAlreadyDisplayed.current) {
-        toast.error(fetchBalanceData.error.message);
         errorMessageAlreadyDisplayed.current = true;
       }
       if (fetchBalanceData.data) {
@@ -41,13 +38,10 @@ export default function useGetBalance() {
       }
 
       // Subscribe to live balance events
-      if (fetchLiveBalanceData.error && !errorMessageAlreadyDisplayed.current) {
-        toast.error(fetchLiveBalanceData.error.message);
-        errorMessageAlreadyDisplayed.current = true;
-      }
       if (fetchLiveBalanceData.data) {
+        console.log(fetchLiveBalanceData);
         const { getLiveBalance } = fetchLiveBalanceData.data;
-        balanceRecover = getLiveBalance.data;
+        balanceRecover = getLiveBalance.data.balance;
         setBalance(balanceRecover);
       }
     } catch (err) {

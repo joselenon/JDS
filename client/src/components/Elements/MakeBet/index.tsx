@@ -11,7 +11,7 @@ import useMakeBet from '../../../hooks/useMakeBet';
 export default function MakeBet() {
   const handleMakeBet = useMakeBet();
   const makeBetInput: ICreateInput = {
-    id: 'amount',
+    id: 'amountBet',
     label: 'Quantia',
     type: 'number',
     defaultValue: 0,

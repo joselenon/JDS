@@ -7,7 +7,7 @@ type Player {
 type BetRedis {
   docId: String
   intervals: [Int]
-  amount: Int
+  amountBet: Int
   createdAt: String
   gameId: String
   userInfo: Player

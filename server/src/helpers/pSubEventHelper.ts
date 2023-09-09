@@ -15,11 +15,6 @@ async function pSubEventHelper(
   payload: any,
   userDocId?: string,
 ) {
-  console.log(
-    'NOVO PUBSUB \n',
-    `event: ${event}\n actionKey: ${actionKey} \n payload: ${payload} \n userDocId: ${userDocId}`,
-  );
-
   const action = { [actionKey]: successResponse('GET_MSG', payload) };
   let triggerName = PUBSUB_EVENTS[event].triggerName;
 

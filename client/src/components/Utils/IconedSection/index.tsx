@@ -15,7 +15,8 @@ export default function IconedSection(props: Props) {
   const { icon, title, Body } = props;
 
   return (
-    <styles.SectionContainer>
+    /* Verifies if the body of the section is a Carousel, since it has padding and the spacing is different */
+    <styles.SectionContainer $isCarousel={Body().type.name === 'Carousel'}>
       <IconedTitle icon={icon} title={title} />
       <Body />
     </styles.SectionContainer>

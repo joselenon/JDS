@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   -webkit-backface-visibility: hidden;
+  will-change: transform;
   border-radius: var(--default-br);
   position: relative;
   transition:

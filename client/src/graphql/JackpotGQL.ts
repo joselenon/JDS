@@ -15,16 +15,19 @@ export const GET_JACKPOT = gql`
         jackpotDuration
         jackpotAnimationDuration
         bets {
-          amount
+          docId
+          amountBet
           userInfo {
             username
             avatar
           }
         }
         winningBetRef {
-          amount
+          docId
+          amountBet
           userInfo {
             username
+            avatar
           }
         }
       }
@@ -47,16 +50,19 @@ export const GET_LIVE_JACKPOT = gql`
         jackpotDuration
         jackpotAnimationDuration
         bets {
-          amount
+          docId
+          amountBet
           userInfo {
             username
             avatar
           }
         }
         winningBetRef {
-          amount
+          docId
+          amountBet
           userInfo {
             username
+            avatar
           }
         }
       }

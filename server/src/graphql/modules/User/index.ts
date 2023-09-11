@@ -1,6 +1,6 @@
 import IGQLContext from '../../../config/interfaces/IGQLContext';
 import validateAndCaptureError from '../../../common/validateAndCaptureError';
-import { successResponse } from '../../../helpers/responseHelpers';
+import { responseBody } from '../../../helpers/responseHelpers';
 import { PSub, PUBSUB_EVENTS } from '../../pubSubConfig';
 
 import pSubEventHelper from '../../../helpers/pSubEventHelper';
@@ -13,7 +13,7 @@ const resolvers = {
         const { validateAuth, jwtToken, UserController } = context;
         const { userDocId } = await validateAuth(jwtToken);
         const userData = await UserController.getUser(userDocId);
-        return successResponse('GET_MSG', userData?.body);
+        return responseBody(true, 'GET_MSG', userData?.body);
       } catch (err) {
         validateAndCaptureError(err);
       }
@@ -23,13 +23,13 @@ const resolvers = {
         const { validateAuth, jwtToken } = context;
         const { userDocId } = await validateAuth(jwtToken);
         const balance = await BalanceService.getBalance(userDocId);
-        await pSubEventHelper(
+        pSubEventHelper(
           'GET_LIVE_BALANCE',
           'getLiveBalance',
-          balance,
+          { success: true, message: 'GET_MSG', data: balance },
           userDocId,
         );
-        return successResponse('GET_MSG', balance);
+        return responseBody(true, 'GET_MSG', balance);
       } catch (err) {
         validateAndCaptureError(err);
       }

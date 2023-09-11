@@ -1,8 +1,10 @@
 import { IBet } from './IBet';
 
-export type TGetBalanceResponse = {
-  balance: number;
-};
+export interface IGQLResponses<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
 
 export type TGetJackpotResponse = {
   docId: string;

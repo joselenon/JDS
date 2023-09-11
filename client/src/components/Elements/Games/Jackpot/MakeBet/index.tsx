@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import * as styles from './styles';
 
-import { ICreateInput } from '../../../config/interfaces/IInput';
-import { DefaultDivButton } from '../../../styles/GLOBAL_STYLES';
-import Button from '../Button';
-import Form from '../Form';
-import useMakeBet from '../../../hooks/useMakeBet';
+import { ICreateInput } from '../../../../../config/interfaces/IInput';
+import { DefaultDivButton } from '../../../../../styles/GLOBAL_STYLES';
+import Button from '../../../Button';
+import Form from '../../../Form';
+import useMakeBet from '../../../../../hooks/useMakeBet';
 
-export default function MakeBet() {
+function MakeBet() {
   const handleMakeBet = useMakeBet();
+
   const makeBetInput: ICreateInput = {
     id: 'amountBet',
     label: 'Quantia',
@@ -34,3 +35,5 @@ export default function MakeBet() {
     </styles.MakeBetContainer>
   );
 }
+
+export default memo(MakeBet);

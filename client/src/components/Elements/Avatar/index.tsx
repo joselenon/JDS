@@ -13,8 +13,6 @@ function Avatar() {
     setImageLoaded(true);
   };
 
-  console.log('Avatar Render');
-
   return (
     <styles.AvatarContainer>
       {!userInfo?.avatar || !imageLoaded ? <RedSkeleton /> : null}

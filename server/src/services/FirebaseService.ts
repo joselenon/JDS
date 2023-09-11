@@ -21,34 +21,43 @@ export default class FirebaseService {
     return docRef.id;
   }
 
+  // Specific query (if the document doesn't exists, it throws an error)
   static async updateDocument<T>(
     collection: TDBCollections,
     docId: string,
     payload: any,
   ): Promise<IFirebaseQueryResponse<T>> {
     const docRef = await firestore.collection(collection).doc(docId);
-    const docSnapshotData = (await docRef.get()).data();
-    if (!docSnapshotData) throw new DocumentNotFound();
+    const docSnapshot = await docRef.get();
+    if (!docSnapshot.exists) throw new DocumentNotFound();
+
+    const docData = docSnapshot.data();
     await docRef.update(payload);
-    return { docId, body: { ...docSnapshotData, ...payload } as T };
+    return { docId, body: { ...docData, ...payload } as T };
   }
 
+  // Specific query (if the document doesn't exists, it throws an error)
   static async getDocumentRef(collection: TDBCollections, docId: string) {
     const docRef = firestore.collection(collection).doc(docId);
+    const docSnapshot = await docRef.get();
+    if (!docSnapshot.exists) throw new DocumentNotFound();
     return docRef;
   }
 
+  // Specific query (if the document doesn't exists, it throws an error)
   static async getDocumentById<T>(
     collection: TDBCollections,
     docId: string,
   ): Promise<IFirebaseQueryResponse<T> | null> {
     const docRef = firestore.collection(collection).doc(docId);
-    const docSnapshotData = (await docRef.get()).data();
-    if (!docSnapshotData) return null;
-    return { docId, body: { ...docSnapshotData } as T };
+    const docSnapshot = await docRef.get();
+    if (!docSnapshot.exists) throw new DocumentNotFound();
+
+    const docData = docSnapshot.data();
+    return { docId, body: { ...docData } as T };
   }
 
-  // Return an obj with docId and data of a single document depending on the param passed
+  // Specific query (if the document doesn't exists, it throws an error)
   static async getSingleDocumentByParam<T>(
     collection: TDBCollections,
     param: string,
@@ -60,9 +69,7 @@ export default class FirebaseService {
       .limit(1);
     const docSnapshot = await docRef.get();
 
-    if (docSnapshot.empty) {
-      return null;
-    }
+    if (docSnapshot.empty) throw new DocumentNotFound();
 
     const docId = docSnapshot.docs[0].id;
     const docSnapshotData = docSnapshot.docs[0].data();
@@ -81,6 +88,7 @@ export default class FirebaseService {
       .collection(collection)
       .where(param, '==', paramValue);
     const docSnapshot = (await docRef.get()).docs;
+
     const docsDataPromise = docSnapshot.map(async (doc) => {
       const docData = doc.data() as T;
       const obj: IFirebaseQueryResponse<T> = {
@@ -89,6 +97,7 @@ export default class FirebaseService {
       };
       return obj;
     });
+
     const docsData = await Promise.all(docsDataPromise);
     return docsData;
   }

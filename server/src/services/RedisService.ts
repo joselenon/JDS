@@ -32,7 +32,6 @@ export default class RedisService {
     value: any,
     options?: TRedisOptions,
     expirationInSeconds: number | null = null,
-    calledBy?: string,
   ) {
     // calledBy && console.log(`Called by ${calledBy}.\n Value: ${value.bets}`);
     const syncSet = RedisService.promisifyCommand('set');
@@ -68,10 +67,18 @@ export default class RedisService {
     return syncPush(key, value);
   }
 
-  static lRange(key: string) {
-    const syncGetMany = RedisService.promisifyCommand('lrange');
-    return syncGetMany(key, 0, -1);
-  }
+  /*
+  static async lRange<T>(
+    key: string,
+    options?: TRedisOptions,
+  ): Promise<T[] | null> {
+    const syncLRange = RedisService.promisifyCommand('lrange');
+    const data = await syncLRange(key, 0, -1);
+    if (data && options?.inJSON) {
+      return JSON.parse(data);
+    }
+    return data;
+  } */
 
   // Removes and returns first element of the list
   static async lPop<T>(

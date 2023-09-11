@@ -1,4 +1,8 @@
 import {
+  GameAlreadyStarted,
+  InsufficientBalance,
+} from '../../config/errorTypes/ClientErrors';
+import {
   IBetControllerGQL,
   IBetRedisCreate,
 } from '../../config/interfaces/IBet';
@@ -16,20 +20,17 @@ class BetControllerGQL implements IBetControllerGQL {
     const { userDocId } = userInfo;
     const { balance: userBalance } = await BalanceService.getBalance(userDocId);
 
-    if (userBalance < amountBet) throw new Error('Saldo insuficiente');
-
+    if (userBalance < amountBet) {
+      throw new InsufficientBalance('Saldo insuficiente');
+    }
     const jackpotInRedis = await JackpotService.getJackpotInRedis();
-    if (!jackpotInRedis) throw new Error('Aguarde a prox...'); // Criar erros dos tipos
+    if (!jackpotInRedis || jackpotInRedis.status === 'FINISHED') {
+      throw new GameAlreadyStarted(userDocId);
+    }
 
-    const { docId: jackpotDocId, prizePool: jackpotPrizePool } = jackpotInRedis;
-
-    // Set ticket intervals (assists DrawWinner.jackpot)
-    const startInterval = jackpotPrizePool === 0 ? 0 : jackpotPrizePool + 1;
-    const endInterval = startInterval + amountBet - 1;
-
+    const { docId: jackpotDocId } = jackpotInRedis;
     const betDBCreatePayload: IBetRedisCreate = {
       userInfo,
-      intervals: [startInterval, endInterval],
       amountBet,
       gameId: jackpotDocId,
       createdAt: Date.now(),

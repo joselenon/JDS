@@ -13,12 +13,12 @@ type User {
 }
 
 type BalanceData {
-  balance: Float
+  balance: Int
 }
 type Balance {
   success: Boolean!
   message: String!
-  data: BalanceData
+  data: BalanceData!
 }
 
 

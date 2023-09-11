@@ -61,22 +61,15 @@ class RenderAvatars {
   winnerRender(winningBetRef: IBet) {
     try {
       this.normalRender();
-      console.log('winningbetREF', winningBetRef);
       const winningBet = this.bets.find((bet) => {
-        console.log('bet aqui', bet);
         return bet.docId === winningBetRef.docId;
       });
       if (!winningBet) throw new Error('Algo deu errado.');
-      console.log('winningbet', winningBet);
       const { avatar } = winningBet.userInfo;
 
-      console.log('winner avatar', avatar);
-
       this.order.splice(91, 1, avatar);
-      console.log('substituido aqui', this.order[91]);
       return this.order;
     } catch (err: any) {
-      console.log(err);
       throw new Error(err);
     }
   }

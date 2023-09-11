@@ -1,5 +1,4 @@
 import { AuthError } from '../config/errorTypes/ClientErrors';
-import { DocumentNotFound } from '../config/errorTypes/SystemErrors';
 import { IJWTPayload } from '../config/interfaces/IJWT';
 import JWTService from '../services/JWTService';
 import checkIfUserAlreadyExistsByDocId from './checkIfUserAlreadyExistsByDocId';
@@ -17,10 +16,7 @@ const validateAuth: TValidateAuthFn = async (authorization: string | null) => {
     );
 
     // DB Verification
-    const userInDB = await checkIfUserAlreadyExistsByDocId(
-      userValidated.userDocId,
-    );
-    if (!userInDB) throw new DocumentNotFound();
+    await checkIfUserAlreadyExistsByDocId(userValidated.userDocId);
     return userValidated;
   } catch (err: any) {
     throw new AuthError();

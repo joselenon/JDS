@@ -16,6 +16,7 @@ export const GET_JACKPOT = gql`
         jackpotAnimationDuration
         bets {
           docId
+          intervals
           amountBet
           userInfo {
             username
@@ -51,6 +52,7 @@ export const GET_LIVE_JACKPOT = gql`
         jackpotAnimationDuration
         bets {
           docId
+          intervals
           amountBet
           userInfo {
             username

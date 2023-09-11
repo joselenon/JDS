@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import JWTService from '../../services/JWTService';
 import UserService from '../../services/UserService';
-import { successResponse } from '../../helpers/responseHelpers';
+import { responseBody } from '../../helpers/responseHelpers';
 import { JWTCookie } from '../../config/app/CookiesConfig';
 import validateAuth from '../../common/validateAuth';
 
@@ -14,7 +14,7 @@ class UserController {
       const docUpdated = await UserService.updateInfo(userDocId, req.body);
       const newJWT = JWTService.signJWT(docUpdated);
       res.cookie(JWTCookie.key, newJWT, JWTCookie.config);
-      return res.status(200).json(successResponse('UPDATE_MSG'));
+      return res.status(200).json(responseBody(true, 'UPDATE_MSG'));
     } catch (err) {
       return next(err);
     }

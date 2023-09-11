@@ -6,6 +6,8 @@ import GraphQLOptionsConfig from '../config/app/GraphQLOptionsConfig';
 import Cookies from 'js-cookie';
 import { JWTCookie } from '../config/app/CookiesConfig';
 import { toast } from 'react-toastify';
+import { IGQLResponses } from '../config/interfaces/IGQLResponses';
+import ERROR_MSGS from '../config/constants/ERROR_MSGS';
 
 interface IGQL {
   query: { gql: DocumentNode };
@@ -21,7 +23,7 @@ function gqlQuery<DataType, GQLType extends string>(props: IGQL['query']) {
   });
   return {
     data: data as {
-      [key in GQLType]: { success: boolean; message: string; data: DataType };
+      [key in GQLType]: IGQLResponses<DataType>;
     },
     refetch,
     error,
@@ -41,25 +43,33 @@ function gqlMutation(props: IGQL['mutation']) {
     };
     return mutationFn;
   } catch (err: any) {
-    toast.error(err.message);
+    toast.error(ERROR_MSGS.SERVER_OFFLINE_MSG);
     console.log('erro aqui', err);
   }
 }
 
+let errorMessageAlreadyDisplayed = false;
 function gqlSubscription<DataType, GQLType extends string>(props: IGQL['subscription']) {
-  const { gql } = props;
-  const token = Cookies.get(JWTCookie.key);
-  const { data, error } = useSubscription(gql, {
-    context: GraphQLOptionsConfig(token).context,
-  });
+  try {
+    const { gql } = props;
+    const token = Cookies.get(JWTCookie.key);
+    const { data, error } = useSubscription(gql, {
+      context: GraphQLOptionsConfig(token).context,
+    });
 
-  if (error) toast.error(error.message);
+    if (error) throw new Error(error.message);
 
-  return {
-    data: data as {
-      [key in GQLType]: { success: boolean; message: string; data: DataType };
-    },
-  };
+    return {
+      data: data as {
+        [key in GQLType]: IGQLResponses<DataType>;
+      },
+    };
+  } catch (err: any) {
+    if (!errorMessageAlreadyDisplayed) {
+      toast.error(err);
+      errorMessageAlreadyDisplayed = true;
+    }
+  }
 }
 
 export { gqlQuery, gqlMutation, gqlSubscription };

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { successResponse } from '../../helpers/responseHelpers';
+import { responseBody } from '../../helpers/responseHelpers';
 import validateAuth from '../../common/validateAuth';
 import DepositService from '../../services/DepositService';
 
@@ -12,7 +12,7 @@ class DepositController {
       // Code validation and claim
       await DepositService.redeemCode(userDocId, req.body);
 
-      return res.status(200).json(successResponse('REDEEM_CODE_MSG'));
+      return res.status(200).json(responseBody(true, 'REDEEM_CODE_MSG'));
     } catch (err) {
       next(err);
     }

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+import * as styles from './styles';
+
+import { TGetJackpotResponse } from '../../config/interfaces/IGQLResponses';
 import Wheel from '../../components/Elements/Games/Jackpot/Wheel';
 import useGetJackpot from '../../hooks/useGetJackpot';
-import { TGetJackpotResponse } from '../../config/interfaces/IGQLResponses';
-import MakeBet from '../../components/Elements/MakeBet';
+import MakeBet from '../../components/Elements/Games/Jackpot/MakeBet';
+import Players from '../../components/Elements/Games/Jackpot/Players';
 
 export default function Jackpot() {
   const [jackpotState, setJackpotState] = useState<TGetJackpotResponse | undefined>(
@@ -17,6 +20,11 @@ export default function Jackpot() {
     bets: jackpotState ? jackpotState.bets : [],
     prizePool: jackpotState ? jackpotState.prizePool : 0,
     winningBetRef: jackpotState ? jackpotState.winningBetRef : undefined,
+  };
+
+  const betsProps = {
+    bets: jackpotState ? jackpotState.bets : [],
+    prizePool: jackpotState ? jackpotState.prizePool : 0,
   };
 
   useEffect(() => {
@@ -33,7 +41,10 @@ export default function Jackpot() {
         Pot: {`${jackpotState && jackpotState.prizePool ? jackpotState.prizePool : 0}`}
       </h2>
       <Wheel props={wheelProps} />
-      <MakeBet />
+      <styles.MakeBetAndPlayersContainer>
+        <MakeBet />
+        <Players props={betsProps} />
+      </styles.MakeBetAndPlayersContainer>
     </div>
   );
 }

@@ -9,12 +9,13 @@ export default createGlobalStyle`
     --default-red: #cb2626;
     --main-bg-color: #ebebeb;
     --primary-color: #212121;
-    --secondary-color: #313131;
+    --secondary-color: #cecece;
     --secondary-text-color: #d9d9d9;
     --default-br: 5px; // Border-radius
     --default-fs: 16px; // Font-size
     --mobile-fs: 12px; // Font-size
     --default-pdn: 15px; // Padding
+    --default-bshadow: 0px 2px 3px rgb(0, 0, 0, 0.6); // Box-shadow
     --default-btn-mt: 8px;
   }
 

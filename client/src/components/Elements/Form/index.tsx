@@ -30,14 +30,8 @@ export default function Form(props: Props) {
   } = useForm();
 
   const onSubmitHandler: SubmitHandler<FieldValues> = async (info) => {
-    try {
-      console.log(info);
-      const res = await axiosCallHook({ ...info });
-      if (res?.status === 200) toast.success(res.data.message);
-    } catch (err: any) {
-      toast.error(err.message);
-      console.log(err);
-    }
+    const res = await axiosCallHook({ ...info });
+    if (res?.status === 200) toast.success(res.data.message);
   };
 
   useEffect(() => {

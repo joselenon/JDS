@@ -23,7 +23,7 @@ import { NoJackpotInRedis } from '../../config/errorTypes/SystemErrors';
 
 class JackpotService {
   // Durations measured per ms
-  private jackpotDuration: number = 10 * 1000;
+  private jackpotDuration: number = 60 * 1000;
   private jackpotAnimationDuration: number = 10 * 1000;
   private jackpotCacheKey: any = getRedisKeyHelper('last_jackpot');
   private jackpotBetsQueueCacheKey = getRedisKeyHelper('jackpot_bets_queue');

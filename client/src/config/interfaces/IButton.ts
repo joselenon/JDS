@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export type BtnTypes = 'CTA' | 'DANGER' | 'IMG';
+export type BtnTypes = 'CTA' | 'DANGER' | 'IMG' | 'DEFAULT';
 
 export type IButtonTypeConfig = {
   [key in BtnTypes]: {

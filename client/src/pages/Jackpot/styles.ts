@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const HeaderAndWheelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
 export const MakeBetAndPlayersContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -8,4 +14,9 @@ export const MakeBetAndPlayersContainer = styled.div`
   @media (max-width: 700px) {
     grid-template-columns: 1fr;
   }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

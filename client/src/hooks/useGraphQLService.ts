@@ -44,7 +44,6 @@ function gqlMutation(props: IGQL['mutation']) {
     return mutationFn;
   } catch (err: any) {
     toast.error(ERROR_MSGS.SERVER_OFFLINE_MSG);
-    console.log('erro aqui', err);
   }
 }
 

@@ -1,6 +1,14 @@
 import { IButtonTypeConfig } from '../config/interfaces/IButton';
 
 const BTN_TYPES: IButtonTypeConfig = {
+  DEFAULT: {
+    padding: { x: 14, y: 10 },
+    colors: {
+      color: 'var(--secondary-color)',
+      shadow_color: 'var(--primary-color)',
+    },
+  },
+
   CTA: {
     padding: { x: 14, y: 10 },
     colors: {

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const MakeBetContainer = styled.div`
   min-width: 250px;
   width: auto;
-  max-height: 150px;
   padding: 10px;
   border-radius: var(--default-br);
   background-color: var(--primary-color);

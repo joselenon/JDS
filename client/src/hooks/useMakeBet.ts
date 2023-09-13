@@ -8,12 +8,14 @@ export default function useMakeBet() {
   const mutationFn = gqlMutation({ gql: BET_QUERIES.BET_ON_JACKPOT });
 
   const makeBetFn = async (payload: IMakeBetPayload) => {
-    console.log('Aqui');
     if (mutationFn) {
       try {
         await mutationFn(payload);
       } catch (err: any) {
-        if (err.message === 'Failed to fetch') toast.error(ERROR_MSGS.SERVER_OFFLINE_MSG);
+        if (err.message === 'Failed to fetch') {
+          return toast.error(ERROR_MSGS.SERVER_OFFLINE_MSG);
+        }
+        return toast.error(err.message);
       }
     } else {
       return null;

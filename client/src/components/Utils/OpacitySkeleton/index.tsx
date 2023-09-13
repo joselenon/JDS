@@ -2,6 +2,10 @@ import React from 'react';
 
 import * as styles from './styles';
 
-export default function OpacitySkeleton() {
-  return <styles.SkeletonCotainer />;
+interface IOpacitySkeletonProps {
+  color?: string;
+}
+
+export default function OpacitySkeleton({ color }: IOpacitySkeletonProps) {
+  return <styles.SkeletonCotainer color={color} />;
 }

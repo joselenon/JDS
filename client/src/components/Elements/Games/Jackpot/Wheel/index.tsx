@@ -4,23 +4,15 @@ import * as styles from './styles';
 import AvatarItem from './AvatarItem';
 import { v4 } from 'uuid';
 import RenderAvatars from './RenderAvatars';
-import { IBet } from '../../../../../config/interfaces/IBet';
 import { TGetJackpotResponse } from '../../../../../config/interfaces/IGQLResponses';
-import Timer from '../Timer/Timer';
 
 interface IWheelProps {
-  props: {
-    jackpotInfo: TGetJackpotResponse | undefined;
-    status: TGetJackpotResponse['status'];
-    bets: IBet[];
-    prizePool: number;
-    winningBetRef: IBet | undefined;
-  };
+  jackpotInfo: TGetJackpotResponse;
 }
 
-export default function Wheel(props: IWheelProps) {
+export default function Wheel({ jackpotInfo }: IWheelProps) {
   const wheelRef = useRef<any>(undefined);
-  const { bets, prizePool, winningBetRef, status, jackpotInfo } = props.props;
+  const { bets, prizePool, winningBetRef, status } = jackpotInfo;
   const [renderedAvatars, setRenderedAvatars] = useState<JSX.Element[] | undefined>(
     undefined,
   );
@@ -62,12 +54,7 @@ export default function Wheel(props: IWheelProps) {
       <styles.AbsoluteContainer
         $jackpotStarted={jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false}
       >
-        {jackpotInfo && jackpotInfo.startedAt && (
-          <Timer
-            startedAt={jackpotInfo?.startedAt}
-            duration={jackpotInfo?.jackpotDuration}
-          />
-        )}
+        <h2>{`${jackpotInfo.startedAt ? prizePool : ''}`}</h2>
 
         {jackpotInfo && jackpotInfo.bets.length === 0 && (
           <styles.AguardandoApostasText

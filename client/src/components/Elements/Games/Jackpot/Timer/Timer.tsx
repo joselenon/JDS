@@ -1,5 +1,4 @@
 // Replace props variables names into generic ones (turn into a generic component)
-
 import React, { useRef, useState, useEffect } from 'react';
 
 interface ITimerProps {
@@ -50,12 +49,12 @@ export default function Timer(props: ITimerProps) {
   }, [startedAt, msLeftToClose]);
 
   return (
-    <span>
+    <h2>
       {timerState % 1000 === 0
         ? `${timerState / 1000}:00`
         : `${Math.floor(timerState / 1000)}:${String(
             Math.floor((timerState / 10) % 100),
           ).padStart(2, '0')}`}
-    </span>
+    </h2>
   );
 }

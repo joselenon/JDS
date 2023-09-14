@@ -21,6 +21,7 @@ export default function Timer(props: ITimerProps) {
     const timerSpeed = 10;
     clearInterval(intervalRef.current);
     if (startedAt) {
+      console.log('aquio');
       intervalRef.current = setInterval(() => {
         if (totalMS.current <= 0) {
           clearInterval(intervalRef.current);
@@ -50,6 +51,8 @@ export default function Timer(props: ITimerProps) {
     startTimer();
     return () => clearInterval(intervalRef.current);
   }, [startedAt, msLeftToClose]);
+
+  console.log(startedAt);
 
   return (
     // Temporary (width: '103px') //

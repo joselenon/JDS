@@ -1,21 +1,17 @@
 import validateAndCaptureError from '../../../common/validateAndCaptureError';
-import pSubEventHelper from '../../../helpers/pSubEventHelper';
 import { responseBody } from '../../../helpers/responseHelpers';
-import JackpotService from '../../../services/GamesServices/JackpotService';
+import JackpotServiceInstance, {
+  JackpotService,
+} from '../../../services/GamesServices/JackpotService';
 import { PSub, PUBSUB_EVENTS } from '../../pubSubConfig';
 
 const resolvers = {
   Query: {
     getJackpot: async (_: any, __: any, ___: any) => {
       try {
-        const jackpot = await JackpotService.getJackpotInRedis();
-        const jackpotObj = { ...jackpot, ...JackpotService.getConfig() };
-        pSubEventHelper('GET_REDIS_JACKPOT', 'getLiveJackpot', {
-          success: true,
-          message: 'GET_MSG',
-          data: jackpotObj,
-        });
-        return responseBody(true, 'GET_MSG', jackpotObj);
+        const jackpot = await JackpotServiceInstance.getJackpotInRedis();
+        JackpotService.emitPSub(jackpot);
+        return responseBody(true, 'GET_MSG', jackpot);
       } catch (err) {
         validateAndCaptureError(err);
       }

@@ -6,6 +6,8 @@ interface IOpacitySkeletonProps {
   color?: string;
 }
 
-export default function OpacitySkeleton({ color }: IOpacitySkeletonProps) {
+export default function OpacitySkeleton({
+  color = 'var(--secondary-color)',
+}: IOpacitySkeletonProps) {
   return <styles.SkeletonCotainer color={color} />;
 }

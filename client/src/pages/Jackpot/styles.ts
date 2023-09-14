@@ -18,5 +18,6 @@ export const MakeBetAndPlayersContainer = styled.div`
 
 export const HeaderContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;

@@ -1,13 +1,16 @@
-// Replace props variables names into generic ones (turn into a generic component)
-import React, { useRef, useState, useEffect } from 'react';
+// Remake variables into generic ones (startedAt)
+
+import React, { useRef, useState, useEffect, CSSProperties } from 'react';
 
 interface ITimerProps {
   startedAt: number | undefined;
   duration: number | undefined;
+  style?: CSSProperties;
 }
 
 export default function Timer(props: ITimerProps) {
-  const { startedAt, duration } = props;
+  const { startedAt, duration = 0, style } = props;
+
   const totalMS = useRef<any>(0);
   const intervalRef = useRef<any>(null);
 
@@ -49,12 +52,19 @@ export default function Timer(props: ITimerProps) {
   }, [startedAt, msLeftToClose]);
 
   return (
-    <h2>
-      {timerState % 1000 === 0
-        ? `${timerState / 1000}:00`
-        : `${Math.floor(timerState / 1000)}:${String(
-            Math.floor((timerState / 10) % 100),
-          ).padStart(2, '0')}`}
-    </h2>
+    // Temporary (width: '103px') //
+    <div style={{ width: '103px' }}>
+      {startedAt ? (
+        <h2 style={style}>
+          {timerState % 1000 === 0
+            ? `${timerState / 1000}:00`
+            : `${Math.floor(timerState / 1000)}:${String(
+                Math.floor((timerState / 10) % 100),
+              ).padStart(2, '0')}`}
+        </h2>
+      ) : (
+        <h2 style={style}>{`${duration / 1000}:00`}</h2>
+      )}
+    </div>
   );
 }

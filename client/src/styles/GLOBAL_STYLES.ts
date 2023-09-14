@@ -71,7 +71,7 @@ export default createGlobalStyle`
   .main-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     max-width: 1300px;
     width: 100%;
     min-height: 80vh;

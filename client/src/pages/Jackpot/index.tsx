@@ -1,61 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import * as styles from './styles';
 
-import { TGetJackpotResponse } from '../../config/interfaces/IGQLResponses';
-import Wheel from '../../components/Elements/Games/Jackpot/Wheel';
+import { DEFAULT_JACKPOT_STATE } from '../../config/constants/DEFAULT_JACKPOT_STATE';
 import useGetJackpot from '../../hooks/useGetJackpot';
-import MakeBet from '../../components/Elements/Games/Jackpot/MakeBet';
-import Bets from '../../components/Elements/Games/Jackpot/Bets';
-import Timer from '../../components/Elements/Games/Jackpot/Timer/Timer';
+import Wheel from '../../components/Sections/Games/Jackpot/Wheel';
+import MakeBet from '../../components/Sections/Games/Jackpot/MakeBet';
+import Bets from '../../components/Sections/Games/Jackpot/Bets';
+import LastWinners from '../../components/Sections/Games/Jackpot/LastWinners';
 
 export default function Jackpot() {
-  const [jackpotState, setJackpotState] = useState<TGetJackpotResponse>({
-    bets: [],
-    createdAt: 0,
-    docId: '',
-    jackpotDuration: 0,
-    jackpotAnimationDuration: 0,
-    prizePool: 0,
-    status: 'ACTIVE',
-    type: 'JACKPOT',
-  });
   const { jackpotInfo, refetch } = useGetJackpot();
+  refetch();
 
   const betsProps = {
-    bets: jackpotState ? jackpotState.bets : [],
-    prizePool: jackpotState ? jackpotState.prizePool : 0,
+    bets: jackpotInfo ? jackpotInfo.bets : [],
+    prizePool: jackpotInfo ? jackpotInfo.prizePool : 0,
   };
-
-  useEffect(() => {
-    if (jackpotInfo) setJackpotState(jackpotInfo);
-  }, [jackpotInfo]);
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <div className="main-wrapper">
       <styles.HeaderAndWheelContainer>
         <styles.HeaderContainer>
-          <div>
-            {jackpotInfo?.startedAt ? (
-              <Timer
-                startedAt={jackpotInfo?.startedAt}
-                duration={jackpotInfo?.jackpotDuration}
-              />
-            ) : jackpotInfo?.jackpotDuration ? (
-              <h2>{jackpotInfo.jackpotDuration / 1000}:00</h2>
-            ) : (
-              <h2>60:00</h2>
-            )}
-          </div>
-          <div>
-            <h2>Last winners</h2>
-          </div>
+          <LastWinners />
+          <h2>{jackpotInfo ? jackpotInfo.prizePool : '0'}</h2>
         </styles.HeaderContainer>
-        <Wheel jackpotInfo={jackpotState} />
+
+        <Wheel jackpotInfo={jackpotInfo ? jackpotInfo : DEFAULT_JACKPOT_STATE} />
       </styles.HeaderAndWheelContainer>
 
       <styles.MakeBetAndPlayersContainer>

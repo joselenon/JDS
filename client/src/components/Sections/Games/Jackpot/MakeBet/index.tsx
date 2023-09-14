@@ -4,9 +4,9 @@ import * as styles from './styles';
 
 import { ICreateInput } from '../../../../../config/interfaces/IInput';
 import { DefaultDivButton } from '../../../../../styles/GLOBAL_STYLES';
-import Button from '../../../Button';
-import Form from '../../../Form';
 import useMakeBet from '../../../../../hooks/useMakeBet';
+import Button from '../../../../Elements/Button';
+import Form from '../../../../Elements/Form';
 
 function MakeBet() {
   const handleMakeBet = useMakeBet();

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { v4 } from 'uuid';
 
 import * as styles from './styles';
 
 import { IBet } from '../../../../../config/interfaces/IBet';
-import Button from '../../../Button';
 import OpacitySkeleton from '../../../../Utils/OpacitySkeleton';
+import Button from '../../../../Elements/Button';
 
 interface IBetsProps {
   props: { bets: IBet[]; prizePool: number };
@@ -62,7 +63,7 @@ export default function Bets(props: IBetsProps) {
   const skeletonBetsHTML = [];
   for (let i = 0; i < 3; i++) {
     skeletonBetsHTML.push(
-      <styles.BetSkeletonContainer>
+      <styles.BetSkeletonContainer key={v4()}>
         <div style={{ width: '70px', height: '70px' }}>
           <OpacitySkeleton color="#b1b1b1" />
         </div>

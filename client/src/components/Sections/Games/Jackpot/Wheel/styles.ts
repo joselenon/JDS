@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 export const WheelContainer = styled.div`
   width: 100%;
+  user-select: none;
   overflow-x: hidden;
   position: relative;
   padding: var(--default-pdn) 0;

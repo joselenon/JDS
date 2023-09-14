@@ -5,6 +5,7 @@ import AvatarItem from './AvatarItem';
 import { v4 } from 'uuid';
 import RenderAvatars from './RenderAvatars';
 import { TGetJackpotResponse } from '../../../../../config/interfaces/IGQLResponses';
+import Timer from '../Timer/Timer';
 
 interface IWheelProps {
   jackpotInfo: TGetJackpotResponse;
@@ -43,18 +44,24 @@ export default function Wheel({ jackpotInfo }: IWheelProps) {
   return (
     <styles.WheelContainer>
       {jackpotInfo &&
-      (jackpotInfo.status === 'FINISHED' || jackpotInfo.status === 'CLOSED') ? (
-        <styles.WheelPointer
-          $jackpotFinished={jackpotInfo.status === 'FINISHED' ? true : false}
-        />
-      ) : (
-        <></>
-      )}
+        (jackpotInfo.status === 'FINISHED' || jackpotInfo.status === 'CLOSED') && (
+          <styles.WheelPointer
+            $jackpotFinished={jackpotInfo.status === 'FINISHED' ? true : false}
+          />
+        )}
+
       <styles.AvatarsContainer ref={wheelRef}>{renderedAvatars}</styles.AvatarsContainer>
+
       <styles.AbsoluteContainer
         $jackpotStarted={jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false}
       >
-        <h2>{`${jackpotInfo.startedAt ? prizePool : ''}`}</h2>
+        {jackpotInfo.startedAt && (
+          <Timer
+            style={{ color: 'white', textShadow: '0 0 10px black', fontSize: '40px' }}
+            startedAt={jackpotInfo.startedAt}
+            duration={jackpotInfo.jackpotDuration}
+          />
+        )}
 
         {jackpotInfo && jackpotInfo.bets.length === 0 && (
           <styles.AguardandoApostasText

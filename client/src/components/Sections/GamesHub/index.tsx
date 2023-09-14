@@ -6,7 +6,7 @@ import * as styles from './styles';
 import JackpotItem from './JackpotItem';
 import PapumteyItem from './PapumteyItem';
 
-export default function Games() {
+export default function GamesHub() {
   return (
     <styles.GamesItemsContainer>
       <Link to="/jackpot" className="jackpot">

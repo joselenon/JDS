@@ -21,13 +21,14 @@ import ProcessWinnerService from './ProcessWinnerService';
 import BalanceService from '../BalanceService';
 import { JackpotBetsService } from './BetsService';
 
-const jackpotCacheKey = getRedisKeyHelper('last_jackpot');
-const jackpotDuration = 1000 * 1000;
+const lastJackpotsCacheKey = getRedisKeyHelper('last_jackpots');
+const jackpotCacheKey = getRedisKeyHelper('active_jackpot');
+const jackpotBetsQueueCacheKey = getRedisKeyHelper('jackpot_bets_queue');
+const jackpotDuration = 5000 * 1000;
 const jackpotAnimationDuration = 10 * 1000;
 
 class JackpotService {
   // Durations measured per ms
-  private jackpotBetsQueueCacheKey = getRedisKeyHelper('jackpot_bets_queue');
   private shouldListenToBets: boolean = true;
   private isJackpotRunning: boolean = false;
 
@@ -75,18 +76,22 @@ class JackpotService {
       await FirebaseService.updateDocument('games', jackpotDocId, payloadToDB);
 
       // Redis Update
-      const jackpotRedisPayload = { ...jackpotInRedis, ...payload };
+      const jackpotRedisPayload = {
+        ...jackpotInRedis,
+        ...payload,
+        jackpotDuration,
+        jackpotAnimationDuration,
+      };
       if (payload.bets) {
         jackpotRedisPayload.bets = [...jackpotInRedis.bets, ...payload.bets];
       }
       await RedisService.set(
         jackpotCacheKey,
         jackpotRedisPayload,
-        {
-          inJSON: true,
-        },
+        { inJSON: true },
         null,
       );
+      console.log('antes de emitir', jackpotRedisPayload);
       JackpotService.emitPSub(jackpotRedisPayload);
     } catch (err) {
       console.log(err);
@@ -109,6 +114,8 @@ class JackpotService {
     const jackpotRedisPayload = {
       ...jackpotDBPayload,
       docId: jackpotDocId,
+      jackpotDuration,
+      jackpotAnimationDuration,
     };
     await RedisService.set(jackpotCacheKey, jackpotRedisPayload, {
       inJSON: true,
@@ -124,6 +131,15 @@ class JackpotService {
     });
     if (!jackpotInRedis) throw new NoJackpotInRedis(); // Fix this
     return jackpotInRedis;
+  }
+
+  async getLastJackpotsInRedis(): Promise<IGameRedis[]> {
+    const lastJackpotsInRedis = await RedisService.lRange<IGameRedis>(
+      lastJackpotsCacheKey,
+      { inJSON: true },
+    );
+    if (!lastJackpotsInRedis || lastJackpotsInRedis.length === 0) return [];
+    return lastJackpotsInRedis;
   }
 
   // Checks if jackpot on Cache is updated, if not, it updates
@@ -165,7 +181,7 @@ class JackpotService {
     try {
       while (this.shouldListenToBets) {
         const task = await RedisService.lPop<IBetRedisCreate>(
-          this.jackpotBetsQueueCacheKey,
+          jackpotBetsQueueCacheKey,
           1,
           { inJSON: true },
         );
@@ -185,13 +201,14 @@ class JackpotService {
     }
   }
 
+  // Process bets done before jackpot finishing
   async receiveLastBets() {
     const { updatedAt } = await this.getJackpotInRedis();
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const task = await RedisService.lPop<IBetRedisCreate>(
-        this.jackpotBetsQueueCacheKey,
+        jackpotBetsQueueCacheKey,
         1,
         { inJSON: true },
       );
@@ -208,9 +225,10 @@ class JackpotService {
         console.log(err);
       }
     }
-    await RedisService.del(this.jackpotBetsQueueCacheKey);
+    await RedisService.del(jackpotBetsQueueCacheKey);
   }
 
+  // Listen to jackpot till it's closure, then triggers the last function 'finishJackpot'
   async listenStartedJackpot() {
     try {
       const checkJackpotStatus = async () => {
@@ -243,7 +261,27 @@ class JackpotService {
     }
   }
 
-  async saveRoundHistory() {}
+  async saveAndUpdateGameHistory() {
+    try {
+      const activeJackpot = await this.getJackpotInRedis();
+      const redisLastJackpots = await this.getLastJackpotsInRedis();
+      if (redisLastJackpots.length === 10) {
+        await RedisService.rPop(lastJackpotsCacheKey, 1, { inJSON: true });
+      }
+      await RedisService.lPush(lastJackpotsCacheKey, activeJackpot, {
+        inJSON: true,
+      });
+
+      const redisLastJackpotsAtt = await this.getLastJackpotsInRedis();
+      return pSubEventHelper('GET_LIVE_LAST_JACKPOTS', 'getLiveLastJackpots', {
+        success: true,
+        message: 'GET_MSG',
+        data: redisLastJackpotsAtt,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   // Close jackpot, draw the winner and then finishes it
   async finishJackpot(jackpotInRedis: IGameRedis) {
@@ -256,7 +294,6 @@ class JackpotService {
       await this.receiveLastBets();
 
       const { bets: jackpotBets, prizePool } = jackpotInRedis;
-      console.log('Jackpot antes de finalizar', jackpotInRedis);
       const { winnerBet, winnerPrize } = await ProcessWinnerService.jackpot(
         jackpotBets,
         prizePool,
@@ -268,7 +305,6 @@ class JackpotService {
         updatedAt: Date.now(),
         finishedAt: Date.now(),
       });
-      console.log('JACKPOT FINALIZADOOOOO.');
 
       // Delay till next jackpot (for the animation to end)
       await new Promise((resolve) =>
@@ -280,7 +316,7 @@ class JackpotService {
         winnerPrize,
         'Atualizando balança vencedor',
       );
-      await this.saveRoundHistory();
+      await this.saveAndUpdateGameHistory();
 
       this.isJackpotRunning = false;
     } catch (err) {
@@ -295,7 +331,7 @@ class JackpotService {
   async initialize() {
     console.log('Jackpot Service Initialized');
     await RedisService.del(jackpotCacheKey);
-    await RedisService.del(this.jackpotBetsQueueCacheKey);
+    await RedisService.del(jackpotBetsQueueCacheKey);
 
     // Starts the jackpots loop
     const jackpotInterval = setInterval(async () => {

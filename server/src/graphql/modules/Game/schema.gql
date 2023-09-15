@@ -34,10 +34,18 @@ type Game {
   data: GameData!
 }
 
+type GameHistory {
+  success: Boolean!
+  message: String!
+  data: [GameData]!
+}
+
 type Query {
   getJackpot: Game!
+  getLastJackpots: GameHistory!
 }
 
 type Subscription {
   getLiveJackpot: Game!
+  getLiveLastJackpots: GameHistory!
 }

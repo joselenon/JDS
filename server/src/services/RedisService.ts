@@ -58,27 +58,38 @@ export default class RedisService {
     }
   }
 
-  static rPush(key: string, value: any, options?: TRedisOptions) {
-    const syncPush = RedisService.promisifyCommand('rpush');
+  static lPush(key: string, value: any, options?: TRedisOptions) {
+    const syncLPush = RedisService.promisifyCommand('lpush');
     if (options?.inJSON) {
       const valueJSON = JSON.stringify(value);
-      return syncPush(key, valueJSON);
+      return syncLPush(key, valueJSON);
     }
-    return syncPush(key, value);
+    return syncLPush(key, value);
   }
 
-  /*
+  static rPush(key: string, value: any, options?: TRedisOptions) {
+    const syncRPush = RedisService.promisifyCommand('rpush');
+    if (options?.inJSON) {
+      const valueJSON = JSON.stringify(value);
+      return syncRPush(key, valueJSON);
+    }
+    return syncRPush(key, value);
+  }
+
   static async lRange<T>(
     key: string,
     options?: TRedisOptions,
   ): Promise<T[] | null> {
     const syncLRange = RedisService.promisifyCommand('lrange');
-    const data = await syncLRange(key, 0, -1);
-    if (data && options?.inJSON) {
-      return JSON.parse(data);
+    const dataJSON = await syncLRange(key, 0, -1);
+    if (dataJSON && options?.inJSON) {
+      const data = dataJSON.map((item: any) => {
+        return JSON.parse(item);
+      });
+      return data;
     }
-    return data;
-  } */
+    return dataJSON;
+  }
 
   // Removes and returns first element of the list
   static async lPop<T>(
@@ -88,6 +99,20 @@ export default class RedisService {
   ): Promise<T | null> {
     const syncLPop = RedisService.promisifyCommand('lpop');
     const data = await syncLPop(key, count);
+    if (data && options?.inJSON) {
+      return JSON.parse(data);
+    }
+    return data;
+  }
+
+  // Removes and returns last element of the list
+  static async rPop<T>(
+    key: string,
+    count: number,
+    options?: TRedisOptions,
+  ): Promise<T | null> {
+    const syncRPop = RedisService.promisifyCommand('rpop');
+    const data = await syncRPop(key, count);
     if (data && options?.inJSON) {
       return JSON.parse(data);
     }

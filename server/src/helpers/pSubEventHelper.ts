@@ -1,9 +1,11 @@
 import { AuthError } from '../config/errorTypes/ClientErrors';
-import { PSub, PUBSUB_EVENTS } from '../graphql/pubSubConfig';
+import {
+  PSub,
+  PUBSUB_EVENTS,
+  TActionKeys,
+  TPubSubEvents,
+} from '../graphql/pubSubConfig';
 import { TMessages, responseBody } from './responseHelpers';
-
-type TPubSubEvents = 'GET_LIVE_BALANCE' | 'GET_REDIS_JACKPOT';
-type TActionKeys = 'getLiveBalance' | 'getLiveJackpot';
 
 function publishPSubEvent(triggerName: string, action: any) {
   return PSub.publish(triggerName, action);

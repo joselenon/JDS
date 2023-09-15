@@ -3,13 +3,13 @@
 import React, { useRef, useState, useEffect, CSSProperties } from 'react';
 
 interface ITimerProps {
-  startedAt: number | undefined;
-  duration: number | undefined;
+  startedAt: number;
+  duration: number;
   style?: CSSProperties;
 }
 
 export default function Timer(props: ITimerProps) {
-  const { startedAt, duration = 0, style } = props;
+  const { startedAt, duration, style } = props;
 
   const totalMS = useRef<any>(0);
   const intervalRef = useRef<any>(null);
@@ -21,8 +21,7 @@ export default function Timer(props: ITimerProps) {
     const timerSpeed = 10;
     clearInterval(intervalRef.current);
     if (startedAt) {
-      console.log('aquio');
-      intervalRef.current = setInterval(() => {
+      return (intervalRef.current = setInterval(() => {
         if (totalMS.current <= 0) {
           clearInterval(intervalRef.current);
           setTimerState(0);
@@ -32,13 +31,14 @@ export default function Timer(props: ITimerProps) {
           totalMS.current = newTotalMS;
           setTimerState(newTotalMS);
         }
-      }, timerSpeed);
+      }, timerSpeed));
     }
   }
 
   const calculateMSLeftToCloseJackpot = () => {
     if (!startedAt) return 0;
     if (!duration) return 0;
+
     const nowTime = new Date().getTime();
     const nowTimeToStartedAtDif = nowTime - Number(startedAt);
     const msLeftToClose = duration - nowTimeToStartedAtDif;
@@ -50,9 +50,7 @@ export default function Timer(props: ITimerProps) {
     totalMS.current = msLeftToClose;
     startTimer();
     return () => clearInterval(intervalRef.current);
-  }, [startedAt, msLeftToClose]);
-
-  console.log(startedAt);
+  }, [startedAt, msLeftToClose, duration]);
 
   return (
     // Temporary (width: '103px') //

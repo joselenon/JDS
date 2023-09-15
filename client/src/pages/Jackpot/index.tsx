@@ -8,8 +8,10 @@ import Wheel from '../../components/Sections/Games/Jackpot/Wheel';
 import MakeBet from '../../components/Sections/Games/Jackpot/MakeBet';
 import Bets from '../../components/Sections/Games/Jackpot/Bets';
 import LastWinners from '../../components/Sections/Games/Jackpot/LastWinners';
+import useGetLastJackpots from '../../hooks/useGetLastJackpots';
 
 export default function Jackpot() {
+  const { lastJackpotsInfo } = useGetLastJackpots();
   const { jackpotInfo, refetch } = useGetJackpot();
   refetch();
 
@@ -22,7 +24,7 @@ export default function Jackpot() {
     <div className="main-wrapper">
       <styles.HeaderAndWheelContainer>
         <styles.HeaderContainer>
-          <LastWinners />
+          <LastWinners lastJackpotsInfo={lastJackpotsInfo ? lastJackpotsInfo : []} />
           <h2>{jackpotInfo ? jackpotInfo.prizePool : '0'}</h2>
         </styles.HeaderContainer>
 

@@ -84,7 +84,6 @@ class JackpotBetsService {
 
     await JackpotService.updateJackpots(this.jackpotInfo, jackpotUpdatePayload);
     await BalanceService.softUpdateBalances(userInfo.userDocId, -amountBet);
-    JackpotService.emitPSub(jackpotUpdatePayload);
   }
 
   async makeBet() {

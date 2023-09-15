@@ -43,17 +43,16 @@ export default function Wheel({ jackpotInfo }: IWheelProps) {
 
   return (
     <styles.WheelContainer>
-      {jackpotInfo &&
-        (jackpotInfo.status === 'FINISHED' || jackpotInfo.status === 'CLOSED') && (
-          <styles.WheelPointer
-            $jackpotFinished={jackpotInfo.status === 'FINISHED' ? true : false}
-          />
-        )}
+      {(jackpotInfo.status === 'FINISHED' || jackpotInfo.status === 'CLOSED') && (
+        <styles.WheelPointer
+          $jackpotFinished={jackpotInfo.status === 'FINISHED' ? true : false}
+        />
+      )}
 
       <styles.AvatarsContainer ref={wheelRef}>{renderedAvatars}</styles.AvatarsContainer>
 
       <styles.AbsoluteContainer
-        $jackpotStarted={jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false}
+        $jackpotStarted={jackpotInfo.status === 'FINISHED' ? true : false}
       >
         {jackpotInfo.startedAt && (
           <Timer
@@ -65,9 +64,7 @@ export default function Wheel({ jackpotInfo }: IWheelProps) {
 
         {jackpotInfo && jackpotInfo.bets.length === 0 && (
           <styles.AguardandoApostasText
-            $jackpotStarted={
-              jackpotInfo && jackpotInfo.status === 'FINISHED' ? true : false
-            }
+            $jackpotStarted={jackpotInfo.status === 'FINISHED' ? true : false}
           >
             Aguardando apostas...
           </styles.AguardandoApostasText>

@@ -26,6 +26,7 @@ const GET_JACKPOT = gql`
         winningBetRef {
           docId
           amountBet
+          intervals
           userInfo {
             username
             avatar
@@ -60,6 +61,7 @@ const GET_LAST_JACKPOTS = gql`
         winningBetRef {
           docId
           amountBet
+          intervals
           userInfo {
             username
             avatar
@@ -96,6 +98,7 @@ const GET_LIVE_JACKPOT = gql`
         winningBetRef {
           docId
           amountBet
+          intervals
           userInfo {
             username
             avatar
@@ -130,6 +133,7 @@ const GET_LIVE_LAST_JACKPOTS = gql`
         winningBetRef {
           docId
           amountBet
+          intervals
           userInfo {
             username
             avatar

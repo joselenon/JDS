@@ -3,7 +3,7 @@ import {
   InsufficientBalance,
 } from '../../config/errorTypes/ClientErrors';
 import { IBetDBCreate, IBetRedisCreate } from '../../config/interfaces/IBet';
-import { IGameRedis, IGameUpdate } from '../../config/interfaces/IGame';
+import { IGameRedis, IGameRedisUpdate } from '../../config/interfaces/IGame';
 import BalanceService from '../BalanceService';
 import FirebaseService from '../FirebaseService';
 import JackpotServiceInstance, { JackpotService } from './JackpotService';
@@ -74,7 +74,7 @@ class JackpotBetsService {
     const { amountBet, userInfo } = this.betInfo;
     const { prizePool } = this.jackpotInfo;
 
-    const jackpotUpdatePayload: IGameUpdate = {
+    const jackpotUpdatePayload: IGameRedisUpdate = {
       bets: [{ ...this.betInfo, docId: newBetDocId, intervals }],
       prizePool: prizePool + amountBet,
     };

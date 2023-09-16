@@ -10,6 +10,7 @@ export default createGlobalStyle`
     --main-bg-color: #ebebeb;
     --primary-color: #212121;
     --secondary-color: #cecece;
+    --green-color: #00963b;
     --secondary-text-color: #d9d9d9;
     --default-br: 5px; // Border-radius
     --default-fs: 16px; // Font-size
@@ -76,7 +77,7 @@ export default createGlobalStyle`
     width: 100%;
     min-height: 80vh;
     margin: 0 auto;
-    padding: 2rem 5vw;
+    padding: 2rem 4vw;
   }
 `;
 

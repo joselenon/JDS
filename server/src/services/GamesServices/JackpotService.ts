@@ -4,7 +4,7 @@ import { IBetRedisCreate } from '../../config/interfaces/IBet';
 import {
   IGameDBUpdate,
   IGameDB,
-  IGameUpdate,
+  IGameRedisUpdate,
   IGameRedis,
 } from '../../config/interfaces/IGame';
 
@@ -24,7 +24,7 @@ import { JackpotBetsService } from './BetsService';
 const lastJackpotsCacheKey = getRedisKeyHelper('last_jackpots');
 const jackpotCacheKey = getRedisKeyHelper('active_jackpot');
 const jackpotBetsQueueCacheKey = getRedisKeyHelper('jackpot_bets_queue');
-const jackpotDuration = 5000 * 1000;
+const jackpotDuration = 15 * 1000;
 const jackpotAnimationDuration = 10 * 1000;
 
 class JackpotService {
@@ -47,7 +47,7 @@ class JackpotService {
   // Helper function to update every DB, Cache and Client jackpots info
   static async updateJackpots(
     jackpotInRedis: IGameRedis,
-    payload: IGameUpdate,
+    payload: IGameRedisUpdate,
   ) {
     try {
       const { docId: jackpotDocId } = jackpotInRedis;

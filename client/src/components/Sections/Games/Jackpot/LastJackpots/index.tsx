@@ -2,20 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
 
 import * as styles from './styles';
-import OpacitySkeleton from '../../../../Utils/OpacitySkeleton';
+
 import { TGetJackpotResponse } from '../../../../../config/interfaces/IGQLResponses';
+import OpacitySkeleton from '../../../../Utils/OpacitySkeleton';
+import { DEFAULT_JACKPOT_STATE } from '../../../../../config/constants/DEFAULT_JACKPOT_STATE';
+import GameInfo from '../GameInfo';
 
 interface ILastWinnersProps {
   lastJackpotsInfo: TGetJackpotResponse[];
 }
 
-export default function LastWinners({ lastJackpotsInfo }: ILastWinnersProps) {
+export default function LastJackpots({ lastJackpotsInfo }: ILastWinnersProps) {
   const [lastWinners, setLastWinners] = useState<JSX.Element[]>([]);
+  const [selectedGameInfo, setSelectedGameInfo] =
+    useState<TGetJackpotResponse>(DEFAULT_JACKPOT_STATE);
+
   useEffect(() => {
     const lastWinnersHTML = lastJackpotsInfo.map((jackpot) => (
-      <div key={jackpot.docId} style={{ width: 20, height: 20 }}>
+      <styles.Game key={jackpot.docId} onClick={() => setSelectedGameInfo(jackpot)}>
         <img src={jackpot.winningBetRef?.userInfo.avatar} width={'100%'} />
-      </div>
+      </styles.Game>
     ));
     setLastWinners(lastWinnersHTML);
   }, [lastJackpotsInfo]);
@@ -30,11 +36,12 @@ export default function LastWinners({ lastJackpotsInfo }: ILastWinnersProps) {
   }
 
   return (
-    <styles.LastWinnersContainer>
+    <styles.LastJackpotsContainer>
       <h2>Last Winners</h2>
-      <styles.RoundsContainer>
+      <styles.GamesContainer>
         {lastJackpotsInfo.length > 0 ? lastWinners : skeletonLastWinnersHTML}
-      </styles.RoundsContainer>
-    </styles.LastWinnersContainer>
+      </styles.GamesContainer>
+      <GameInfo gameInfo={selectedGameInfo} />
+    </styles.LastJackpotsContainer>
   );
 }

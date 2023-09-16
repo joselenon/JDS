@@ -7,8 +7,9 @@ import useGetJackpot from '../../hooks/useGetJackpot';
 import Wheel from '../../components/Sections/Games/Jackpot/Wheel';
 import MakeBet from '../../components/Sections/Games/Jackpot/MakeBet';
 import Bets from '../../components/Sections/Games/Jackpot/Bets';
-import LastWinners from '../../components/Sections/Games/Jackpot/LastWinners';
+import LastJackpots from '../../components/Sections/Games/Jackpot/LastJackpots';
 import useGetLastJackpots from '../../hooks/useGetLastJackpots';
+import PrizePool from '../../components/Sections/Games/Jackpot/PrizePool';
 
 export default function Jackpot() {
   const { lastJackpotsInfo } = useGetLastJackpots();
@@ -24,8 +25,8 @@ export default function Jackpot() {
     <div className="main-wrapper">
       <styles.HeaderAndWheelContainer>
         <styles.HeaderContainer>
-          <LastWinners lastJackpotsInfo={lastJackpotsInfo ? lastJackpotsInfo : []} />
-          <h2>{jackpotInfo ? jackpotInfo.prizePool : '0'}</h2>
+          <LastJackpots lastJackpotsInfo={lastJackpotsInfo ? lastJackpotsInfo : []} />
+          <PrizePool prizePool={jackpotInfo ? jackpotInfo.prizePool : 0} />
         </styles.HeaderContainer>
 
         <Wheel jackpotInfo={jackpotInfo ? jackpotInfo : DEFAULT_JACKPOT_STATE} />

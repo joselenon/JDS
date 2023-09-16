@@ -29,9 +29,5 @@ export default function useGetJackpot() {
     }
   }, [jackpotFetch, liveJackpotFetch]);
 
-  useEffect(() => {
-    console.log('agora asis', jackpot);
-  }, [jackpot]);
-
   return { jackpotInfo: jackpot, refetch: jackpotFetch.refetch };
 }

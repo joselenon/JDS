@@ -294,13 +294,12 @@ class JackpotService {
       await this.receiveLastBets();
 
       const { bets: jackpotBets, prizePool } = jackpotInRedis;
-      const { winnerBet, winnerPrize } = await ProcessWinnerService.jackpot(
-        jackpotBets,
-        prizePool,
-      );
+      const { winnerBet, winnerPrize, ticketDrawn } =
+        await ProcessWinnerService.jackpot(jackpotBets, prizePool);
 
       await JackpotService.updateJackpots(jackpotInRedis, {
         winningBetRef: winnerBet,
+        ticketDrawn,
         status: 'FINISHED',
         updatedAt: Date.now(),
         finishedAt: Date.now(),

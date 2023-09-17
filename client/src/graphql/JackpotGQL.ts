@@ -14,6 +14,10 @@ const GET_JACKPOT = gql`
         status
         jackpotDuration
         jackpotAnimationDuration
+        ticketDrawn {
+          ticket
+          hash
+        }
         bets {
           docId
           intervals
@@ -49,6 +53,10 @@ const GET_LAST_JACKPOTS = gql`
         updatedAt
         prizePool
         status
+        ticketDrawn {
+          ticket
+          hash
+        }
         bets {
           docId
           intervals
@@ -86,6 +94,10 @@ const GET_LIVE_JACKPOT = gql`
         status
         jackpotDuration
         jackpotAnimationDuration
+        ticketDrawn {
+          ticket
+          hash
+        }
         bets {
           docId
           intervals
@@ -121,6 +133,10 @@ const GET_LIVE_LAST_JACKPOTS = gql`
         updatedAt
         prizePool
         status
+        ticketDrawn {
+          ticket
+          hash
+        }
         bets {
           docId
           intervals

@@ -3,7 +3,6 @@ import React from 'react';
 import * as styles from './styles';
 
 import { TGetJackpotResponse } from '../../../../../config/interfaces/IGQLResponses';
-import PrizePool from '../PrizePool';
 
 interface IGameInfoProps {
   gameInfo: TGetJackpotResponse;
@@ -18,8 +17,15 @@ export default function GameInfo({ gameInfo }: IGameInfoProps) {
   const createdAt = new Date(createdAtNumber).toLocaleString();
 
   const betsHTML = gameInfo.bets.map((bet) => {
+    const winnerBetStyle =
+      gameInfo.ticketDrawn &&
+      gameInfo.ticketDrawn?.ticket > bet.intervals[0] &&
+      gameInfo.ticketDrawn?.ticket < bet.intervals[1]
+        ? { background: 'rgb(58, 122, 218, 0.3)' }
+        : {};
+
     return (
-      <styles.BetTR key={bet.docId}>
+      <styles.BetTR key={bet.docId} style={winnerBetStyle}>
         <styles.BetTD>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <img src={bet.userInfo.avatar} width={20} />
@@ -47,13 +53,18 @@ export default function GameInfo({ gameInfo }: IGameInfoProps) {
 
       <hr style={{ width: '100%', border: '1px solid #303030' }}></hr>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+      <styles.TicketDrawnAndPrizePool>
         <div>
-          <h2>Ticket Vencedor</h2>
-          <h2>{`${gameInfo.winningBetRef?.intervals[0]} - ${gameInfo.winningBetRef?.intervals[1]}`}</h2>
+          <h2>T. Sorteado</h2>
+          <h1 style={{ color: 'var(--blue-color)' }}>
+            {gameInfo.ticketDrawn ? gameInfo.ticketDrawn.ticket : 0}
+          </h1>
         </div>
-        <PrizePool prizePool={gameInfo.prizePool} />
-      </div>
+        <div>
+          <h2>Pot</h2>
+          <h1 style={{ color: 'var(--green-color)' }}>{gameInfo.prizePool}</h1>
+        </div>
+      </styles.TicketDrawnAndPrizePool>
 
       <styles.BetsTable>
         <thead>

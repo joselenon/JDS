@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const GameInfoContainer = styled.div`
+  max-width: 400px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,10 +12,18 @@ export const GameInfoContainer = styled.div`
   background-color: var(--primary-color);
   gap: 0.5rem;
 
+  h1 {
+    font-size: 30px;
+    line-height: 23px;
+    text-align: center;
+  }
+
   h2 {
-    font-size: 20px;
     color: white;
+    text-align: center;
     white-space: nowrap;
+    line-height: 20px;
+    font-size: 14px !important;
   }
 `;
 
@@ -33,6 +43,13 @@ export const GameInfoHeaderContainer = styled.div`
       color: white;
     }
   }
+`;
+
+export const TicketDrawnAndPrizePool = styled.div`
+  user-select: none;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 `;
 
 export const BetsTable = styled.table`
@@ -61,16 +78,6 @@ export const BetTR = styled.tr`
     width: 20px;
     height: 20px;
   }
-
-  h3 {
-    max-width: 150px;
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 20px;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-  }
 `;
 
 export const BetTD = styled.td`
@@ -81,8 +88,8 @@ export const BetTD = styled.td`
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 20px;
+    font-size: 16px;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    font-size: 16px;
   }
 `;

@@ -6,15 +6,10 @@ export const PotContainer = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-
-  h2 {
-    font-size: 16px;
-  }
 `;
 
-export const PotText = styled.h2`
+export const PotText = styled.h1`
   color: var(--green-color) !important;
   text-align: end;
   font-size: 30px !important;
-  line-height: 24px;
 `;

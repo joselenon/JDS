@@ -11,6 +11,7 @@ export default createGlobalStyle`
     --primary-color: #212121;
     --secondary-color: #cecece;
     --green-color: #00963b;
+    --blue-color: #3a7ada;
     --secondary-text-color: #d9d9d9;
     --default-br: 5px; // Border-radius
     --default-fs: 16px; // Font-size

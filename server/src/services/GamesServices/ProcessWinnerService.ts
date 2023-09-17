@@ -1,5 +1,6 @@
 import { DEV_FEE } from '../../config/gameLogic/config';
 import { IBetDBCreate, IBetRedis } from '../../config/interfaces/IBet';
+import { IGameDB } from '../../config/interfaces/IGame';
 import FirebaseService from '../FirebaseService';
 
 function getRandomInt(max: number) {
@@ -16,6 +17,10 @@ class ProcessWinnerService {
     if (totalTickets !== prizePool) throw new Error('algo deu errado');
 
     const drawRandomTicket = getRandomInt(totalTickets - 1);
+    const ticketDrawn: IGameDB['ticketDrawn'] = {
+      ticket: drawRandomTicket,
+      hash: '',
+    };
     const winnerBet = jackpotBets.find((bet) => {
       if (
         drawRandomTicket >= bet.intervals[0] &&
@@ -37,7 +42,7 @@ class ProcessWinnerService {
       { amountReceived: winnerPrize },
     );
 
-    return { winnerBet, winnerPrize };
+    return { winnerBet, winnerPrize, ticketDrawn };
   }
 }
 

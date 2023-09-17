@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const LastJackpotsContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

@@ -13,11 +13,17 @@ type BetRedis {
   userInfo: Player
 }
 
+type TicketDrawn {
+  ticket: Int
+  hash: String
+}
+
 type GameData {
   docId: String
   bets: [BetRedis]
   type: String
   winningBetRef: BetRedis
+  ticketDrawn: TicketDrawn
   prizePool: Int
   status: String
   createdAt: String

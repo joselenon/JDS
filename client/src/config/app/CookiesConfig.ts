@@ -3,6 +3,6 @@ export const JWTCookie = {
   config: {
     maxAge: 5 * 24 * 60 * 60, // 5 days (in seconds)
     secure: true,
-    domain: 'jdsserverv1.gamblance.com',
+    domain: '.gamblance.com',
   },
 };

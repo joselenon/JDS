@@ -8,7 +8,7 @@ export const JWTCookie = {
   config: {
     maxAge: JWTConfig.expiration,
     secure: true,
-    domain: 'jdsserverv1.gamblance.com',
+    domain: '.gamblance.com',
   } as CookieOptions,
 };
 

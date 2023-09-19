@@ -10,6 +10,7 @@ export const JWTCookie = {
     maxAge: JWTConfig.expiration,
     secure: true,
     domain: URLS.MAIN_URLS.SERVER_URL,
+    path: URLS.MAIN_URLS.CLIENT_URL,
   } as CookieOptions,
 };
 

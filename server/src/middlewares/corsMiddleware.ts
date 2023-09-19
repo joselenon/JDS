@@ -4,5 +4,5 @@ import cors from 'cors';
 import { URLS } from '../config/constants';
 
 export default function corsMiddleware() {
-  return cors({ origin: URLS.MAIN_URLS.CLIENT_URL, credentials: true });
+  return cors({ origin: URLS.MAIN_URLS.CLIENT_FULL_URL, credentials: true });
 }

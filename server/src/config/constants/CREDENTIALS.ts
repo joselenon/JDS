@@ -5,6 +5,10 @@ const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
 
 const CREDENTIALS = {
+  SERVER_URL: process.env.SERVER_URL,
+  SERVER_PORT: process.env.SERVER_PORT,
+  CLIENT_URL: process.env.CLIENT_URL,
+  CLIENT_PORT: process.env.CLIENT_PORT,
   SENTRY_DSN: process.env.SENTRY_DSN,
   FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
   FIREBASE_PRIVATE_KEY_ID: process.env.FIREBASE_PRIVATE_KEY_ID,

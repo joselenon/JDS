@@ -14,7 +14,6 @@ class AuthController {
 
   async steamCallback(req: any, res: Response) {
     try {
-      console.log('entrou aqui');
       const steamPayload: ISteamProfile = req.user._json;
       const userExists = await checkIfUserAlreadyExistsBySteamId(
         steamPayload.steamid,

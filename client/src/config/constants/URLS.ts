@@ -1,4 +1,4 @@
-const SERVER_URL = `http://jdsserverv1.gamblance.com`;
+const SERVER_URL = `https://jdsserverv1.gamblance.com`;
 
 const API_BASE = '/api';
 

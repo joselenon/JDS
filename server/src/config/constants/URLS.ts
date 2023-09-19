@@ -1,7 +1,7 @@
 import CREDENTIALS from './CREDENTIALS';
 
 const SERVER_URL = CREDENTIALS.SERVER_URL;
-if (!SERVER_URL) throw new Error('Algo deu errado,');
+if (!SERVER_URL) throw new Error('Algo deu errado - 1337');
 
 const SERVER_PORT = CREDENTIALS.SERVER_PORT;
 const SERVER_FULL_URL = SERVER_PORT
@@ -9,7 +9,7 @@ const SERVER_FULL_URL = SERVER_PORT
   : SERVER_URL;
 
 const CLIENT_URL = CREDENTIALS.CLIENT_URL;
-if (!CLIENT_URL) throw new Error('Algo deu errado,');
+if (!CLIENT_URL) throw new Error('Algo deu errado - 1338');
 const CLIENT_PORT = CREDENTIALS.CLIENT_PORT;
 const CLIENT_FULL_URL = CLIENT_PORT
   ? `${CLIENT_URL}:${CLIENT_PORT}`
@@ -53,6 +53,7 @@ const URLS = {
     SERVER_URL,
     API_URL,
     CLIENT_FULL_URL,
+    SERVER_FULL_URL,
   },
   ENDPOINTS: API_ENDPOINTS,
 };

@@ -3,38 +3,44 @@ import { promisify } from 'util';
 
 import { TRedisCommands, TRedisOptions } from '../config/interfaces/IRedis';
 
-export default class RedisService {
-  private static client: Redis = new Redis({
-    host: '127.0.0.1',
-    port: 6379,
-    // Will run every connection fail
-    retryStrategy: (times) => {
-      const maxRetries = 5;
-      if (times === maxRetries) {
-        return null;
-      }
-      const delay = Math.min(times * 100, 2000);
-      return delay;
-    },
-  });
+class RedisService {
+  private client: Redis;
 
-  private static promisifyCommand(command: TRedisCommands) {
-    return promisify(RedisService.client[command]).bind(RedisService.client);
+  constructor(host: string, port: number, password: string = '') {
+    this.client = new Redis({
+      host,
+      port,
+      password,
+
+      // Will run every connection fail
+      retryStrategy: (times) => {
+        const maxRetries = 5;
+        if (times === maxRetries) {
+          return null;
+        }
+        const delay = Math.min(times * 100, 2000);
+        return delay;
+      },
+    });
   }
 
-  static del(key: string) {
-    const syncDel = RedisService.promisifyCommand('del');
+  private promisifyCommand(command: TRedisCommands) {
+    return promisify(this.client[command]).bind(this.client);
+  }
+
+  del(key: string) {
+    const syncDel = this.promisifyCommand('del');
     return syncDel(key);
   }
 
-  static set(
+  set(
     key: string,
     value: any,
     options?: TRedisOptions,
     expirationInSeconds: number | null = null,
   ) {
     // calledBy && console.log(`Called by ${calledBy}.\n Value: ${value.bets}`);
-    const syncSet = RedisService.promisifyCommand('set');
+    const syncSet = this.promisifyCommand('set');
     const args = [key, options?.inJSON ? JSON.stringify(value) : value];
     if (expirationInSeconds) {
       args.push('EX', expirationInSeconds);
@@ -42,12 +48,12 @@ export default class RedisService {
     return syncSet(...args);
   }
 
-  static async get<T>(
+  async get<T>(
     key: string,
     options?: TRedisOptions,
   ): Promise<T | null | undefined> {
     try {
-      const syncGet = RedisService.promisifyCommand('get');
+      const syncGet = this.promisifyCommand('get');
       const data = await syncGet(key);
       if (data && options?.inJSON) {
         return JSON.parse(data);
@@ -58,8 +64,8 @@ export default class RedisService {
     }
   }
 
-  static lPush(key: string, value: any, options?: TRedisOptions) {
-    const syncLPush = RedisService.promisifyCommand('lpush');
+  lPush(key: string, value: any, options?: TRedisOptions) {
+    const syncLPush = this.promisifyCommand('lpush');
     if (options?.inJSON) {
       const valueJSON = JSON.stringify(value);
       return syncLPush(key, valueJSON);
@@ -67,8 +73,8 @@ export default class RedisService {
     return syncLPush(key, value);
   }
 
-  static rPush(key: string, value: any, options?: TRedisOptions) {
-    const syncRPush = RedisService.promisifyCommand('rpush');
+  rPush(key: string, value: any, options?: TRedisOptions) {
+    const syncRPush = this.promisifyCommand('rpush');
     if (options?.inJSON) {
       const valueJSON = JSON.stringify(value);
       return syncRPush(key, valueJSON);
@@ -76,11 +82,8 @@ export default class RedisService {
     return syncRPush(key, value);
   }
 
-  static async lRange<T>(
-    key: string,
-    options?: TRedisOptions,
-  ): Promise<T[] | null> {
-    const syncLRange = RedisService.promisifyCommand('lrange');
+  async lRange<T>(key: string, options?: TRedisOptions): Promise<T[] | null> {
+    const syncLRange = this.promisifyCommand('lrange');
     const dataJSON = await syncLRange(key, 0, -1);
     if (dataJSON && options?.inJSON) {
       const data = dataJSON.map((item: any) => {
@@ -92,12 +95,12 @@ export default class RedisService {
   }
 
   // Removes and returns first element of the list
-  static async lPop<T>(
+  async lPop<T>(
     key: string,
     count: number,
     options?: TRedisOptions,
   ): Promise<T | null> {
-    const syncLPop = RedisService.promisifyCommand('lpop');
+    const syncLPop = this.promisifyCommand('lpop');
     const data = await syncLPop(key, count);
     if (data && options?.inJSON) {
       return JSON.parse(data);
@@ -106,12 +109,12 @@ export default class RedisService {
   }
 
   // Removes and returns last element of the list
-  static async rPop<T>(
+  async rPop<T>(
     key: string,
     count: number,
     options?: TRedisOptions,
   ): Promise<T | null> {
-    const syncRPop = RedisService.promisifyCommand('rpop');
+    const syncRPop = this.promisifyCommand('rpop');
     const data = await syncRPop(key, count);
     if (data && options?.inJSON) {
       return JSON.parse(data);
@@ -119,3 +122,10 @@ export default class RedisService {
     return data;
   }
 }
+
+// Redis connection (cloud server)
+export default new RedisService(
+  'redis-10048.c308.sa-east-1-1.ec2.cloud.redislabs.com',
+  10048,
+  'b1PcleujSFzuywQpwmbV0QyuJG2aKz4z',
+);

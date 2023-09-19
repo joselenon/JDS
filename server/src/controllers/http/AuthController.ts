@@ -14,6 +14,7 @@ class AuthController {
 
   async steamCallback(req: any, res: Response) {
     try {
+      console.log('entrou aqui');
       const steamPayload: ISteamProfile = req.user._json;
       const userExists = await checkIfUserAlreadyExistsBySteamId(
         steamPayload.steamid,
@@ -32,6 +33,7 @@ class AuthController {
       res.cookie(JWTCookie.key, jwtCreated, JWTCookie.config);
       return res.redirect(URLS.MAIN_URLS.CLIENT_FULL_URL);
     } catch (err) {
+      console.log(err);
       // Error being handled in different way cause this call comes from outside the client app
       return res.redirect(URLS.MAIN_URLS.CLIENT_FULL_URL);
     }

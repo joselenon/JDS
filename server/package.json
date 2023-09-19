@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "clear && node copyGQLs.js && tsc",
-    "start": "clear && node dist/index.js",
+    "build": "node copyGQLs.js && tsc",
+    "start": "node dist/index.js",
     "nodemon": "nodemon --exec ts-node src/index.ts"
   },
   "author": "",

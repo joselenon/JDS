@@ -25,8 +25,9 @@ export default class SteamAuthService {
     passport.use(
       new SteamStrategy(
         {
+          // EDITED TO A RETURN URL WITHOUT PORT (PRODUCTION)
           returnURL: `${URLS.MAIN_URLS.SERVER_URL}${URLS.ENDPOINTS.AUTH.steam.callback}`, // Callback URL (full URL)
-          realm: URLS.MAIN_URLS.API_URL + '/', // Endpoint callback
+          realm: `${URLS.MAIN_URLS.SERVER_URL}/`, // Endpoint callback
           apiKey: CREDENTIALS.STEAM_CLIENT_SECRET,
         },
         (identifier: any, profile: any, done: any) => {

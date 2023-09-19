@@ -1,13 +1,6 @@
-const MAIN_URL = `http://localhost:`;
-
-const CLIENT_PORT = 3000;
-const CLIENT_URL = `${MAIN_URL}${CLIENT_PORT}`;
-
-const SERVER_PORT = 4001;
-const SERVER_URL = `${MAIN_URL}${SERVER_PORT}`;
+const SERVER_URL = `http://jdsserverv1.gamblance.com`;
 
 const API_BASE = '/api';
-const API_URL = `${MAIN_URL}${SERVER_PORT}${API_BASE}`;
 
 const ENDPOINTS = {
   GRAPHQL: '/graphql',
@@ -36,7 +29,6 @@ const API_ENDPOINTS = {
 };
 
 const URLS = {
-  MAIN_URLS: { CLIENT_PORT, CLIENT_URL, SERVER_PORT, SERVER_URL, API_URL },
   ENDPOINTS: API_ENDPOINTS,
 };
 

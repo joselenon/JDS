@@ -101,7 +101,7 @@ class AppService {
       console.log('Web-socket server started.'),
     );
     this.httpServer.listen(URLS.MAIN_URLS.SERVER_PORT, () =>
-      console.log(`Server started, ${URLS.MAIN_URLS.SERVER_URL}`),
+      console.log(`Server started, ${URLS.MAIN_URLS.SERVER_FULL_URL}`),
     );
   }
 }

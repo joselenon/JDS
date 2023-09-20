@@ -28,7 +28,6 @@ const requiredVariables = [
   'CLIENT_URL',
   'REDIS_HOST',
   'REDIS_PORT',
-  'REDIS_PASSWORD',
   'SENTRY_DSN',
   'FIREBASE_PROJECT_ID',
   'FIREBASE_PRIVATE_KEY_ID',

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
 import { JWTCookie } from '../../config/app/CookiesConfig';
+import { ISteamProfile } from '../../config/interfaces/ISteamProfile';
 import JWTService from '../../services/JWTService';
 import UserService from '../../services/UserService';
+import URLS from '../../config/constants/URLS';
 import checkIfUserAlreadyExistsBySteamId from '../../common/checkIfUserAlreadyExistsBySteamId';
-import { URLS } from '../../config/constants';
-import { ISteamProfile } from '../../config/interfaces/ISteamProfile';
 
 class AuthController {
   async steam(req: Request, res: Response) {

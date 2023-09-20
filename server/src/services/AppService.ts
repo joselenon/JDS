@@ -32,7 +32,7 @@ import {
   requestHandlerMiddleware,
   tracingHandlerMiddleware,
 } from '../middlewares/sentryMiddlewares';
-import { URLS } from '../config/constants';
+import URLS from '../config/constants/URLS';
 
 class AppService {
   private app: express.Application;

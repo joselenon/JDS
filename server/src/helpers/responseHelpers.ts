@@ -1,4 +1,4 @@
-import { API_RESPONSE_MSGS } from '../config/constants';
+import { API_RESPONSE_MSGS } from '../config/constants/RESPONSES';
 
 type TSuccessMessage = keyof typeof API_RESPONSE_MSGS.SUCCESS;
 type TErrorMessage = keyof typeof API_RESPONSE_MSGS.ERROR.CLIENT_ERROR_MSGS;

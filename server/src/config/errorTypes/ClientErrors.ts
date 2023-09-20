@@ -1,5 +1,5 @@
 import pSubEventHelper from '../../helpers/pSubEventHelper';
-import { ERRORS_CONFIG } from '../constants';
+import { ERRORS_CONFIG } from '../constants/RESPONSES';
 
 export abstract class ClientError extends Error {
   private status: number;

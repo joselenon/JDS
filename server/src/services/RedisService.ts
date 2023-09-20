@@ -2,6 +2,7 @@ import Redis from 'ioredis';
 import { promisify } from 'util';
 
 import { TRedisCommands, TRedisOptions } from '../config/interfaces/IRedis';
+import CREDENTIALS from '../config/constants/CREDENTIALS';
 
 class RedisService {
   private client: Redis;
@@ -125,7 +126,7 @@ class RedisService {
 
 // Redis connection (cloud server)
 export default new RedisService(
-  'redis-10048.c308.sa-east-1-1.ec2.cloud.redislabs.com',
-  10048,
-  'b1PcleujSFzuywQpwmbV0QyuJG2aKz4z',
+  CREDENTIALS.REDIS_HOST,
+  parseInt(CREDENTIALS.REDIS_PORT),
+  CREDENTIALS.REDIS_PASSWORD,
 );

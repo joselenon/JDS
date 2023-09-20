@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import express from 'express';
-import { CREDENTIALS, URLS } from '../config/constants';
+
+import URLS from '../config/constants/URLS';
+import CREDENTIALS from '../config/constants/CREDENTIALS';
 
 const session = require('express-session');
 const passport = require('passport');

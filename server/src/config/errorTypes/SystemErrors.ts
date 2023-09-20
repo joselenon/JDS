@@ -1,4 +1,4 @@
-import { ERRORS_CONFIG } from '../constants';
+import { ERRORS_CONFIG } from '../constants/RESPONSES';
 
 export abstract class SystemError extends Error {
   constructor(message: string, type: string) {

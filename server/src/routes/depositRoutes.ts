@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { URLS } from '../config/constants';
 import DepositController from '../controllers/http/DepositController';
+import URLS from '../config/constants/URLS';
 
 const depositRoutes = Router();
 

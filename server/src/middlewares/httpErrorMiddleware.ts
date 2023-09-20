@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/node';
 
 import { errorResponse } from '../helpers/responseHelpers';
 import { ClientError } from '../config/errorTypes/ClientErrors';
-import { API_RESPONSE_MSGS } from '../config/constants';
+import { API_RESPONSE_MSGS } from '../config/constants/RESPONSES';
 
 const httpErrorMiddleware = (
   err: Error,

@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import context from '../config/graphql/context';
-import { URLS } from '../config/constants';
+import URLS from '../config/constants/URLS';
 
 const graphQLRoute = (apolloServer: ApolloServer) => {
   const graphQLRoutes = Router();

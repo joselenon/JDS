@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import YoutubeController from '../controllers/http/YoutubeController';
-import { URLS } from '../config/constants';
+import URLS from '../config/constants/URLS';
 
 const externalAPIsRoutes = Router();
 

@@ -5,13 +5,13 @@ import {
   ISearchResource,
   IYoutubeChannel,
 } from '../config/interfaces/IYoutube';
-import { CREDENTIALS } from '../config/constants';
-import RedisService from './RedisService';
 import {
   SAULLO_CHANNEL,
   lastVideosQueries,
   VIDEOS_IN_CACHE_EXPIRATION,
 } from '../config/app/YoutubeAPIConfig';
+import RedisService from './RedisService';
+import CREDENTIALS from '../config/constants/CREDENTIALS';
 import getRedisKeyHelper from '../helpers/redisHelper';
 
 class YoutubeAPIService {

@@ -2,8 +2,8 @@
 import * as Sentry from '@sentry/node';
 import express from 'express';
 
-import { CREDENTIALS } from '../constants';
 import sentryBeforeSendConfig from './server/sentryBeforeSendConfig';
+import CREDENTIALS from '../constants/CREDENTIALS';
 
 const SentryConfig = (app: express.Application) => {
   return {

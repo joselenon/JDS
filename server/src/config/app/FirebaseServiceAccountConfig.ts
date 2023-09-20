@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
-import { CREDENTIALS } from '../constants';
+
+import CREDENTIALS from '../constants/CREDENTIALS';
 
 const FirebaseServiceAccountConfig = {
   type: 'service_account',

@@ -26,7 +26,6 @@ const requiredVariables = [
   'SERVER_URL',
   'SERVER_PORT',
   'CLIENT_URL',
-  'CLIENT_PORT',
   'REDIS_HOST',
   'REDIS_PORT',
   'REDIS_PASSWORD',

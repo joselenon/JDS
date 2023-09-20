@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import URLS from '../constants/URLS';
 
 const AxiosConfig = axios.create({
-  baseURL: 'http://localhost:4001/api/',
+  baseURL: URLS.MAIN_URLS.API_URL,
   timeout: 10000,
-});
+} as AxiosRequestConfig);
 
 export default AxiosConfig;

@@ -5,9 +5,11 @@ const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
 
 const CREDENTIALS = {
-  SERVER_URL: process.env.SERVER_URL as string,
+  DOMAIN: process.env.DOMAIN,
+  HTTPS: process.env.HTTPS === 'true' ? true : false,
+  SERVER_DOMAIN: process.env.SERVER_DOMAIN as string,
   SERVER_PORT: process.env.SERVER_PORT as string,
-  CLIENT_URL: process.env.CLIENT_URL as string,
+  CLIENT_DOMAIN: process.env.CLIENT_DOMAIN as string,
   CLIENT_PORT: process.env.CLIENT_PORT as string,
   REDIS_HOST: process.env.REDIS_HOST as string,
   REDIS_PORT: process.env.REDIS_PORT as string,
@@ -23,9 +25,11 @@ const CREDENTIALS = {
 };
 
 const requiredVariables = [
-  'SERVER_URL',
+  'DOMAIN',
+  'HTTPS',
+  'SERVER_DOMAIN',
   'SERVER_PORT',
-  'CLIENT_URL',
+  'CLIENT_DOMAIN',
   'REDIS_HOST',
   'REDIS_PORT',
   'SENTRY_DSN',

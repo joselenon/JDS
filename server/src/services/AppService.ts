@@ -32,7 +32,7 @@ import {
   requestHandlerMiddleware,
   tracingHandlerMiddleware,
 } from '../middlewares/sentryMiddlewares';
-import URLS from '../config/constants/URLS';
+import URLS, { API_BASE } from '../config/constants/URLS';
 
 class AppService {
   private app: express.Application;
@@ -87,7 +87,7 @@ class AppService {
 
   private setupEndpoints(): void {
     this.app.use(graphQLRoute(this.apolloServer));
-    this.app.use('/', routes);
+    this.app.use(API_BASE, routes);
     this.app.use(errorHandlerMiddleware()); // Final Sentry middleware
   }
 

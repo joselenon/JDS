@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import express from 'express';
 
-import URLS from '../config/constants/URLS';
+import URLS, { API_BASE } from '../config/constants/URLS';
 import CREDENTIALS from '../config/constants/CREDENTIALS';
 
 const session = require('express-session');
@@ -28,8 +28,8 @@ export default class SteamAuthService {
       new SteamStrategy(
         {
           // EDITED TO A RETURN URL WITHOUT PORT (PRODUCTION)
-          returnURL: `${URLS.MAIN_URLS.SERVER_URL}${URLS.ENDPOINTS.AUTH.steam.callback}`, // Callback URL (full URL)
-          realm: `${URLS.MAIN_URLS.SERVER_URL}/`, // Endpoint callback
+          returnURL: `${URLS.MAIN_URLS.SERVER_FULL_URL}${API_BASE}${URLS.ENDPOINTS.AUTH.steam.callback}`, // Callback URL (full URL)
+          realm: `${URLS.MAIN_URLS.SERVER_FULL_URL}/`, // Endpoint callback
           apiKey: CREDENTIALS.STEAM_CLIENT_SECRET,
         },
         (identifier: any, profile: any, done: any) => {

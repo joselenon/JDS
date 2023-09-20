@@ -7,7 +7,7 @@ import URLS from '../../../config/constants/URLS';
 export default function Auth() {
   return (
     <div>
-      <a href={URLS.ENDPOINTS.AUTH.steam.initial}>
+      <a href={`${URLS.MAIN_URLS.API_URL}${URLS.ENDPOINTS.AUTH.steam.initial}`}>
         <Button btnType="CTA" label="Login" icon={<SiSteam />} />
       </a>
     </div>

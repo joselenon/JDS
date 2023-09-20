@@ -2,13 +2,14 @@ import { CookieOptions } from 'express';
 
 import JWTConfig from './JWTConfig';
 import ICookieConfig from '../interfaces/ICookieConfig';
+import CREDENTIALS from '../constants/CREDENTIALS';
 
 export const JWTCookie = {
   key: 'token',
   config: {
     maxAge: JWTConfig.expiration,
     secure: true,
-    domain: '.gamblance.com',
+    domain: `.${CREDENTIALS.DOMAIN}`,
   } as CookieOptions,
 };
 

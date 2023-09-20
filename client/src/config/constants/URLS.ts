@@ -1,6 +1,9 @@
-const SERVER_URL = `https://jdsserverv1.gamblance.com`;
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const SERVER_PORT = process.env.REACT_APP_SERVER_PORT;
+const SERVER_FULL_URL = SERVER_PORT ? `${SERVER_URL}:${SERVER_PORT}` : SERVER_URL;
 
 const API_BASE = '/api';
+const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
 
 const ENDPOINTS = {
   GRAPHQL: '/graphql',
@@ -11,25 +14,26 @@ const ENDPOINTS = {
 };
 
 const API_ENDPOINTS = {
-  GRAPHQL: `${SERVER_URL}${API_BASE}${ENDPOINTS.GRAPHQL}`,
+  GRAPHQL: `${ENDPOINTS.GRAPHQL}`,
   EXTERNAL_APIS: {
-    youtube: `${SERVER_URL}${API_BASE}${ENDPOINTS.EXTERNAL_APIS}/youtube`,
+    youtube: `${ENDPOINTS.EXTERNAL_APIS}/youtube`,
   },
   AUTH: {
     steam: {
-      initial: `${SERVER_URL}${API_BASE}${ENDPOINTS.AUTH}/steam`,
+      initial: `${ENDPOINTS.AUTH}/steam`,
     },
   },
   USER: {
-    update: `${SERVER_URL}${API_BASE}${ENDPOINTS.USER}/update`,
+    update: `${ENDPOINTS.USER}/update`,
   },
   DEPOSIT: {
-    code: `${SERVER_URL}${API_BASE}${ENDPOINTS.DEPOSIT}/code`,
+    code: `${ENDPOINTS.DEPOSIT}/code`,
   },
 };
 
 const URLS = {
   ENDPOINTS: API_ENDPOINTS,
+  MAIN_URLS: { SERVER_URL, API_URL },
 };
 
 export default URLS;

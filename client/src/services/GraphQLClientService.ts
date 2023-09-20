@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 
 import { JWTCookie } from '../config/app/CookiesConfig';
 
-const local = '://jdsserverv1.gamblance.com/api/graphql';
+const local = 's://jdsserverv1.gamblance.com/api/graphql';
 const tokenFromCookies = Cookies.get(JWTCookie.key);
 
 class GraphQLClientService {

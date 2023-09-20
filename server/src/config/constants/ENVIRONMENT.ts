@@ -4,7 +4,7 @@ import path from 'path';
 const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
 
-const CREDENTIALS = {
+const ENVIRONMENT = {
   DOMAIN: process.env.DOMAIN,
   HTTPS: process.env.HTTPS === 'true' ? true : false,
   SERVER_DOMAIN: process.env.SERVER_DOMAIN as string,
@@ -50,4 +50,4 @@ if (missingVariables.length > 0) {
   throw new Error(`Variável de ambiente faltando. - ${missingVariables}`);
 }
 
-export default CREDENTIALS;
+export default ENVIRONMENT;

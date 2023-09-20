@@ -3,11 +3,11 @@ import * as Sentry from '@sentry/node';
 import express from 'express';
 
 import sentryBeforeSendConfig from './server/sentryBeforeSendConfig';
-import CREDENTIALS from '../constants/CREDENTIALS';
+import ENVIRONMENT from '../constants/ENVIRONMENT';
 
 const SentryConfig = (app: express.Application) => {
   return {
-    dsn: CREDENTIALS.SENTRY_DSN,
+    dsn: ENVIRONMENT.SENTRY_DSN,
     integrations: [
       // enable HTTP calls tracing
       new Sentry.Integrations.Http({

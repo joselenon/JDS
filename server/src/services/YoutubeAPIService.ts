@@ -11,11 +11,11 @@ import {
   VIDEOS_IN_CACHE_EXPIRATION,
 } from '../config/app/YoutubeAPIConfig';
 import RedisService from './RedisService';
-import CREDENTIALS from '../config/constants/CREDENTIALS';
+import ENVIRONMENT from '../config/constants/ENVIRONMENT';
 import getRedisKeyHelper from '../helpers/redisHelper';
 
 class YoutubeAPIService {
-  private apiKey = CREDENTIALS.GOOGLE_API_KEY;
+  private apiKey = ENVIRONMENT.GOOGLE_API_KEY;
   private baseURL: string = 'https://www.googleapis.com/youtube/v3';
   private channelId: string;
   private channelName: string;

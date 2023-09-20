@@ -5,8 +5,9 @@ import { createClient } from 'graphql-ws';
 import Cookies from 'js-cookie';
 
 import { JWTCookie } from '../config/app/CookiesConfig';
+import URLS, { PROTOCOL } from '../config/constants/URLS';
+import ENVIRONMENT from '../config/constants/ENVIRONMENT';
 
-const local = 's://jdsserverv1.gamblance.com/api/graphql';
 const tokenFromCookies = Cookies.get(JWTCookie.key);
 
 class GraphQLClientService {
@@ -17,11 +18,13 @@ class GraphQLClientService {
 
   constructor() {
     this.httpLink = new HttpLink({
-      uri: `http${local}`,
+      uri: `${PROTOCOL}${URLS.MAIN_URLS.API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
     });
     this.wsLink = new GraphQLWsLink(
       createClient({
-        url: `ws${local}`,
+        url: `ws${ENVIRONMENT.REACT_APP_HTTPS && 's'}://${URLS.MAIN_URLS.API_URL}${
+          URLS.ENDPOINTS.GRAPHQL
+        }`,
         // Set field 'connectionParams' in websocket connections
         connectionParams: { Authorization: `Bearer ${tokenFromCookies}` },
       }),

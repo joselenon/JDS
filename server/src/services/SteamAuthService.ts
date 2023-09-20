@@ -2,7 +2,7 @@
 import express from 'express';
 
 import URLS, { API_BASE } from '../config/constants/URLS';
-import CREDENTIALS from '../config/constants/CREDENTIALS';
+import ENVIRONMENT from '../config/constants/ENVIRONMENT';
 
 const session = require('express-session');
 const passport = require('passport');
@@ -30,7 +30,7 @@ export default class SteamAuthService {
           // EDITED TO A RETURN URL WITHOUT PORT (PRODUCTION)
           returnURL: `${URLS.MAIN_URLS.SERVER_FULL_URL}${API_BASE}${URLS.ENDPOINTS.AUTH.steam.callback}`, // Callback URL (full URL)
           realm: `${URLS.MAIN_URLS.SERVER_FULL_URL}/`, // Endpoint callback
-          apiKey: CREDENTIALS.STEAM_CLIENT_SECRET,
+          apiKey: ENVIRONMENT.STEAM_CLIENT_SECRET,
         },
         (identifier: any, profile: any, done: any) => {
           process.nextTick(() => {

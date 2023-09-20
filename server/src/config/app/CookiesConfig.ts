@@ -9,7 +9,7 @@ export const JWTCookie = {
   config: {
     maxAge: JWTConfig.expiration,
     secure: true,
-    domain: `.${CREDENTIALS.DOMAIN}`,
+    domain: `.${CREDENTIALS.DOMAIN}.com`,
   } as CookieOptions,
 };
 

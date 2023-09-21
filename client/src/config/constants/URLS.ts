@@ -9,10 +9,8 @@ const SERVER_FULL_URL =
     ? `${PROTOCOL}${SERVER_DOMAIN}:${SERVER_PORT}`
     : `${PROTOCOL}${SERVER_DOMAIN}`;
 
-const API_BASE = '/api';
+export const API_BASE = '/api';
 const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
-
-console.log(`API URL: ${API_URL} \n SERVERFULLURL: ${SERVER_FULL_URL}`);
 
 const ENDPOINTS = {
   GRAPHQL: '/graphql',

@@ -9,6 +9,7 @@ export default function useGetVideos() {
   const initialCallCompleted = useRef(false);
   const [data, setData] = useState<IYoutubeSearchResource | null>(null);
 
+  console.log('Aqui esta jose', URLS.ENDPOINTS.EXTERNAL_APIS.youtube);
   const fetchData = async () => {
     const response = await AxiosService.get<IAPIResponse<IYoutubeSearchResource>>(
       URLS.ENDPOINTS.EXTERNAL_APIS.youtube,

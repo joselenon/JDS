@@ -12,6 +12,8 @@ const SERVER_FULL_URL =
 const API_BASE = '/api';
 const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
 
+console.log(`API URL: ${API_URL} \n SERVERFULLURL: ${SERVER_FULL_URL}`);
+
 const ENDPOINTS = {
   GRAPHQL: '/graphql',
   EXTERNAL_APIS: '/externalapis',

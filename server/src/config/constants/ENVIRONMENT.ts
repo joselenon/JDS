@@ -5,12 +5,13 @@ const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
 
 const ENVIRONMENT = {
-  DOMAIN: process.env.DOMAIN,
+  MODE: process.env.MODE as 'DEVELOPMENT' | 'PRODUCTION',
+  DOMAIN: process.env.DOMAIN || 'localhost',
   HTTPS: process.env.HTTPS === 'true' ? true : false,
-  SERVER_DOMAIN: process.env.SERVER_DOMAIN as string,
-  SERVER_PORT: process.env.SERVER_PORT as string,
-  CLIENT_DOMAIN: process.env.CLIENT_DOMAIN as string,
-  CLIENT_PORT: process.env.CLIENT_PORT as string,
+  SERVER_DOMAIN: process.env.SERVER_DOMAIN || 'localhost',
+  SERVER_PORT: process.env.SERVER_PORT || '4000',
+  CLIENT_DOMAIN: process.env.CLIENT_DOMAIN || 'localhost',
+  CLIENT_PORT: process.env.CLIENT_PORT || '3000',
   REDIS_HOST: process.env.REDIS_HOST as string,
   REDIS_PORT: process.env.REDIS_PORT as string,
   REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
@@ -25,6 +26,7 @@ const ENVIRONMENT = {
 };
 
 const requiredVariables = [
+  'MODE',
   'DOMAIN',
   'HTTPS',
   'SERVER_DOMAIN',

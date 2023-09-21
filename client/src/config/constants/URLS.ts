@@ -1,6 +1,7 @@
 import ENVIRONMENT from './ENVIRONMENT';
 
-export const PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'https://' : 'http://';
+export const HTTP_PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'https://' : 'http://';
+export const WS_PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'wss://' : 'ws://';
 
 // 'localhost' | 'jds.gamblance'
 const SERVER_DOMAIN = `${ENVIRONMENT.REACT_APP_SERVER_DOMAIN}`;
@@ -11,11 +12,12 @@ const SERVER_PORT = ENVIRONMENT.REACT_APP_SERVER_PORT;
 // 'http://localhost:4000' | 'https://jds.gamblance.com'
 const SERVER_FULL_URL =
   ENVIRONMENT.REACT_APP_MODE === 'PRODUCTION'
-    ? `${PROTOCOL}${SERVER_DOMAIN}.com`
-    : `${PROTOCOL}${SERVER_DOMAIN}:${SERVER_PORT}`;
+    ? `${SERVER_DOMAIN}.com`
+    : `${SERVER_DOMAIN}:${SERVER_PORT}`;
 
 export const API_BASE = '/api';
-const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
+const HTTP_API_URL = `${HTTP_PROTOCOL}${SERVER_FULL_URL}${API_BASE}`;
+const WS_API_URL = `${WS_PROTOCOL}${SERVER_FULL_URL}${API_BASE}`;
 
 const ENDPOINTS = {
   GRAPHQL: '/graphql',
@@ -45,7 +47,7 @@ const API_ENDPOINTS = {
 
 const URLS = {
   ENDPOINTS: API_ENDPOINTS,
-  MAIN_URLS: { SERVER_DOMAIN, API_URL },
+  MAIN_URLS: { SERVER_DOMAIN, HTTP_API_URL, WS_API_URL },
 };
 
 export default URLS;

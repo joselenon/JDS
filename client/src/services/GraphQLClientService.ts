@@ -22,7 +22,7 @@ class GraphQLClientService {
     });
     this.wsLink = new GraphQLWsLink(
       createClient({
-        url: `ws${ENVIRONMENT.REACT_APP_HTTPS && 's'}://${URLS.MAIN_URLS.API_URL}${
+        url: `ws${ENVIRONMENT.REACT_APP_HTTPS ? 's' : ''}://${URLS.MAIN_URLS.API_URL}${
           URLS.ENDPOINTS.GRAPHQL
         }`,
         // Set field 'connectionParams' in websocket connections

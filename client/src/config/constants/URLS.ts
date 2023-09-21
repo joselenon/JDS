@@ -2,12 +2,17 @@ import ENVIRONMENT from './ENVIRONMENT';
 
 export const PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'https://' : 'http://';
 
+// 'localhost' | 'jds.gamblance'
 const SERVER_DOMAIN = `${ENVIRONMENT.REACT_APP_SERVER_DOMAIN}`;
+
+// '4000'
 const SERVER_PORT = ENVIRONMENT.REACT_APP_SERVER_PORT;
+
+// 'http://localhost:4000' | 'https://jds.gamblance.com'
 const SERVER_FULL_URL =
-  ENVIRONMENT.REACT_APP_MODE === 'DEVELOPMENT'
-    ? `${PROTOCOL}${SERVER_DOMAIN}:${SERVER_PORT}`
-    : `${PROTOCOL}${SERVER_DOMAIN}.com`;
+  ENVIRONMENT.REACT_APP_MODE === 'PRODUCTION'
+    ? `${PROTOCOL}${SERVER_DOMAIN}.com`
+    : `${PROTOCOL}${SERVER_DOMAIN}:${SERVER_PORT}`;
 
 export const API_BASE = '/api';
 const API_URL = `${SERVER_FULL_URL}${API_BASE}`;

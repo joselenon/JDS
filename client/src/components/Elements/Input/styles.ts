@@ -20,8 +20,15 @@ export const InputContainer = styled.div`
     padding: var(--default-pdn) 5px;
     color: white;
   }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 `;
 
 export const ErrorMessage = styled.span`
+  font-size: 14px;
   color: red;
 `;

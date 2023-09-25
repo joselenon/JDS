@@ -14,6 +14,8 @@ export default function RedeemCodeForm() {
     id: 'code',
     type: 'text',
     label: '',
+    required: true,
+    errorMsg: '',
     validationFn: (arg) => arg.length > 0,
   };
 

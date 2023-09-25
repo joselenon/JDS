@@ -7,20 +7,21 @@ const API_RESPONSE_MSGS = {
 
   ERROR: {
     SYSTEM_ERROR_MSGS: {
-      DOCUMENT_NOT_IN_DB_MSG: 'Documento(s) não encontrado(s) no DB.',
-      INVALID_PAYLOAD: 'Payload inválido.',
-      REDIS: 'Erro no Redis.',
-      NO_JACKPOT_IN_REDIS: 'Redis sem jackpot.',
+      DOCUMENT_NOT_IN_DB_MSG: 'Documento(s) não encontrado(s) no DB',
+      INVALID_PAYLOAD: 'Payload inválido',
+      REDIS: 'Erro no Redis',
+      NO_JACKPOT_IN_REDIS: 'Redis sem jackpot',
     },
 
     CLIENT_ERROR_MSGS: {
       GENERIC_MSG: 'Houve um erro... já estamos trabalhando para corrigí-lo!',
-      AUTH_MSG: 'Não autorizado.',
-      CODE_NOT_FOUND: 'Código inválido.',
-      CODE_USAGE_LIMIT: 'Limite de uso para o código atingido.',
-      CODE_ALREADY_USED: 'Código já utilizado.',
-      INSUFFICIENT_BALANCE: 'Saldo insuficiente.',
-      GAME_ALREADY_STARTED: 'Jogo já começou.',
+      AUTH_MSG: 'Não autorizado',
+      CODE_NOT_FOUND: 'Código inválido',
+      CODE_USAGE_LIMIT: 'Limite de uso para o código atingido',
+      CODE_ALREADY_USED: 'Código já utilizado',
+      INVALID_AMOUNT_BET: 'Valor inválido',
+      INSUFFICIENT_BALANCE: 'Saldo insuficiente',
+      GAME_ALREADY_STARTED: 'Jogo já começou',
     },
   },
 };
@@ -66,6 +67,9 @@ const ERRORS_CONFIG = {
       // System Error
       noJackpotInRedis:
         API_RESPONSE_MSGS.ERROR.SYSTEM_ERROR_MSGS.NO_JACKPOT_IN_REDIS,
+      // Client Error
+      invalidAmountBet:
+        API_RESPONSE_MSGS.ERROR.CLIENT_ERROR_MSGS.INVALID_AMOUNT_BET,
       // Client Error
       insufficientBalance:
         API_RESPONSE_MSGS.ERROR.CLIENT_ERROR_MSGS.INSUFFICIENT_BALANCE,

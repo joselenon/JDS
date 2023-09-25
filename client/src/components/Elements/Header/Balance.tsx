@@ -7,14 +7,14 @@ import RedeemCode from '../Modals/RedeemCode';
 import useGetBalance from '../../../hooks/useGetBalance';
 
 function Balance() {
-  const balance = useGetBalance();
+  const updatedBalance = useGetBalance();
 
   return (
     <styles.BalanceContainer>
       <styles.BalanceDisplayContainer>
         <styles.BalanceAndIcon>
           <img src={logo} width={18} height={18} />
-          <span>{balance ? balance : 0}</span>
+          <span>{updatedBalance}</span>
         </styles.BalanceAndIcon>
         <RedeemCode />
       </styles.BalanceDisplayContainer>

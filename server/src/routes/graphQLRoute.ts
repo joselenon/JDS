@@ -12,7 +12,7 @@ const graphQLRoute = (apolloServer: ApolloServer) => {
 
   graphQLRoutes.use(
     `${API_BASE}${URLS.ENDPOINTS.GRAPHQL}`,
-    cors(),
+    cors({ origin: 'https://google.com' }),
     bodyParser.json(),
     expressMiddleware(apolloServer, { context }),
   );

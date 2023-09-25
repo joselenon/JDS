@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 
 export const GameInfoContainer = styled.div`
-  max-width: 400px;
+  max-width: 350px;
   width: 100%;
+  height: 500px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   padding: var(--default-pdn);
   border-radius: var(--default-br);
@@ -24,6 +23,12 @@ export const GameInfoContainer = styled.div`
     white-space: nowrap;
     line-height: 20px;
     font-size: 14px !important;
+  }
+
+  hr {
+    width: 100% !important;
+    border: 1px solid #303030 !important;
+    border-radius: var(--default-br);
   }
 `;
 

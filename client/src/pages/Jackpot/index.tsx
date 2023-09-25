@@ -14,7 +14,7 @@ import PrizePool from '../../components/Sections/Games/Jackpot/PrizePool';
 export default function Jackpot() {
   const { lastJackpotsInfo } = useGetLastJackpots();
   const { jackpotInfo, refetch } = useGetJackpot();
-  refetch();
+  refetch && refetch();
 
   const betsProps = {
     bets: jackpotInfo ? jackpotInfo.bets : [],

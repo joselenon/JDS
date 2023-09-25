@@ -1,6 +1,7 @@
 import {
   GameAlreadyStarted,
   InsufficientBalance,
+  InvalidAmountBet,
 } from '../../config/errorTypes/ClientErrors';
 import {
   IBetControllerGQL,
@@ -20,6 +21,9 @@ class BetControllerGQL implements IBetControllerGQL {
     const { userDocId } = userInfo;
     const { balance: userBalance } = await BalanceService.getBalance(userDocId);
 
+    if (amountBet <= 0) {
+      throw new InvalidAmountBet(userDocId);
+    }
     if (userBalance < amountBet) {
       throw new InsufficientBalance('Saldo insuficiente');
     }

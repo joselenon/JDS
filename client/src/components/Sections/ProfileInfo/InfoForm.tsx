@@ -20,7 +20,9 @@ export default function InfoForm() {
     type: 'text',
     defaultValue: userInfo?.email,
     label: 'E-mail',
-    validationFn: validateEmail,
+    errorMsg: 'E-mail inválido',
+    required: false,
+    validationFn: (value: string) => validateEmail(value, true),
   };
 
   const tradeLinkInput: ICreateInput = {
@@ -28,11 +30,15 @@ export default function InfoForm() {
     type: 'text',
     defaultValue: userInfo?.tradeLink,
     label: 'Trade-Link',
+    errorMsg: '',
+    required: false,
   };
 
   const saveButton = (
     <styles.SaveButtonContainer>
-      <Button btnType="CTA" label="Salvar" type={'submit'} />
+      <div>
+        <Button btnType="CTA" label="Salvar" type={'submit'} />
+      </div>
     </styles.SaveButtonContainer>
   );
 

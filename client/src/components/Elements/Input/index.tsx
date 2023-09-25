@@ -11,6 +11,8 @@ export default function Input(props: IInput) {
     label,
     type,
     defaultValue,
+    required = true,
+    errorMsg,
     rhfRegister,
     rhfErrors,
     rhfValidate = () => true,
@@ -24,14 +26,17 @@ export default function Input(props: IInput) {
           type={type}
           defaultValue={defaultValue}
           {...rhfRegister(id, {
-            required: false,
             valueAsNumber: type === 'number' ? true : false,
             validate: (value) => rhfValidate(value),
           })}
+          required={required}
           aria-invalid={rhfErrors[id] ? 'true' : 'false'}
         />
+        {rhfErrors[id] && rhfErrors[id]!.type === 'required' && (
+          <styles.ErrorMessage>Campo obrigatório.</styles.ErrorMessage>
+        )}
         {rhfErrors[id] && rhfErrors[id]!.type === 'validate' && (
-          <styles.ErrorMessage>E-mail inválido.</styles.ErrorMessage>
+          <styles.ErrorMessage>{errorMsg}</styles.ErrorMessage>
         )}
       </label>
     </styles.InputContainer>

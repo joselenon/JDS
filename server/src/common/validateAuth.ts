@@ -8,8 +8,8 @@ export type TValidateAuthFn = (
 ) => Promise<IJWTPayload>;
 
 const validateAuth: TValidateAuthFn = async (authorization: string | null) => {
-  // JWT Verification
   try {
+    // JWT Verification
     if (!authorization) throw new AuthError();
     const userValidated = JWTService.validateJWT(
       authorization?.replace('Bearer ', ''),

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 interface IModalContainerProps {
-  show: 'true' | 'false';
+  $show: 'true' | 'false';
 }
 
 export const ModalContainer = styled.div<IModalContainerProps>`
-  display: ${({ show }) => (show === 'true' ? 'flex' : 'none')};
+  display: ${({ $show }) => ($show === 'true' ? 'flex' : 'none')};
   position: fixed;
   justify-content: center;
   align-items: center;
@@ -14,6 +14,7 @@ export const ModalContainer = styled.div<IModalContainerProps>`
   right: 0;
   width: 100vw;
   height: 100vh;
+  padding: var(--default-pdn);
 `;
 
 export const ModalBackground = styled.div`

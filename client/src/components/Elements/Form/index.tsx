@@ -30,6 +30,7 @@ export default function Form(props: Props) {
   } = useForm();
 
   const onSubmitHandler: SubmitHandler<FieldValues> = async (info) => {
+    console.log('submit');
     const res = await axiosCallHook({ ...info });
     if (res?.status === 200) toast.success(res.data.message);
   };
@@ -46,6 +47,8 @@ export default function Form(props: Props) {
       type={input.type}
       id={input.id}
       defaultValue={input.defaultValue}
+      errorMsg={input.errorMsg}
+      required={input.required}
       label={input.label}
       rhfValidate={input.validationFn}
       rhfRegister={register}
@@ -54,7 +57,7 @@ export default function Form(props: Props) {
   ));
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
+    <form onSubmit={handleSubmit(onSubmitHandler)} noValidate>
       <InputContainer>{inputArrayHTML}</InputContainer>
       {submitButton}
     </form>

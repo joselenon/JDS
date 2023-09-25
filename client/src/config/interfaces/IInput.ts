@@ -7,6 +7,8 @@ export default interface IInput {
   type: 'number' | 'text';
   defaultValue?: string | number;
   label: string;
+  required: boolean;
+  errorMsg: string;
   rhfRegister: UseFormRegister<FieldValues>;
   rhfErrors: FieldErrors;
   rhfValidate?: (value: any) => boolean;
@@ -17,5 +19,7 @@ export interface ICreateInput {
   type: 'number' | 'text';
   defaultValue?: IInput['defaultValue'];
   label: IInput['label'];
+  required: boolean;
+  errorMsg: string;
   validationFn?: (...args: any) => boolean;
 }

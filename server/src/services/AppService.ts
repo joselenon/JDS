@@ -1,3 +1,4 @@
+// Heart of the application
 import * as Sentry from '@sentry/node';
 import express from 'express';
 
@@ -107,15 +108,3 @@ class AppService {
 }
 
 export default new AppService();
-
-/*
-    private setupWebSocket(): void {
-      this.wsServer.on('connection', (socket) => {
-        console.log('nova conexão');
-      });
-
-      this.wsServer.on('close', (socket) => {
-        console.log('conexão encerrada.');
-      });
-    }
-   */

@@ -1,9 +1,16 @@
+// Errors occured with the system (not shared with client)
 import { ERRORS_CONFIG } from '../constants/RESPONSES';
 
 export abstract class SystemError extends Error {
   constructor(message: string, type: string) {
     super(message);
     this.name = `System Error - ${type}`;
+  }
+}
+
+export class UnknownError extends SystemError {
+  constructor(message: string) {
+    super(message, ERRORS_CONFIG.GENERIC.TYPE);
   }
 }
 

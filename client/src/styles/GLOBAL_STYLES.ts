@@ -49,12 +49,23 @@ export default createGlobalStyle`
   }
 
   button {
+    font-family: 'Chakra Petch', sans-serif;
     cursor: pointer;
+    background: none;
+    border: none;
     height: 37px;
   }
 
   input {
-    border: 1px solid black;
+    border: none;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-clear-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
   }
 
   h2 {

@@ -26,7 +26,6 @@ export default function useGetLastJackpots() {
     }
 
     if (liveLastJackpotsFetch?.data) {
-      console.log('aquiiooo', liveLastJackpotsFetch);
       setLastJackpots(liveLastJackpotsFetch.data.getLiveLastJackpots.data);
     }
   }, [lastJackpotsFetch, liveLastJackpotsFetch]);

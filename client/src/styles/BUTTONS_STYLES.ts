@@ -1,37 +1,43 @@
-import { IButtonTypeConfig } from '../config/interfaces/IButton';
+import { ReactElement } from 'react';
+
+export type BtnTypes = 'TEXT' | 'CTA' | 'DANGER' | 'IMG' | 'DEFAULT';
+
+export type IButtonTypeConfig = {
+  [key in BtnTypes]: React.CSSProperties;
+};
+
+export interface IButton {
+  id?: string;
+  btnType: BtnTypes;
+  icon?: ReactElement;
+  label?: string | JSX.Element;
+  img?: string;
+  type?: 'button' | 'submit' | undefined;
+  onClickFn?: (e?: any) => any;
+}
 
 const BTN_TYPES: IButtonTypeConfig = {
   DEFAULT: {
-    padding: { x: 14, y: 10 },
-    colors: {
-      color: 'var(--secondary-color)',
-      shadow_color: 'var(--primary-color)',
-    },
+    padding: '14px 10px',
+    color: 'var(--secondary-color)',
+  },
+
+  TEXT: {
+    background: 'none',
   },
 
   CTA: {
-    padding: { x: 14, y: 10 },
-    colors: {
-      color: '#00963b',
-      shadow_color: '#01702d',
-    },
+    width: '100%',
+    padding: '14px 10px',
+    background: '#14b546',
   },
 
   DANGER: {
-    padding: { x: 14, y: 10 },
-    colors: {
-      color: 'var(--default-red)',
-      shadow_color: '#b51212',
-    },
+    padding: '14px 10px',
+    background: 'var(--default-red)',
   },
 
-  IMG: {
-    padding: { x: 0, y: 0 },
-    colors: {
-      color: '',
-      shadow_color: '',
-    },
-  },
+  IMG: {},
 };
 
-export default BTN_TYPES;
+export { BTN_TYPES };

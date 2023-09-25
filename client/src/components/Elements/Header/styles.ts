@@ -42,7 +42,6 @@ export const BalanceContainer = styled.div`
 
 export const BalanceDisplayContainer = styled.div`
   background-color: #3d3d3d;
-  border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;

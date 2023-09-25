@@ -1,7 +1,7 @@
-import IGQLContext from '../../../config/interfaces/IGQLContext';
-import validateAndCaptureError from '../../../common/validateAndCaptureError';
 import { responseBody } from '../../../helpers/responseHelpers';
 import { PSub, PUBSUB_EVENTS } from '../../pubSubConfig';
+import IGQLContext from '../../../config/interfaces/IGQLContext';
+import validateAndCaptureError from '../../../common/validateAndCaptureError';
 
 import pSubEventHelper from '../../../helpers/pSubEventHelper';
 import BalanceService from '../../../services/BalanceService';

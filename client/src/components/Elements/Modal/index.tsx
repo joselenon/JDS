@@ -11,7 +11,7 @@ interface IModalProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Modal({ children, showModal, toggleModal }: IModalProps) {
   return (
-    <styles.ModalContainer show={showModal ? 'true' : 'false'}>
+    <styles.ModalContainer $show={showModal ? 'true' : 'false'}>
       <styles.ModalBackground onClick={() => toggleModal()} />
       <styles.ModalContent>{children}</styles.ModalContent>
     </styles.ModalContainer>

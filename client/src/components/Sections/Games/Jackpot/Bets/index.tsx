@@ -5,7 +5,7 @@ import * as styles from './styles';
 
 import { IBet } from '../../../../../config/interfaces/IBet';
 import OpacitySkeleton from '../../../../Utils/OpacitySkeleton';
-import Button from '../../../../Elements/Button';
+import PageSelectButtons from '../../../../Elements/Button/PageSelectButtons';
 
 interface IBetsProps {
   props: { bets: IBet[]; prizePool: number };
@@ -79,20 +79,11 @@ export default function Bets(props: IBetsProps) {
       <styles.BetsContainer>
         {betsHTML ? betsHTML : skeletonBetsHTML}
       </styles.BetsContainer>
-      <styles.PageButtons>
-        <Button
-          btnType="DEFAULT"
-          label={'<'}
-          onClickFn={() => setChunkPage(chunkPage > 0 ? chunkPage - 1 : chunkPage)}
-        />
-        <Button
-          btnType="DEFAULT"
-          label=">"
-          onClickFn={() =>
-            setChunkPage(chunkPage + 1 === chunks.length ? chunkPage : chunkPage + 1)
-          }
-        />
-      </styles.PageButtons>
+      <PageSelectButtons
+        page={chunkPage}
+        pagesLength={chunks.length}
+        setPage={setChunkPage}
+      />
     </div>
   );
 }

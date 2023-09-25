@@ -1,3 +1,4 @@
+// Errors occurred because of unauthorized or invalid requests by the user (shared with client)
 import pSubEventHelper from '../../helpers/pSubEventHelper';
 import { ERRORS_CONFIG } from '../constants/RESPONSES';
 
@@ -42,6 +43,25 @@ export class CodeUsageLimitError extends ClientError {
 export class CodeAlreadyUsed extends ClientError {
   constructor(message: string = ERRORS_CONFIG.DEPOSIT.MSGS.alreadyUsed) {
     super(400, message, ERRORS_CONFIG.DEPOSIT.TYPE);
+  }
+}
+
+export class InvalidAmountBet extends ClientError {
+  constructor(
+    private userDocId: string,
+    message: string = ERRORS_CONFIG.GAME.MSGS.invalidAmountBet,
+  ) {
+    super(400, message, ERRORS_CONFIG.GAME.TYPE);
+    this.sendPSub();
+  }
+
+  sendPSub() {
+    return pSubEventHelper(
+      'GET_LIVE_BALANCE',
+      'getLiveBalance',
+      { success: false, message: 'INVALID_AMOUNT_BET', data: { balance: 0 } },
+      this.userDocId,
+    );
   }
 }
 

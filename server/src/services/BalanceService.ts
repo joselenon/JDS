@@ -80,12 +80,7 @@ class BalanceService {
   }
 
   // Do not recalculate all the transaction, only adds a value received to the in cache saved balance (Cache, Client)
-  static async softUpdateBalances(
-    userDocId: string,
-    valueToAdd: number,
-    calledBy?: string,
-  ) {
-    console.log(`Chamado por: ${calledBy}`, valueToAdd);
+  static async softUpdateBalances(userDocId: string, valueToAdd: number) {
     const { balance } = await BalanceService.getBalance(userDocId);
     const newBalance = { balance: balance + valueToAdd };
 

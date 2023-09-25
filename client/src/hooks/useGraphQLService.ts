@@ -68,6 +68,7 @@ function gqlSubscription<DataType, GQLType extends string>(props: IGQL['subscrip
       toast.error(err);
       errorMessageAlreadyDisplayed = true;
     }
+    return { data: undefined };
   }
 }
 

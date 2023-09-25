@@ -40,7 +40,6 @@ class RedisService {
     options?: TRedisOptions,
     expirationInSeconds: number | null = null,
   ) {
-    // calledBy && console.log(`Called by ${calledBy}.\n Value: ${value.bets}`);
     const syncSet = this.promisifyCommand('set');
     const args = [key, options?.inJSON ? JSON.stringify(value) : value];
     if (expirationInSeconds) {

@@ -1,50 +1,38 @@
 import { useEffect, useState, useRef } from 'react';
 
-import { gqlQuery, gqlSubscription } from './useGraphQLService';
-
-import USER_QUERIES from '../graphql/UserInfoGQL';
+import { useBalanceContext } from '../contexts/BalanceContext';
 import { toast } from 'react-toastify';
 
-// Persists balance value after renderization
-let balanceRecover = 0;
-
 export default function useGetBalance() {
-  const errorMessageAlreadyDisplayed = useRef(false);
-  const [balance, setBalance] = useState(balanceRecover);
+  const errorAlreadyDisplayed = useRef(false);
+  const [updatedBalance, setUpdatedBalance] = useState(0);
 
-  // Get balance
-  const fetchBalanceData = gqlQuery<{ balance: number }, 'getBalance'>({
-    gql: USER_QUERIES.GET_BALANCE,
-  });
-
-  // Subscribe to live balance events
-  const fetchLiveBalanceData = gqlSubscription<{ balance: number }, 'getLiveBalance'>({
-    gql: USER_QUERIES.GET_LIVE_BALANCE,
-  });
+  const { balance } = useBalanceContext();
+  const { data, liveData } = balance;
 
   useEffect(() => {
-    if (fetchBalanceData.error && !errorMessageAlreadyDisplayed.current) {
-      errorMessageAlreadyDisplayed.current = true;
-    }
-
-    if (fetchBalanceData.data) {
-      const { getBalance } = fetchBalanceData.data;
-      balanceRecover = getBalance.data.balance;
-      setBalance(balanceRecover);
-    }
-
-    // Subscribe to live balance events
-    if (fetchLiveBalanceData?.data) {
-      const { getLiveBalance } = fetchLiveBalanceData.data;
-
-      if (getLiveBalance.success) {
-        balanceRecover = getLiveBalance.data.balance;
-        setBalance(balanceRecover);
+    if (liveData) {
+      if (liveData.getLiveBalance.success) {
+        errorAlreadyDisplayed.current = false;
+        return setUpdatedBalance(liveData.getLiveBalance.data.balance);
       } else {
-        toast.error(fetchLiveBalanceData.data.getLiveBalance.message);
+        !errorAlreadyDisplayed.current && toast.error(liveData.getLiveBalance.message);
+        errorAlreadyDisplayed.current = true;
+        return;
       }
     }
-  }, [fetchBalanceData, fetchLiveBalanceData]);
 
-  return balance;
+    if (data) {
+      if (data.getBalance.success) {
+        errorAlreadyDisplayed.current = false;
+        return setUpdatedBalance(data.getBalance.data.balance);
+      } else {
+        !errorAlreadyDisplayed.current && toast.error(data.getBalance.message);
+        errorAlreadyDisplayed.current = true;
+        return;
+      }
+    }
+  }, [balance]);
+
+  return updatedBalance;
 }

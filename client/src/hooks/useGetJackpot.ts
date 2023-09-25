@@ -24,7 +24,6 @@ export default function useGetJackpot() {
 
     if (liveJackpotFetch?.data) {
       const jackpotData = liveJackpotFetch.data.getLiveJackpot.data;
-      console.log(jackpotData);
       setJackpot(jackpotData);
     }
   }, [jackpotFetch, liveJackpotFetch]);

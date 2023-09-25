@@ -14,7 +14,7 @@ export default function useGetUserInfo() {
   });
 
   useEffect(() => {
-    refetch();
+    refetch && refetch();
     if (data) {
       setUserInfoData(data.getUser.data);
     }

@@ -19,12 +19,14 @@ export default function RedeemCode() {
 
   return (
     <div>
-      <Button
-        label={<FontAwesomeIcon icon={faPlus} />}
-        btnType="CTA"
-        onClickFn={toggleModal}
-        id={'redeem'}
-      />
+      <div style={{ width: 37 }}>
+        <Button
+          label={<FontAwesomeIcon icon={faPlus} />}
+          btnType="CTA"
+          onClickFn={toggleModal}
+          id={'redeem'}
+        />
+      </div>
       {modalOpen && (
         <styles.ModalContainer id="modal-background" onClick={(e) => toggleModal(e)}>
           <styles.ModalContent>

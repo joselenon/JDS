@@ -10,9 +10,9 @@ import {
   lastVideosQueries,
   VIDEOS_IN_CACHE_EXPIRATION,
 } from '../config/app/YoutubeAPIConfig';
-import RedisService from './RedisService';
 import ENVIRONMENT from '../config/constants/ENVIRONMENT';
 import getRedisKeyHelper from '../helpers/redisHelper';
+import { RedisInstance } from '..';
 
 class YoutubeAPIService {
   private apiKey = ENVIRONMENT.GOOGLE_API_KEY;
@@ -445,7 +445,7 @@ class YoutubeAPIService {
 
   async getLastVideos(): Promise<ISearchResource | undefined> {
     const redisKey = getRedisKeyHelper('ytb_last_videos', this.channelName);
-    const videosInCache: any = await RedisService.get(redisKey, {
+    const videosInCache: any = await RedisInstance.get(redisKey, {
       inJSON: true,
     });
 
@@ -454,7 +454,7 @@ class YoutubeAPIService {
         await this.getYTBDocument('search', lastVideosQueries(this.channelId))
       ).data;
 
-      await RedisService.set(
+      await RedisInstance.set(
         redisKey,
         videosFromAPI,
         { inJSON: true },

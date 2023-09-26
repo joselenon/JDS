@@ -1,13 +1,16 @@
+import ENVIRONMENT from './config/constants/ENVIRONMENT';
 import AppService from './services/AppService';
 import startGamesServices from './services/GamesServices/startGamesServices';
+import RedisService from './services/RedisService';
 
-async function startApp() {
-  try {
-    await AppService.initialize();
-    await startGamesServices();
-  } catch (err: any) {
-    throw new Error(err);
-  }
-}
+AppService.initialize();
 
-startApp();
+const RedisInstance = new RedisService(
+  ENVIRONMENT.REDIS_HOST,
+  parseInt(ENVIRONMENT.REDIS_PORT),
+  ENVIRONMENT.REDIS_PASSWORD,
+);
+
+startGamesServices();
+
+export { RedisInstance };

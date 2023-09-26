@@ -4,8 +4,8 @@ import { IBetDBCreate } from '../config/interfaces/IBet';
 import ITransaction from '../config/interfaces/ITransaction';
 
 import getRedisKeyHelper from '../helpers/redisHelper';
-import RedisService from './RedisService';
 import pSubEventHelper from '../helpers/pSubEventHelper';
+import { RedisInstance } from '..';
 
 class BalanceService {
   static async calculateTransactions(
@@ -70,7 +70,7 @@ class BalanceService {
       await FirebaseService.updateDocument('users', userDocId, balanceObj);
       // Cache Update
       const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
-      await RedisService.set(cacheKey, balanceObj, { inJSON: true });
+      await RedisInstance.set(cacheKey, balanceObj, { inJSON: true });
 
       return balanceObj;
     } catch (err) {
@@ -93,13 +93,13 @@ class BalanceService {
     );
     // Cache update
     const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
-    await RedisService.set(cacheKey, newBalance, { inJSON: true });
+    await RedisInstance.set(cacheKey, newBalance, { inJSON: true });
   }
 
   // Function to display the balance (not trustable since if there's any value in cache, it will delivery it)
   static async getBalance(userDocId: string): Promise<{ balance: number }> {
     const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
-    const balance = await RedisService.get<{ balance: number }>(cacheKey, {
+    const balance = await RedisInstance.get<{ balance: number }>(cacheKey, {
       inJSON: true,
     });
     if (!balance) {

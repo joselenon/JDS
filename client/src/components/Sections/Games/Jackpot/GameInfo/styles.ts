@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const GameInfoContainer = styled.div`
   max-width: 350px;
   width: 100%;
-  height: 500px;
   display: flex;
   flex-direction: column;
   padding: var(--default-pdn);

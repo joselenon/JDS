@@ -1,3 +1,4 @@
+import { RedisInstance } from '../..';
 import {
   GameAlreadyStarted,
   InsufficientBalance,
@@ -13,7 +14,6 @@ import { IJackpotBetPayload } from '../../config/interfaces/IPayloads';
 import getRedisKeyHelper from '../../helpers/redisHelper';
 import BalanceService from '../../services/BalanceService';
 import JackpotService from '../../services/GamesServices/JackpotService';
-import RedisService from '../../services/RedisService';
 
 class BetControllerGQL implements IBetControllerGQL {
   async makeBetOnJackpot(userInfo: IJWTPayload, payload: IJackpotBetPayload) {
@@ -42,7 +42,7 @@ class BetControllerGQL implements IBetControllerGQL {
 
     // Create a new task on Redis queue
     const cacheKey = getRedisKeyHelper('jackpot_bets_queue');
-    await RedisService.rPush(cacheKey, betDBCreatePayload, { inJSON: true });
+    await RedisInstance.rPush(cacheKey, betDBCreatePayload, { inJSON: true });
   }
 }
 

@@ -1,17 +1,26 @@
+import { RedisInstance } from '../..';
 import {
   GameAlreadyStarted,
   InsufficientBalance,
 } from '../../config/errorTypes/ClientErrors';
 import { IBetDBCreate, IBetRedisCreate } from '../../config/interfaces/IBet';
 import { IGameRedis, IGameRedisUpdate } from '../../config/interfaces/IGame';
+import JackpotServiceInstance, {
+  JackpotService,
+  jackpotBetsQueueCacheKey,
+} from './JackpotService';
 import BalanceService from '../BalanceService';
 import FirebaseService from '../FirebaseService';
-import JackpotServiceInstance, { JackpotService } from './JackpotService';
 
 class JackpotBetsService {
   private jackpotInfo: IGameRedis | undefined;
 
   constructor(private betInfo: IBetRedisCreate) {}
+
+  static async clearBetsQueue() {
+    await RedisInstance.del(jackpotBetsQueueCacheKey);
+    return true;
+  }
 
   async getJackpot() {
     return (this.jackpotInfo =

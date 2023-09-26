@@ -2,9 +2,8 @@ import Redis from 'ioredis';
 import { promisify } from 'util';
 
 import { TRedisCommands, TRedisOptions } from '../config/interfaces/IRedis';
-import ENVIRONMENT from '../config/constants/ENVIRONMENT';
 
-class RedisService {
+export default class RedisService {
   private client: Redis;
 
   constructor(host: string, port: number, password: string = '') {
@@ -122,10 +121,3 @@ class RedisService {
     return data;
   }
 }
-
-// Redis connection (cloud server)
-export default new RedisService(
-  ENVIRONMENT.REDIS_HOST,
-  parseInt(ENVIRONMENT.REDIS_PORT),
-  ENVIRONMENT.REDIS_PASSWORD,
-);

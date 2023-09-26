@@ -300,6 +300,7 @@ class JackpotService {
   // Initialize jackpot service (loop)
   async initialize() {
     console.log('Jackpot Service Started');
+    this.shouldListenBets = true;
     try {
       await this.checkAndSetJackpot();
       this.processJackpotBetsQueue();

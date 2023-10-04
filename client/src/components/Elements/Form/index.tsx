@@ -1,25 +1,11 @@
 import React, { useEffect } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Input from '../Input';
-import { ICreateInput } from '../../../config/interfaces/IInput';
+import { IFormProps } from '../../../config/interfaces/IForm';
 import { AxiosResponse } from 'axios';
 import IResponses from '../../../config/interfaces/IHTTPResponses';
-import { toast } from 'react-toastify';
 
-interface Props {
-  // Function that will be used when form submits
-  axiosCallHook: (
-    payload: any,
-  ) =>
-    | Promise<AxiosResponse<IResponses<any> | any> | undefined>
-    | Promise<IResponses<any> | any>;
-  // In order to have custom style on inputs container
-  InputContainer: React.ComponentType<{ children: React.ReactNode }>;
-  inputArray: ICreateInput[];
-  submitButton: JSX.Element;
-}
-
-export default function Form(props: Props) {
+export default function Form(props: IFormProps) {
   const { axiosCallHook, InputContainer, inputArray, submitButton } = props;
 
   const {
@@ -30,9 +16,9 @@ export default function Form(props: Props) {
   } = useForm();
 
   const onSubmitHandler: SubmitHandler<FieldValues> = async (info) => {
-    console.log('submit');
-    const res = await axiosCallHook({ ...info });
-    if (res?.status === 200) toast.success(res.data.message);
+    (await axiosCallHook({ ...info })) as
+      | AxiosResponse<IResponses<unknown>, any>
+      | undefined;
   };
 
   useEffect(() => {
@@ -46,11 +32,11 @@ export default function Form(props: Props) {
       key={input.id}
       type={input.type}
       id={input.id}
+      multiple={input.multiple}
       defaultValue={input.defaultValue}
-      errorMsg={input.errorMsg}
       required={input.required}
       label={input.label}
-      rhfValidate={input.validationFn}
+      validationFn={input.validationFn}
       rhfRegister={register}
       rhfErrors={errors}
     />

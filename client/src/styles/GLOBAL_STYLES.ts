@@ -8,6 +8,7 @@ export default createGlobalStyle`
     --header-height: 70px;
     --default-red: #cb2626;
     --main-bg-color: #ebebeb;
+    --primary-text-color: #212121;
     --primary-color: #212121;
     --secondary-color: #cecece;
     --green-color: #00963b;

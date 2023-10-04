@@ -1,4 +1,4 @@
-import IFirebaseQueryResponse from './IFirebaseQueryResponse';
+import IFirebaseQueryResponse from './IFirebase';
 
 export default interface IUser {
   username: string;

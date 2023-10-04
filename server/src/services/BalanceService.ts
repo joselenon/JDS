@@ -1,18 +1,17 @@
-import FirebaseService, { firestore } from './FirebaseService';
 import { AuthError } from '../config/errorTypes/ClientErrors';
 import { IBetDBCreate } from '../config/interfaces/IBet';
 import ITransaction from '../config/interfaces/ITransaction';
 
 import getRedisKeyHelper from '../helpers/redisHelper';
 import pSubEventHelper from '../helpers/pSubEventHelper';
-import { RedisInstance } from '..';
+import { FirebaseInstance, RedisInstance } from '..';
 
 class BalanceService {
   static async calculateTransactions(
     userRef: FirebaseFirestore.DocumentReference,
   ) {
     const userTransactions =
-      await FirebaseService.getManyDocumentsByParam<ITransaction>(
+      await FirebaseInstance.getManyDocumentsByParam<ITransaction>(
         'transactions',
         'userRef',
         userRef,
@@ -37,7 +36,7 @@ class BalanceService {
 
   static async calculateBets(userRef: FirebaseFirestore.DocumentReference) {
     const userBets =
-      await FirebaseService.getManyDocumentsByParam<IBetDBCreate>(
+      await FirebaseInstance.getManyDocumentsByParam<IBetDBCreate>(
         'bets',
         'userRef',
         userRef,
@@ -59,7 +58,7 @@ class BalanceService {
   // Recalculate all the transactions and bets in order to update the balance (DB, Cache, Client???)
   static async hardUpdateBalances(userDocId: string) {
     try {
-      const userRef = firestore.collection('users').doc(userDocId);
+      const userRef = await FirebaseInstance.getDocumentRef('users', userDocId);
       if (!userRef) throw new AuthError();
       const balanceCalc =
         (await BalanceService.calculateTransactions(userRef)) +
@@ -67,7 +66,7 @@ class BalanceService {
       const balanceObj = { balance: balanceCalc };
 
       // DB Update
-      await FirebaseService.updateDocument('users', userDocId, balanceObj);
+      await FirebaseInstance.updateDocument('users', userDocId, balanceObj);
       // Cache Update
       const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
       await RedisInstance.set(cacheKey, balanceObj, { inJSON: true });

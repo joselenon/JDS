@@ -17,10 +17,8 @@ const ENVIRONMENT = {
   REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
   SENTRY_DSN: process.env.SENTRY_DSN as string,
   FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID as string,
-  FIREBASE_PRIVATE_KEY_ID: process.env.FIREBASE_PRIVATE_KEY_ID as string,
   FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY as string,
   FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL as string,
-  FIREBASE_CLIENT_ID: process.env.FIREBASE_CLIENT_ID as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   STEAM_CLIENT_SECRET: process.env.STEAM_CLIENT_SECRET as string,
 };
@@ -36,10 +34,8 @@ const requiredVariables = [
   'REDIS_PORT',
   'SENTRY_DSN',
   'FIREBASE_PROJECT_ID',
-  'FIREBASE_PRIVATE_KEY_ID',
   'FIREBASE_PRIVATE_KEY',
   'FIREBASE_CLIENT_EMAIL',
-  'FIREBASE_CLIENT_ID',
   'GOOGLE_API_KEY',
   'STEAM_CLIENT_SECRET',
 ];

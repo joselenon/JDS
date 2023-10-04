@@ -1,7 +1,7 @@
-import FirebaseService from '../services/FirebaseService';
+import { FirebaseInstance } from '..';
 
 const checkIfUserAlreadyExistsByDocId = async (userDocId: string) => {
-  const userExists = await FirebaseService.getDocumentRef('users', userDocId);
+  const userExists = await FirebaseInstance.getDocumentRef('users', userDocId);
   return userExists;
 };
 

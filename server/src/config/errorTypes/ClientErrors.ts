@@ -1,6 +1,6 @@
 // Errors occurred because of unauthorized or invalid requests by the user (shared with client)
 import pSubEventHelper from '../../helpers/pSubEventHelper';
-import { ERRORS_CONFIG } from '../constants/RESPONSES';
+import { RESPONSE_CONFIG } from '../constants/RESPONSES';
 
 export abstract class ClientError extends Error {
   private status: number;
@@ -17,41 +17,52 @@ export abstract class ClientError extends Error {
 }
 
 export class GenericError extends ClientError {
-  constructor(message: string = ERRORS_CONFIG.GENERIC.MSGS.Generic) {
-    super(500, message, ERRORS_CONFIG.GENERIC.TYPE);
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.GENERIC_MSG,
+  ) {
+    super(500, message, RESPONSE_CONFIG.ERROR.TYPES.Generic);
   }
 }
 
 export class AuthError extends ClientError {
-  constructor(message: string = ERRORS_CONFIG.AUTH.MSGS.Unauthorized) {
-    super(401, message, ERRORS_CONFIG.AUTH.TYPE);
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.AUTH_MSG,
+  ) {
+    super(401, message, RESPONSE_CONFIG.ERROR.TYPES.Authorization);
   }
 }
 
 export class CodeNotFound extends ClientError {
-  constructor(message: string = ERRORS_CONFIG.DEPOSIT.MSGS.notFound) {
-    super(400, message, ERRORS_CONFIG.DEPOSIT.TYPE);
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.CODE_NOT_FOUND,
+  ) {
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.Deposit);
   }
 }
 
 export class CodeUsageLimitError extends ClientError {
-  constructor(message: string = ERRORS_CONFIG.DEPOSIT.MSGS.usageLimit) {
-    super(400, message, ERRORS_CONFIG.DEPOSIT.TYPE);
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.CODE_USAGE_LIMIT,
+  ) {
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.Deposit);
   }
 }
 
 export class CodeAlreadyUsed extends ClientError {
-  constructor(message: string = ERRORS_CONFIG.DEPOSIT.MSGS.alreadyUsed) {
-    super(400, message, ERRORS_CONFIG.DEPOSIT.TYPE);
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.CODE_ALREADY_USED,
+  ) {
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.Deposit);
   }
 }
 
 export class InvalidAmountBet extends ClientError {
   constructor(
     private userDocId: string,
-    message: string = ERRORS_CONFIG.GAME.MSGS.invalidAmountBet,
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS
+      .INVALID_AMOUNT_BET,
   ) {
-    super(400, message, ERRORS_CONFIG.GAME.TYPE);
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.Game);
     this.sendPSub();
   }
 
@@ -68,9 +79,10 @@ export class InvalidAmountBet extends ClientError {
 export class InsufficientBalance extends ClientError {
   constructor(
     private userDocId: string,
-    message: string = ERRORS_CONFIG.GAME.MSGS.insufficientBalance,
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS
+      .INSUFFICIENT_BALANCE,
   ) {
-    super(400, message, ERRORS_CONFIG.GAME.TYPE);
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.Game);
     this.sendPSub();
   }
 
@@ -87,9 +99,10 @@ export class InsufficientBalance extends ClientError {
 export class GameAlreadyStarted extends ClientError {
   constructor(
     private userDocId: string,
-    message: string = ERRORS_CONFIG.GAME.MSGS.gameAlreadyStarted,
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS
+      .GAME_ALREADY_STARTED,
   ) {
-    super(400, message, ERRORS_CONFIG.GAME.TYPE);
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.Game);
     this.sendPSub();
   }
 

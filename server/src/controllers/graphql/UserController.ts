@@ -1,9 +1,9 @@
+import { FirebaseInstance } from '../..';
 import IUser, { IUserControllerGQL } from '../../config/interfaces/IUser';
-import FirebaseService from '../../services/FirebaseService';
 
 class UserController implements IUserControllerGQL {
   async getUser(userDocId: string) {
-    const userData = await FirebaseService.getDocumentById<IUser>(
+    const userData = await FirebaseInstance.getDocumentById<IUser>(
       'users',
       userDocId,
     );

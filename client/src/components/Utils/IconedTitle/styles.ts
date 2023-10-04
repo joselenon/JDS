@@ -9,11 +9,11 @@ export const TitleContainer = styled.div`
     font-family: var(--chakra-font);
     font-size: 18px !important;
     text-transform: uppercase;
-    color: var(--primary-color);
+    color: var(--primary-text-color);
   }
 
   svg {
     width: 18px;
-    color: var(--primary-color);
+    color: var(--primary-text-color);
   }
 `;

@@ -9,16 +9,16 @@ import {
   ICreateTransactionPayload,
   IRedeemCodePayload,
 } from '../config/interfaces/IPayloads';
-import { InvalidPayload } from '../config/errorTypes/SystemErrors';
+import { InvalidPayloadError } from '../config/errorTypes/SystemErrors';
 import ICode from '../config/interfaces/ICode';
-import IFirebaseQueryResponse from '../config/interfaces/IFirebaseQueryResponse';
+import IFirebaseQueryResponse from '../config/interfaces/IFirebase';
 
-import FirebaseService, { firestore } from './FirebaseService';
 import BalanceService from './BalanceService';
+import { FirebaseInstance } from '..';
 
 class DepositService {
   private async validateCodeUsage(code: string, userDocId: string) {
-    const codeInfo = await FirebaseService.getSingleDocumentByParam<ICode>(
+    const codeInfo = await FirebaseInstance.getSingleDocumentByParam<ICode>(
       'codes',
       'name',
       code,
@@ -38,32 +38,30 @@ class DepositService {
     codeInfo: IFirebaseQueryResponse<ICode>,
   ) {
     const { docId: codeDocId } = codeInfo;
-    const userCollection = firestore.collection('users');
-    const userReference = userCollection.doc(userDocId);
+    const userRef = await FirebaseInstance.getDocumentRef('users', userDocId);
     const payload = {
-      claims: admin.firestore.FieldValue.arrayUnion(userReference),
+      claims: admin.firestore.FieldValue.arrayUnion(userRef),
     };
-    FirebaseService.updateDocument('codes', codeDocId, payload);
+    await FirebaseInstance.updateDocument('codes', codeDocId, payload);
   }
 
   async createNewTransaction(userDocId: string, codeValue: number) {
-    const userCollection = firestore.collection('users');
-    const userReference = userCollection.doc(userDocId);
+    const userRef = await FirebaseInstance.getDocumentRef('users', userDocId);
     const transactionFullPayload: ICreateTransactionPayload = {
       method: 'code',
       type: 'deposit',
-      userRef: userReference,
+      userRef: userRef,
       value: codeValue,
       createdAt: Date.now(),
     };
-    await FirebaseService.writeDocument<ICreateTransactionPayload>(
+    await FirebaseInstance.writeDocument<ICreateTransactionPayload>(
       'transactions',
       transactionFullPayload,
     );
   }
 
   async redeemCode(userDocId: string, payload: IRedeemCodePayload) {
-    if (!payload.code) throw new InvalidPayload();
+    if (!payload.code) throw new InvalidPayloadError();
 
     const { code } = payload;
     const { codeInfo, value: codeValue } = await this.validateCodeUsage(

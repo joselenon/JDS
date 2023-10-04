@@ -12,13 +12,13 @@ export default function Home() {
   return (
     <div className="main-wrapper">
       <HomeWelcome />
-      <IconedSection icon={faDice} title="Jogos" Body={GamesHub} />
+      <IconedSection icon={faDice} title="Jogos" Content={<GamesHub />} />
       <div />
       <div />
       <HomeBanner />
       <div />
       <div />
-      <IconedSection icon={faYoutube} title="Últimos Vídeos" Body={LastVideos} />
+      <IconedSection icon={faYoutube} title="Últimos Vídeos" Content={<LastVideos />} />
       <div />
     </div>
   );

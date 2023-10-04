@@ -1,12 +1,12 @@
-import { API_RESPONSE_MSGS } from '../config/constants/RESPONSES';
+import { RESPONSE_CONFIG } from '../config/constants/RESPONSES';
 
-type TSuccessMessage = keyof typeof API_RESPONSE_MSGS.SUCCESS;
-type TErrorMessage = keyof typeof API_RESPONSE_MSGS.ERROR.CLIENT_ERROR_MSGS;
+type TSuccessMessage = keyof typeof RESPONSE_CONFIG.SUCCESS;
+type TErrorMessage = keyof typeof RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS;
 export type TMessages = TSuccessMessage | TErrorMessage;
 
 const MESSAGES = {
-  ...API_RESPONSE_MSGS.ERROR.CLIENT_ERROR_MSGS,
-  ...API_RESPONSE_MSGS.SUCCESS,
+  ...RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS,
+  ...RESPONSE_CONFIG.SUCCESS,
 };
 
 export const responseBody = (

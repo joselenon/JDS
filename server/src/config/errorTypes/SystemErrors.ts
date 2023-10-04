@@ -1,5 +1,5 @@
 // Errors occured with the system (not shared with client)
-import { ERRORS_CONFIG } from '../constants/RESPONSES';
+import { RESPONSE_CONFIG } from '../constants/RESPONSES';
 
 export abstract class SystemError extends Error {
   constructor(message: string, type: string) {
@@ -8,38 +8,58 @@ export abstract class SystemError extends Error {
   }
 }
 
-export class UnknownError extends SystemError {
-  constructor(message: string) {
-    super(message, ERRORS_CONFIG.GENERIC.TYPE);
-  }
-}
-
-export abstract class DBError extends SystemError {
-  constructor(message: string, type: string = ERRORS_CONFIG.DB.TYPE) {
+export abstract class DatabaseError extends SystemError {
+  constructor(
+    message: string,
+    type: string = RESPONSE_CONFIG.ERROR.TYPES.Database,
+  ) {
     super(message, type);
   }
 }
 
-export class DocumentNotFound extends DBError {
-  constructor(message: string = ERRORS_CONFIG.DB.MSGS.GET) {
+export class UnexpectedDatabaseError extends DatabaseError {
+  constructor(
+    message: string,
+    type: string = RESPONSE_CONFIG.ERROR.TYPES.Generic,
+  ) {
+    super(message, type);
+  }
+}
+
+export class DocumentNotFoundError extends DatabaseError {
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS
+      .DOCUMENT_NOT_IN_DB_MSG,
+  ) {
     super(message);
   }
 }
 
-export class InvalidPayload extends DBError {
-  constructor(message: string = ERRORS_CONFIG.DB.MSGS.UPDATE) {
+export class InvalidPayloadError extends DatabaseError {
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS.INVALID_PAYLOAD,
+  ) {
     super(message);
   }
 }
 
 export class RedisError extends SystemError {
   constructor(message: string) {
-    super(message, ERRORS_CONFIG.REDIS.TYPE);
+    super(message, RESPONSE_CONFIG.ERROR.TYPES.Redis);
   }
 }
 
-export class NoJackpotInRedis extends SystemError {
-  constructor(message: string = ERRORS_CONFIG.GAME.MSGS.noJackpotInRedis) {
-    super(message, ERRORS_CONFIG.REDIS.TYPE);
+export class NoJackpotInRedisError extends SystemError {
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS
+      .NO_JACKPOT_IN_REDIS,
+  ) {
+    super(message, RESPONSE_CONFIG.ERROR.TYPES.Game);
+  }
+}
+
+export class JackpotWinnerProcessingError extends SystemError {
+  constructor(message: string) {
+    super(message, RESPONSE_CONFIG.ERROR.TYPES.Game);
   }
 }

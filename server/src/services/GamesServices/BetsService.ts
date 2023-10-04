@@ -1,4 +1,4 @@
-import { RedisInstance } from '../..';
+import { FirebaseInstance, RedisInstance } from '../..';
 import {
   GameAlreadyStarted,
   InsufficientBalance,
@@ -10,7 +10,6 @@ import JackpotServiceInstance, {
   jackpotBetsQueueCacheKey,
 } from './JackpotService';
 import BalanceService from '../BalanceService';
-import FirebaseService from '../FirebaseService';
 
 class JackpotBetsService {
   private jackpotInfo: IGameRedis | undefined;
@@ -57,7 +56,7 @@ class JackpotBetsService {
     const { amountBet, createdAt, gameId, userInfo } = this.betInfo;
     const intervals = await this.processIntervals();
 
-    const userRef = await FirebaseService.getDocumentRef(
+    const userRef = await FirebaseInstance.getDocumentRef(
       'users',
       userInfo.userDocId,
     );
@@ -69,7 +68,7 @@ class JackpotBetsService {
       intervals,
       amountReceived: 0,
     };
-    const newBetDocId = await FirebaseService.writeDocument(
+    const newBetDocId = await FirebaseInstance.writeDocument(
       'bets',
       betDBCreatePayload,
     );

@@ -8,17 +8,25 @@ import IconedTitle from '../IconedTitle';
 interface Props {
   icon: IconDefinition;
   title: string;
-  Body: () => JSX.Element;
+  Content: JSX.Element;
 }
 
 export default function IconedSection(props: Props) {
-  const { icon, title, Body } = props;
+  const { icon, title, Content } = props;
 
   return (
     /* Verifies if the body of the section is a Carousel, since it has padding and the spacing is different */
-    <styles.SectionContainer $isCarousel={Body().type.name === 'Carousel'}>
+    <styles.SectionContainer $isCarousel={Content.type.name === 'Carousel'}>
       <IconedTitle icon={icon} title={title} />
-      <Body />
+      {Content}
     </styles.SectionContainer>
   );
 }
+
+/*
+Usage example:
+  import { faDice } from '@fortawesome/free-solid-svg-icons';
+  import GamesHub from '../../components/Sections/GamesHub';
+
+  <IconedSection icon={faDice} title="Jogos" Body={GamesHub} />
+*/

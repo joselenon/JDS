@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/node';
 
 import { errorResponse } from '../helpers/responseHelpers';
 import { ClientError } from '../config/errorTypes/ClientErrors';
-import { API_RESPONSE_MSGS } from '../config/constants/RESPONSES';
+import { RESPONSE_CONFIG } from '../config/constants/RESPONSES';
 
 const httpErrorMiddleware = (
   err: Error,
@@ -21,7 +21,7 @@ const httpErrorMiddleware = (
   // In case error is not instance of ClientError (displayable ones), throw a generic one
   res
     .status(500)
-    .json(errorResponse(API_RESPONSE_MSGS.ERROR.CLIENT_ERROR_MSGS.GENERIC_MSG));
+    .json(errorResponse(RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.GENERIC_MSG));
   return next();
 };
 

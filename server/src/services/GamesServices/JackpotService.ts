@@ -10,14 +10,16 @@ import {
 } from '../../config/interfaces/IGame';
 
 import { ClientError } from '../../config/errorTypes/ClientErrors';
-import { NoJackpotInRedis } from '../../config/errorTypes/SystemErrors';
+import {
+  NoJackpotInRedisError,
+  UnexpectedDatabaseError,
+} from '../../config/errorTypes/SystemErrors';
 import getRedisKeyHelper from '../../helpers/redisHelper';
 import pSubEventHelper from '../../helpers/pSubEventHelper';
-import FirebaseService from '../FirebaseService';
 import ProcessWinnerService from './ProcessWinnerService';
 import BalanceService from '../BalanceService';
 import { JackpotBetsService } from './BetsService';
-import { RedisInstance } from '../..';
+import { FirebaseInstance, RedisInstance } from '../..';
 
 const lastJackpotsCacheKey = getRedisKeyHelper('last_jackpots');
 const jackpotCacheKey = getRedisKeyHelper('active_jackpot');
@@ -58,15 +60,18 @@ class JackpotService {
     // checkthis ------------------------------------------------------------------
     if (Array.isArray(payload.bets) && !payload.winningBetRef) {
       const { docId } = payload.bets[0];
-      const betRef = await FirebaseService.getDocumentRef('bets', docId);
+      const betRef = await FirebaseInstance.getDocumentRef('bets', docId);
       payloadToDB.bets = admin.firestore.FieldValue.arrayUnion(betRef);
     }
     if (payload.winningBetRef) {
       const { docId } = payload.winningBetRef;
-      const winningBetRef = await FirebaseService.getDocumentRef('bets', docId);
+      const winningBetRef = await FirebaseInstance.getDocumentRef(
+        'bets',
+        docId,
+      );
       payloadToDB.winningBetRef = winningBetRef;
     }
-    await FirebaseService.updateDocument('games', jackpotDocId, payloadToDB);
+    await FirebaseInstance.updateDocument('games', jackpotDocId, payloadToDB);
 
     // Redis Update
     const jackpotRedisPayload = {
@@ -89,29 +94,34 @@ class JackpotService {
 
   // Creates a new jackpot on DB and Cache and send to Client
   async createNewJackpot(): Promise<IGameRedis> {
-    const jackpotDBPayload: IGameDB = {
-      bets: [],
-      createdAt: Date.now(),
-      prizePool: 0,
-      status: 'ACTIVE',
-      type: 'JACKPOT',
-    };
-    const jackpotDocId = await FirebaseService.writeDocument(
-      'games',
-      jackpotDBPayload,
-    );
-    const jackpotRedisPayload = {
-      ...jackpotDBPayload,
-      docId: jackpotDocId,
-      winningBetRef: undefined,
-      jackpotDuration,
-      jackpotAnimationDuration,
-    };
-    await RedisInstance.set(jackpotCacheKey, jackpotRedisPayload, {
-      inJSON: true,
-    });
-    JackpotService.emitPSub(jackpotRedisPayload);
-    return jackpotRedisPayload;
+    try {
+      const jackpotDBPayload: IGameDB = {
+        bets: [],
+        createdAt: Date.now(),
+        prizePool: 0,
+        status: 'ACTIVE',
+        type: 'JACKPOT',
+      };
+      const jackpotDocId = await FirebaseInstance.writeDocument(
+        'games',
+        jackpotDBPayload,
+      );
+      const jackpotRedisPayload = {
+        ...jackpotDBPayload,
+        docId: jackpotDocId,
+        winningBetRef: undefined,
+        jackpotDuration,
+        jackpotAnimationDuration,
+      };
+      await RedisInstance.set(jackpotCacheKey, jackpotRedisPayload, {
+        inJSON: true,
+      });
+      JackpotService.emitPSub(jackpotRedisPayload);
+      return jackpotRedisPayload;
+    } catch (err) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return await this.createNewJackpot();
+    }
   }
 
   // Get jackpot info from Cache
@@ -122,7 +132,7 @@ class JackpotService {
         inJSON: true,
       },
     );
-    if (!jackpotInRedis) throw new NoJackpotInRedis(); // Fix this
+    if (!jackpotInRedis) throw new NoJackpotInRedisError(); // Refactor
     return jackpotInRedis;
   }
 
@@ -147,7 +157,7 @@ class JackpotService {
       }
       return jackpotInRedis;
     } catch (err) {
-      if (err instanceof NoJackpotInRedis) {
+      if (err instanceof NoJackpotInRedisError) {
         const newJackpot = await this.createNewJackpot();
         return newJackpot;
       }
@@ -301,13 +311,20 @@ class JackpotService {
   async initialize() {
     console.log('Jackpot Service Started');
     this.shouldListenBets = true;
+
     try {
       await this.checkAndSetJackpot();
       this.processJackpotBetsQueue();
       await this.listenStartedJackpot();
     } catch (err) {
       this.shouldListenBets = false;
+
       if (err instanceof ClientError) return;
+
+      if (err instanceof UnexpectedDatabaseError) {
+        return await this.forceFinishJackpot();
+      }
+
       await this.forceFinishJackpot();
     }
   }

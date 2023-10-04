@@ -17,7 +17,7 @@ class GraphQLClientService {
 
   constructor() {
     this.httpLink = new HttpLink({
-      uri: `${URLS.MAIN_URLS.HTTP_API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
+      uri: `${URLS.MAIN_URLS.API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
     });
     this.wsLink = new GraphQLWsLink(
       createClient({

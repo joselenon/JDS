@@ -1,11 +1,11 @@
+import { FirebaseInstance } from '..';
 import { IJWTPayload } from '../config/interfaces/IJWT';
 import IUser from '../config/interfaces/IUser';
-import FirebaseService from '../services/FirebaseService';
 
 const checkIfUserAlreadyExistsBySteamId = async (
   steamid: string = '',
 ): Promise<IJWTPayload | null> => {
-  const userExists = await FirebaseService.getSingleDocumentByParam<IUser>(
+  const userExists = await FirebaseInstance.getSingleDocumentByParam<IUser>(
     'users',
     'steamid',
     steamid,

@@ -1,8 +1,7 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
 import * as styles from './styles';
 
-import { ICreateInput } from '../../../../../config/interfaces/IInput';
 import { DefaultDivButton } from '../../../../../styles/GLOBAL_STYLES';
 import useMakeBet from '../../../../../hooks/useMakeBet';
 import Button from '../../../../Elements/Button';
@@ -11,28 +10,25 @@ import ERROR_MSGS from '../../../../../config/constants/ERROR_MSGS';
 import useGetBalance from '../../../../../hooks/useGetBalance';
 import { useSelector } from 'react-redux';
 import IReduxStore from '../../../../../config/interfaces/IReduxStore';
+import { ICreateInput } from '../../../../../config/interfaces/IForm';
 
 function MakeBet() {
   const userInfo = useSelector((state: IReduxStore) => state.auth.userInfo);
   const updatedBalance = useGetBalance();
 
-  const [errorMsg, setErrorMsg] = useState('');
   const handleMakeBet = useMakeBet();
 
   const validateInput = (value: number) => {
     if (!userInfo) {
-      setErrorMsg(ERROR_MSGS.GAMES.NOT_LOGGED);
-      return false;
+      return { valid: false, errorMsg: ERROR_MSGS.NOT_LOGGED };
     }
     if (value <= 0) {
-      setErrorMsg(ERROR_MSGS.GAMES.INVALID_AMOUNT_BET);
-      return false;
+      return { valid: false, errorMsg: ERROR_MSGS.GAMES.INVALID_AMOUNT_BET };
     }
     if (value > 0 && value > updatedBalance) {
-      setErrorMsg(ERROR_MSGS.GAMES.INSUFFICIENT_BALANCE);
-      return false;
+      return { valid: false, errorMsg: ERROR_MSGS.GAMES.INSUFFICIENT_BALANCE };
     }
-    return true;
+    return { valid: true, errorMsg: '' };
   };
 
   const makeBetInput: ICreateInput = {
@@ -41,7 +37,6 @@ function MakeBet() {
     type: 'number',
     defaultValue: 0,
     required: true,
-    errorMsg,
     validationFn: (value) => validateInput(value), // Bet must be over 0 coins
   };
 

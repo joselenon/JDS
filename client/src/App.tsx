@@ -45,40 +45,28 @@ function App() {
           {/*       <NewsBar /> */}
           <AppRoutes />
           <Footer />
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable
-            pauseOnHover={false}
-            theme="dark"
-          />
-          <GLOBAL_STYLES />
         </BalanceContextProvider>
       ) : (
         <>
           <Header />
           <AppRoutes />
           <Footer />
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable
-            pauseOnHover={false}
-            theme="dark"
-          />
-          <GLOBAL_STYLES />
         </>
       )}
+
+      <GLOBAL_STYLES />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
     </BrowserRouter>
   );
 }

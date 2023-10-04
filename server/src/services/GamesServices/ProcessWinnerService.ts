@@ -1,10 +1,15 @@
+import { FirebaseInstance } from '../..';
+import { JackpotWinnerProcessingError } from '../../config/errorTypes/SystemErrors';
 import { DEV_FEE } from '../../config/gameLogic/config';
 import { IBetDBCreate, IBetRedis } from '../../config/interfaces/IBet';
 import { IGameDB } from '../../config/interfaces/IGame';
-import FirebaseService from '../FirebaseService';
 
 function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
+  try {
+    return Math.floor(Math.random() * max);
+  } catch (err: any) {
+    throw new JackpotWinnerProcessingError(err);
+  }
 }
 
 class ProcessWinnerService {
@@ -14,9 +19,14 @@ class ProcessWinnerService {
       0,
     );
 
-    if (totalTickets !== prizePool) throw new Error('algo deu errado');
+    if (totalTickets !== prizePool) {
+      throw new JackpotWinnerProcessingError(
+        "Total tickets and prizepool didn't match",
+      );
+    }
 
     const drawRandomTicket = getRandomInt(totalTickets - 1);
+
     const ticketDrawn: IGameDB['ticketDrawn'] = {
       ticket: drawRandomTicket,
       hash: '',
@@ -29,14 +39,16 @@ class ProcessWinnerService {
         return bet;
       }
     });
+
     if (!winnerBet) {
-      throw new Error('algo deu errado'); // optimize
+      throw new JackpotWinnerProcessingError("Winner didn't found"); // optimize
     }
 
+    // Run function to pay dev account
     const winnerPrize = Math.round(
       totalTickets - (totalTickets * DEV_FEE.JACKPOT) / 100,
     );
-    await FirebaseService.updateDocument<IBetDBCreate>(
+    await FirebaseInstance.updateDocument<IBetDBCreate>(
       'bets',
       winnerBet.docId,
       { amountReceived: winnerPrize },

@@ -6,23 +6,28 @@ import * as styles from './styles';
 
 import Button from '../../Elements/Button';
 import useUpdateUserInfo from '../../../hooks/useUpdateUserInfo';
-import validateEmail from '../../../common/validateEmail';
-import { ICreateInput } from '../../../config/interfaces/IInput';
 import Form from '../../Elements/Form';
 import useGetUserInfo from '../../../hooks/useGetUserInfo';
+import { ICreateInput } from '../../../config/interfaces/IForm';
 
 export default function InfoForm() {
   const userInfo = useGetUserInfo();
-
   const handleUpdateUserInfo = useUpdateUserInfo();
+
+  const validateEmail = (value: string) => {
+    if (!validateEmail(value) && value.length !== 0) {
+      return { valid: false, errorMsg: 'E-mail inválido.' };
+    }
+    return { valid: true, errorMsg: '' };
+  };
+
   const emailInput: ICreateInput = {
     id: 'email',
     type: 'text',
     defaultValue: userInfo?.email,
     label: 'E-mail',
-    errorMsg: 'E-mail inválido',
     required: false,
-    validationFn: (value: string) => validateEmail(value, true),
+    validationFn: (value: string) => validateEmail(value),
   };
 
   const tradeLinkInput: ICreateInput = {
@@ -30,7 +35,6 @@ export default function InfoForm() {
     type: 'text',
     defaultValue: userInfo?.tradeLink,
     label: 'Trade-Link',
-    errorMsg: '',
     required: false,
   };
 

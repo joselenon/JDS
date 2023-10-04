@@ -21,7 +21,7 @@ export default function ProfileInfo() {
         </styles.AvatarContainer>
         <UserAndLevel auth={auth} />
       </styles.ProfileContainer>
-      <IconedSection icon={faGear} title="Configurações" Body={InfoForm} />
+      <IconedSection icon={faGear} title="Configurações" Content={<InfoForm />} />
     </styles.ProfileInfoContainer>
   );
 }

@@ -20,7 +20,7 @@ const RESPONSE_CONFIG = {
       DOCUMENT_NOT_IN_DB_MSG: 'Documento(s) não encontrado(s) no DB',
       INVALID_PAYLOAD: 'Payload inválido',
       REDIS: 'Erro no Redis',
-      NO_JACKPOT_IN_REDIS: 'Redis sem jackpot',
+      NO_JACKPOT: 'No jackpot at the moment...',
     },
 
     CLIENT_ERROR_MSGS: {

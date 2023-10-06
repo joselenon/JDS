@@ -1,6 +1,6 @@
 // Errors occurred because of unauthorized or invalid requests by the user (shared with client)
-import pSubEventHelper from '../../helpers/pSubEventHelper';
-import { RESPONSE_CONFIG } from '../constants/RESPONSES';
+import pSubEventHelper from '../../../helpers/pSubEventHelper';
+import { RESPONSE_CONFIG } from '../../constants/RESPONSES';
 
 export abstract class ClientError extends Error {
   private status: number;

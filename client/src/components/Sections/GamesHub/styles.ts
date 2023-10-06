@@ -80,7 +80,7 @@ export const ComingSoon = styled.div`
   align-items: flex-end;
 
   h2 {
-    font-family: 'Gotham', sans-serif;
+    font-family: var(--bai-font);
     font-size: 15px;
     padding: 15px;
     color: white;

@@ -1,4 +1,4 @@
-import { AuthError } from '../config/errorTypes/ClientErrors';
+import { AuthError } from '../config/errors/classes/ClientErrors';
 import { IJWTPayload } from '../config/interfaces/IJWT';
 import JWTService from '../services/JWTService';
 import checkIfUserAlreadyExistsByDocId from './checkIfUserAlreadyExistsByDocId';

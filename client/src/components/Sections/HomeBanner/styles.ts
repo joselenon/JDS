@@ -82,7 +82,7 @@ export const Responsive = styled.div`
 `;
 
 export const Versus = styled.span`
-  font-family: var(--gotham-font);
+  font-family: var(--bai-font);
   color: white;
   opacity: 0.5;
 `;

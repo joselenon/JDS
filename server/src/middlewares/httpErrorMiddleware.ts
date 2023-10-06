@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as Sentry from '@sentry/node';
 
 import { errorResponse } from '../helpers/responseHelpers';
-import { ClientError } from '../config/errorTypes/ClientErrors';
+import { ClientError } from '../config/errors/classes/ClientErrors';
 import { RESPONSE_CONFIG } from '../config/constants/RESPONSES';
 
 const httpErrorMiddleware = (

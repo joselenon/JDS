@@ -5,8 +5,6 @@ import FirebaseService from './services/FirebaseService';
 import startGamesServices from './services/GamesServices/startGamesServices';
 import RedisService from './services/RedisService';
 
-AppService.initialize();
-
 const FirebaseInstance = new FirebaseService(FirebaseCredentials);
 
 const RedisInstance = new RedisService(
@@ -15,6 +13,14 @@ const RedisInstance = new RedisService(
   ENVIRONMENT.REDIS_PASSWORD,
 );
 
-startGamesServices();
+async function initializeApp() {
+  await AppService.initialize();
+
+  startGamesServices();
+
+  return { FirebaseInstance, RedisInstance };
+}
+
+initializeApp();
 
 export { FirebaseInstance, RedisInstance };

@@ -1,4 +1,4 @@
-import { InvalidPayloadError } from '../config/errorTypes/SystemErrors';
+import { InvalidPayloadError } from '../config/errors/classes/SystemErrors';
 
 function validUpdateUserPayload(obj: any) {
   const validKeys = ['email', 'tradeLink'];

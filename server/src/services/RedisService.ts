@@ -1,7 +1,9 @@
+/* eslint-disable no-constant-condition */
 import Redis from 'ioredis';
 import { promisify } from 'util';
 
 import { TRedisCommands, TRedisOptions } from '../config/interfaces/IRedis';
+import { RedisError } from '../config/errors/classes/SystemErrors';
 
 export default class RedisService {
   private client: Redis;
@@ -14,10 +16,6 @@ export default class RedisService {
 
       // Will run every connection fail
       retryStrategy: (times) => {
-        const maxRetries = 5;
-        if (times === maxRetries) {
-          return null;
-        }
         const delay = Math.min(times * 100, 2000);
         return delay;
       },
@@ -28,69 +26,103 @@ export default class RedisService {
     return promisify(this.client[command]).bind(this.client);
   }
 
-  del(key: string) {
-    const syncDel = this.promisifyCommand('del');
-    return syncDel(key);
+  // Function responsible for "retry catches"
+  async retryWithBackoff<T>(
+    func: () => Promise<T>,
+    maxTries: number = 5,
+    delayMs: number = 2000,
+  ): Promise<T> {
+    let retryCount = 0;
+
+    while (true) {
+      try {
+        const result = await func();
+        return result;
+      } catch (err: any) {
+        retryCount++;
+        if (retryCount >= maxTries) {
+          throw new RedisError(err); // Se atingir o máximo de tentativas, lança o erro
+        }
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
+    }
   }
 
-  set(
+  async del(key: string) {
+    const syncDel = this.promisifyCommand('del');
+    const fn = async () => syncDel(key);
+    const data = await this.retryWithBackoff(fn);
+    return data;
+  }
+
+  async set(
     key: string,
     value: any,
     options?: TRedisOptions,
     expirationInSeconds: number | null = null,
   ) {
     const syncSet = this.promisifyCommand('set');
+
+    // args: key, value, EX (optional), expirationMs(optional)
     const args = [key, options?.inJSON ? JSON.stringify(value) : value];
     if (expirationInSeconds) {
       args.push('EX', expirationInSeconds);
     }
-    return syncSet(...args);
+
+    const fn = async () => await syncSet(...args);
+    const data = await this.retryWithBackoff(fn);
+
+    return data;
   }
 
   async get<T>(
     key: string,
     options?: TRedisOptions,
   ): Promise<T | null | undefined> {
-    try {
-      const syncGet = this.promisifyCommand('get');
-      const data = await syncGet(key);
-      if (data && options?.inJSON) {
-        return JSON.parse(data);
-      }
-      return data as T | null;
-    } catch (err) {
-      console.log(err);
+    const syncGet = this.promisifyCommand('get');
+    const fn = async () => await syncGet(key);
+    const data = await this.retryWithBackoff(fn);
+
+    if (data && options?.inJSON) {
+      return JSON.parse(data);
     }
+    return data as T | null;
   }
 
-  lPush(key: string, value: any, options?: TRedisOptions) {
+  // Add element to the left of a list
+  async lPush(key: string, value: any, options?: TRedisOptions) {
     const syncLPush = this.promisifyCommand('lpush');
-    if (options?.inJSON) {
-      const valueJSON = JSON.stringify(value);
-      return syncLPush(key, valueJSON);
-    }
-    return syncLPush(key, value);
+
+    const args = [key, options?.inJSON ? JSON.stringify(value) : value];
+    const fn = async () => await syncLPush(...args);
+    const data = await this.retryWithBackoff(fn);
+
+    return data;
   }
 
-  rPush(key: string, value: any, options?: TRedisOptions) {
+  // Add element to the right of a list
+  async rPush(key: string, value: any, options?: TRedisOptions) {
     const syncRPush = this.promisifyCommand('rpush');
-    if (options?.inJSON) {
-      const valueJSON = JSON.stringify(value);
-      return syncRPush(key, valueJSON);
-    }
-    return syncRPush(key, value);
+
+    const args = [key, options?.inJSON ? JSON.stringify(value) : value];
+    const fn = async () => await syncRPush(...args);
+    const data = await this.retryWithBackoff(fn);
+
+    return data;
   }
 
+  // Returns list of elements
   async lRange<T>(key: string, options?: TRedisOptions): Promise<T[] | null> {
     const syncLRange = this.promisifyCommand('lrange');
-    const dataJSON = await syncLRange(key, 0, -1);
-    if (dataJSON && options?.inJSON) {
-      const data = dataJSON.map((item: any) => {
-        return JSON.parse(item);
-      });
+
+    const fn = async () => await syncLRange(key, 0, -1);
+    const data = await this.retryWithBackoff(fn);
+
+    if (data && options?.inJSON) {
+      return data.map((item: any) => JSON.parse(item));
+    } else {
       return data;
     }
-    return dataJSON;
   }
 
   // Removes and returns first element of the list
@@ -100,11 +132,15 @@ export default class RedisService {
     options?: TRedisOptions,
   ): Promise<T | null> {
     const syncLPop = this.promisifyCommand('lpop');
-    const data = await syncLPop(key, count);
+
+    const fn = async () => await syncLPop(key, count);
+    const data = await this.retryWithBackoff(fn);
+
     if (data && options?.inJSON) {
       return JSON.parse(data);
+    } else {
+      return data;
     }
-    return data;
   }
 
   // Removes and returns last element of the list
@@ -114,10 +150,14 @@ export default class RedisService {
     options?: TRedisOptions,
   ): Promise<T | null> {
     const syncRPop = this.promisifyCommand('rpop');
-    const data = await syncRPop(key, count);
+
+    const fn = async () => await syncRPop(key, count);
+    const data = await this.retryWithBackoff(fn);
+
     if (data && options?.inJSON) {
       return JSON.parse(data);
+    } else {
+      return data;
     }
-    return data;
   }
 }

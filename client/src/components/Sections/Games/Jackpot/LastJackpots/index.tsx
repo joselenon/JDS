@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { v4 } from 'uuid';
 
 import * as styles from './styles';
@@ -14,7 +14,7 @@ interface ILastWinnersProps {
   lastJackpotsInfo: TGetJackpotResponse[];
 }
 
-export default function LastJackpots({ lastJackpotsInfo }: ILastWinnersProps) {
+function LastJackpots({ lastJackpotsInfo }: ILastWinnersProps) {
   const [widthSize, setWidthSize] = useState<number | undefined>(undefined);
   const [historyAmount, setHistoryAmount] = useState(10);
 
@@ -64,7 +64,7 @@ export default function LastJackpots({ lastJackpotsInfo }: ILastWinnersProps) {
       lastJackpotsInfoCopy.splice(historyAmount);
     }
     const lastWinnersHTML = lastJackpotsInfoCopy.map((jackpot) => (
-      <styles.Game key={jackpot.docId} onClick={() => handleShowGameInfo(jackpot)}>
+      <styles.Game key={v4()} onClick={() => handleShowGameInfo(jackpot)}>
         {jackpot.winningBetRef?.userInfo.avatar ? (
           <img src={jackpot.winningBetRef?.userInfo.avatar} width={'100%'} />
         ) : (
@@ -98,3 +98,5 @@ export default function LastJackpots({ lastJackpotsInfo }: ILastWinnersProps) {
     </styles.LastJackpotsContainer>
   );
 }
+
+export default memo(LastJackpots);

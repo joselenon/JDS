@@ -4,12 +4,12 @@ import {
   CodeAlreadyUsed,
   CodeNotFound,
   CodeUsageLimitError,
-} from '../config/errorTypes/ClientErrors';
+} from '../config/errors/classes/ClientErrors';
 import {
   ICreateTransactionPayload,
   IRedeemCodePayload,
 } from '../config/interfaces/IPayloads';
-import { InvalidPayloadError } from '../config/errorTypes/SystemErrors';
+import { InvalidPayloadError } from '../config/errors/classes/SystemErrors';
 import ICode from '../config/interfaces/ICode';
 import IFirebaseQueryResponse from '../config/interfaces/IFirebase';
 

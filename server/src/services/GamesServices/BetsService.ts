@@ -1,35 +1,32 @@
+/* eslint-disable no-useless-catch */
 import { FirebaseInstance, RedisInstance } from '../..';
 import {
+  ClientError,
   GameAlreadyStarted,
+  GenericError,
   InsufficientBalance,
-} from '../../config/errorTypes/ClientErrors';
+} from '../../config/errors/classes/ClientErrors';
 import { IBetDBCreate, IBetRedisCreate } from '../../config/interfaces/IBet';
 import { IGameRedis, IGameRedisUpdate } from '../../config/interfaces/IGame';
-import JackpotServiceInstance, {
-  JackpotService,
+import {
+  JackpotServiceClass,
   jackpotBetsQueueCacheKey,
 } from './JackpotService';
 import BalanceService from '../BalanceService';
 
 class JackpotBetsService {
-  private jackpotInfo: IGameRedis | undefined;
-
-  constructor(private betInfo: IBetRedisCreate) {}
+  constructor(
+    private betInfo: IBetRedisCreate,
+    private jackpot: IGameRedis,
+  ) {}
 
   static async clearBetsQueue() {
     await RedisInstance.del(jackpotBetsQueueCacheKey);
     return true;
   }
 
-  async getJackpot() {
-    return (this.jackpotInfo =
-      await JackpotServiceInstance.getJackpotInRedis());
-  }
-
   async checkJackpotBetValidity() {
-    if (!this.jackpotInfo) throw new Error('Algo deu errado.');
-
-    const { docId, status } = this.jackpotInfo;
+    const { docId, status } = this.jackpot;
     const { gameId, userInfo, amountBet } = this.betInfo;
     const userBalance = await BalanceService.getBalance(userInfo.userDocId);
 
@@ -42,9 +39,7 @@ class JackpotBetsService {
   }
 
   async processIntervals() {
-    if (!this.jackpotInfo) throw new Error('Algo deu errado.');
-
-    const { prizePool } = this.jackpotInfo;
+    const { prizePool } = this.jackpot;
     const { amountBet } = this.betInfo;
 
     const startInterval = prizePool === 0 ? 0 : prizePool + 1;
@@ -77,28 +72,33 @@ class JackpotBetsService {
   }
 
   async updateJackpotsAndBalance(newBetDocId: string, intervals: number[]) {
-    if (!this.jackpotInfo) throw new Error('Algo deu errado.');
-
     const { amountBet, userInfo } = this.betInfo;
-    const { prizePool } = this.jackpotInfo;
+    const { prizePool } = this.jackpot;
 
     const jackpotUpdatePayload: IGameRedisUpdate = {
       bets: [{ ...this.betInfo, docId: newBetDocId, intervals }],
       prizePool: prizePool + amountBet,
     };
-    if (this.jackpotInfo.bets.length === 0) {
+    if (this.jackpot.bets.length === 0) {
       jackpotUpdatePayload.startedAt = Date.now();
     }
 
-    await JackpotService.updateJackpots(this.jackpotInfo, jackpotUpdatePayload);
+    await JackpotServiceClass.updateJackpots(
+      this.jackpot,
+      jackpotUpdatePayload,
+    );
     await BalanceService.softUpdateBalances(userInfo.userDocId, -amountBet);
   }
 
   async makeBet() {
-    await this.getJackpot();
-    await this.checkJackpotBetValidity();
-    const { newBetDocId, intervals } = await this.createBetInDB();
-    await this.updateJackpotsAndBalance(newBetDocId, intervals);
+    try {
+      await this.checkJackpotBetValidity();
+      const { newBetDocId, intervals } = await this.createBetInDB();
+      await this.updateJackpotsAndBalance(newBetDocId, intervals);
+    } catch (err) {
+      if (err instanceof ClientError) throw err;
+      throw new GenericError();
+    }
   }
 }
 

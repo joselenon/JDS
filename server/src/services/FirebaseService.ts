@@ -7,7 +7,7 @@ import IFirebaseQueryResponse, {
 import {
   DocumentNotFoundError,
   UnexpectedDatabaseError,
-} from '../config/errorTypes/SystemErrors';
+} from '../config/errors/classes/SystemErrors';
 
 class FirebaseService {
   public firestore: FirebaseFirestore.Firestore;

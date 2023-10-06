@@ -3,7 +3,7 @@ import {
   GameAlreadyStarted,
   InsufficientBalance,
   InvalidAmountBet,
-} from '../../config/errorTypes/ClientErrors';
+} from '../../config/errors/classes/ClientErrors';
 import {
   IBetControllerGQL,
   IBetRedisCreate,
@@ -13,7 +13,7 @@ import { IJackpotBetPayload } from '../../config/interfaces/IPayloads';
 
 import getRedisKeyHelper from '../../helpers/redisHelper';
 import BalanceService from '../../services/BalanceService';
-import JackpotService from '../../services/GamesServices/JackpotService';
+import { JackpotServiceClass } from '../../services/GamesServices/JackpotService';
 
 class BetControllerGQL implements IBetControllerGQL {
   async makeBetOnJackpot(userInfo: IJWTPayload, payload: IJackpotBetPayload) {
@@ -27,10 +27,13 @@ class BetControllerGQL implements IBetControllerGQL {
     if (userBalance < amountBet) {
       throw new InsufficientBalance('Saldo insuficiente');
     }
-    const jackpotInRedis = await JackpotService.getJackpotInRedis();
+    const jackpotInRedis = await JackpotServiceClass.getJackpotInRedis();
     if (!jackpotInRedis || jackpotInRedis.status === 'FINISHED') {
       throw new GameAlreadyStarted(userDocId);
     }
+
+    const shouldPushBet = JackpotServiceClass.getShouldListenBets();
+    if (!shouldPushBet) throw new GameAlreadyStarted(userDocId);
 
     const { docId: jackpotDocId } = jackpotInRedis;
     const betDBCreatePayload: IBetRedisCreate = {

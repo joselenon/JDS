@@ -1,4 +1,4 @@
-import { AuthError } from '../config/errorTypes/ClientErrors';
+import { AuthError } from '../config/errors/classes/ClientErrors';
 import { IBetDBCreate } from '../config/interfaces/IBet';
 import ITransaction from '../config/interfaces/ITransaction';
 

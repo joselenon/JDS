@@ -4,7 +4,6 @@ export default createGlobalStyle`
   :root {
     --chakra-font: 'Chakra Petch', sans-serif;
     --bai-font: 'Bai Jamjuree', sans-serif;
-    --gotham-font: 'Gotham', sans-serif;
     --header-height: 70px;
     --default-red: #cb2626;
     --main-bg-color: #ebebeb;

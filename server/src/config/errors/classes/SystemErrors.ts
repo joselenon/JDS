@@ -1,10 +1,14 @@
 // Errors occured with the system (not shared with client)
-import { RESPONSE_CONFIG } from '../constants/RESPONSES';
+import * as Sentry from '@sentry/node';
+
+import { RESPONSE_CONFIG } from '../../constants/RESPONSES';
 
 export abstract class SystemError extends Error {
   constructor(message: string, type: string) {
     super(message);
     this.name = `System Error - ${type}`;
+
+    Sentry.captureException(this, { tags: { type } });
   }
 }
 
@@ -49,10 +53,9 @@ export class RedisError extends SystemError {
   }
 }
 
-export class NoJackpotInRedisError extends SystemError {
+export class NoJackpot extends SystemError {
   constructor(
-    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS
-      .NO_JACKPOT_IN_REDIS,
+    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS.NO_JACKPOT,
   ) {
     super(message, RESPONSE_CONFIG.ERROR.TYPES.Game);
   }

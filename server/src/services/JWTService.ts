@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import JWTConfig from '../config/app/JWTConfig';
 import { IJWTPayload, IJWTService } from '../config/interfaces/IJWT';
-import { AuthError } from '../config/errorTypes/ClientErrors';
+import { AuthError } from '../config/errors/classes/ClientErrors';
 
 class JWTService implements IJWTService {
   signJWT(payload: IJWTPayload) {

@@ -55,6 +55,7 @@ class ProcessWinnerService {
     );
 
     return { winnerBet, winnerPrize, ticketDrawn };
+    // Potential errors:  JackpotWinnerProcessingError || UnexpectedDatabaseError
   }
 }
 

@@ -2,12 +2,11 @@
 import { FirebaseInstance, RedisInstance } from '../..';
 import {
   ClientError,
-  GameAlreadyStarted,
-  GenericError,
-  InsufficientBalance,
+  GameAlreadyStartedError,
+  InsufficientBalanceError,
 } from '../../config/errors/classes/ClientErrors';
 import { IBetDBCreate, IBetRedisCreate } from '../../config/interfaces/IBet';
-import { IGameRedis, IGameRedisUpdate } from '../../config/interfaces/IGame';
+import { IGameInfo, IGameInfoUpdate } from '../../config/interfaces/IGame';
 import {
   JackpotServiceClass,
   jackpotBetsQueueCacheKey,
@@ -17,7 +16,7 @@ import BalanceService from '../BalanceService';
 class JackpotBetsService {
   constructor(
     private betInfo: IBetRedisCreate,
-    private jackpot: IGameRedis,
+    private jackpot: IGameInfo,
   ) {}
 
   static async clearBetsQueue() {
@@ -28,14 +27,17 @@ class JackpotBetsService {
   async checkJackpotBetValidity() {
     const { docId, status } = this.jackpot;
     const { gameId, userInfo, amountBet } = this.betInfo;
-    const userBalance = await BalanceService.getBalance(userInfo.userDocId);
 
     if (docId !== gameId || status === 'CLOSED' || status === 'FINISHED') {
-      throw new GameAlreadyStarted(userInfo.userDocId);
+      throw new GameAlreadyStartedError(userInfo.userDocId);
     }
+
+    const userBalance = await BalanceService.getBalance(userInfo.userDocId);
+
     if (amountBet > userBalance.balance) {
-      throw new InsufficientBalance(userInfo.userDocId);
+      throw new InsufficientBalanceError(userInfo.userDocId);
     }
+    // Potential errors: GameAlreadyStartedError || InsufficientBalanceError || RedisError
   }
 
   async processIntervals() {
@@ -69,13 +71,14 @@ class JackpotBetsService {
     );
 
     return { newBetDocId, intervals };
+    // Potential errors: UnexpectedDatabaseError
   }
 
   async updateJackpotsAndBalance(newBetDocId: string, intervals: number[]) {
     const { amountBet, userInfo } = this.betInfo;
     const { prizePool } = this.jackpot;
 
-    const jackpotUpdatePayload: IGameRedisUpdate = {
+    const jackpotUpdatePayload: IGameInfoUpdate = {
       bets: [{ ...this.betInfo, docId: newBetDocId, intervals }],
       prizePool: prizePool + amountBet,
     };
@@ -88,16 +91,22 @@ class JackpotBetsService {
       jackpotUpdatePayload,
     );
     await BalanceService.softUpdateBalances(userInfo.userDocId, -amountBet);
+    // Potential errors: UnexpectedDatabaseError
   }
 
   async makeBet() {
     try {
+      // Potential errors: GameAlreadyStartedError || InsufficientBalanceError || RedisError
       await this.checkJackpotBetValidity();
+
+      // Potential errors: UnexpectedDatabaseError
       const { newBetDocId, intervals } = await this.createBetInDB();
+
+      // Potential errors: UnexpectedDatabaseError
       await this.updateJackpotsAndBalance(newBetDocId, intervals);
     } catch (err) {
-      if (err instanceof ClientError) throw err;
-      throw new GenericError();
+      if (err instanceof ClientError) return;
+      throw err;
     }
   }
 }

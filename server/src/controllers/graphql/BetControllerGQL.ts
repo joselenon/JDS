@@ -1,7 +1,7 @@
 import { RedisInstance } from '../..';
 import {
-  GameAlreadyStarted,
-  InsufficientBalance,
+  GameAlreadyStartedError,
+  InsufficientBalanceError,
   InvalidAmountBet,
 } from '../../config/errors/classes/ClientErrors';
 import {
@@ -25,15 +25,15 @@ class BetControllerGQL implements IBetControllerGQL {
       throw new InvalidAmountBet(userDocId);
     }
     if (userBalance < amountBet) {
-      throw new InsufficientBalance('Saldo insuficiente');
+      throw new InsufficientBalanceError('Saldo insuficiente');
     }
     const jackpotInRedis = await JackpotServiceClass.getJackpotInRedis();
     if (!jackpotInRedis || jackpotInRedis.status === 'FINISHED') {
-      throw new GameAlreadyStarted(userDocId);
+      throw new GameAlreadyStartedError(userDocId);
     }
 
     const shouldPushBet = JackpotServiceClass.getShouldListenBets();
-    if (!shouldPushBet) throw new GameAlreadyStarted(userDocId);
+    if (!shouldPushBet) throw new GameAlreadyStartedError(userDocId);
 
     const { docId: jackpotDocId } = jackpotInRedis;
     const betDBCreatePayload: IBetRedisCreate = {

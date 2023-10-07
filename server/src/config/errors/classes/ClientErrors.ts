@@ -76,7 +76,7 @@ export class InvalidAmountBet extends ClientError {
   }
 }
 
-export class InsufficientBalance extends ClientError {
+export class InsufficientBalanceError extends ClientError {
   constructor(
     private userDocId: string,
     message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS
@@ -96,7 +96,7 @@ export class InsufficientBalance extends ClientError {
   }
 }
 
-export class GameAlreadyStarted extends ClientError {
+export class GameAlreadyStartedError extends ClientError {
   constructor(
     private userDocId: string,
     message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS

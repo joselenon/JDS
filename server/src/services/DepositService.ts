@@ -23,13 +23,17 @@ class DepositService {
       'name',
       code,
     );
+
     if (!codeInfo) throw new CodeNotFound();
+
     const { nUsers, claims, value } = codeInfo.body;
     if (claims.length >= nUsers) throw new CodeUsageLimitError();
+
     const userAlreadyClaimed = claims.some(
       (claimRef) => userDocId === claimRef.id,
     );
     if (userAlreadyClaimed) throw new CodeAlreadyUsed();
+
     return { codeInfo, value };
   }
 

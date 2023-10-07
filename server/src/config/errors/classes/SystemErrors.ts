@@ -53,7 +53,7 @@ export class RedisError extends SystemError {
   }
 }
 
-export class NoJackpot extends SystemError {
+export class NoJackpotError extends SystemError {
   constructor(
     message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS.NO_JACKPOT,
   ) {

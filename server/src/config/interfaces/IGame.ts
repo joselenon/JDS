@@ -16,7 +16,7 @@ export interface IGameDB {
   finishedAt?: number;
 }
 
-export interface IGameRedis {
+export interface IGameInfo {
   docId: string;
   bets: IBetRedis[];
   type: GameModeProtocol;
@@ -30,7 +30,7 @@ export interface IGameRedis {
   finishedAt?: number;
 }
 
-export interface IGameRedisUpdate {
+export interface IGameInfoUpdate {
   docId?: string;
   bets?: IBetRedis[];
   type?: GameModeProtocol;

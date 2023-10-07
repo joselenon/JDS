@@ -90,14 +90,16 @@ class FirebaseService {
         .limit(1);
       const docSnapshot = await docRef.get();
 
-      if (docSnapshot.empty) throw new DocumentNotFoundError();
-
-      const docId = docSnapshot.docs[0].id;
-      const docSnapshotData = docSnapshot.docs[0].data();
-      return {
-        docId: docId as string,
-        body: { ...docSnapshotData } as T,
-      };
+      if (!docSnapshot.empty) {
+        const docId = docSnapshot.docs[0].id;
+        const docSnapshotData = docSnapshot.docs[0].data();
+        return {
+          docId: docId as string,
+          body: { ...docSnapshotData } as T,
+        };
+      } else {
+        return null;
+      }
     } catch (err: any) {
       throw new UnexpectedDatabaseError(err);
     }

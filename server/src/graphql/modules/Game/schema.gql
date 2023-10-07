@@ -37,7 +37,7 @@ type GameData {
 type Game {
   success: Boolean!
   message: String!
-  data: GameData!
+  data: GameData
 }
 
 type GameHistory {

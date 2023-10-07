@@ -9,6 +9,11 @@ export default interface IUser {
   email?: string;
 }
 
+export interface IUserUpdatePayload {
+  email?: string;
+  tradeLink?: string;
+}
+
 export interface IUserJWTPayload {
   userDocId: string;
   username: string;

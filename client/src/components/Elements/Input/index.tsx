@@ -29,6 +29,7 @@ export default function Input(props: IInputRHF) {
 
   const validation = (value: any) => {
     const validate = validationFn(value);
+    console.log(validate);
     setValidationValue(validate);
     return validate;
   };

@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import { EnvVariablesMissingError } from '../errors/classes/SystemErrors';
 
 const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
@@ -21,6 +22,7 @@ const ENVIRONMENT = {
   FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL as string,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   STEAM_CLIENT_SECRET: process.env.STEAM_CLIENT_SECRET as string,
+  JWT_SECRET: process.env.JWT_SECRET as string,
 };
 
 const requiredVariables = [
@@ -38,6 +40,7 @@ const requiredVariables = [
   'FIREBASE_CLIENT_EMAIL',
   'GOOGLE_API_KEY',
   'STEAM_CLIENT_SECRET',
+  'JWT_SECRET',
 ];
 
 const missingVariables = requiredVariables.filter(
@@ -45,7 +48,7 @@ const missingVariables = requiredVariables.filter(
 );
 
 if (missingVariables.length > 0) {
-  throw new Error(`Variável de ambiente faltando. - ${missingVariables}`);
+  throw new EnvVariablesMissingError(missingVariables);
 }
 
 export default ENVIRONMENT;

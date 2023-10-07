@@ -1,8 +1,7 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import ENVIRONMENT from '../constants/ENVIRONMENT';
 
 const JWTConfig = {
-  secret: process.env.JWT_SECRET,
+  secret: ENVIRONMENT.JWT_SECRET,
   expiration: 5 * 24 * 60 * 60, // 5 days (in seconds)
 };
 

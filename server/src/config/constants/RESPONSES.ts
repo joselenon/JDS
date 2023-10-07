@@ -14,13 +14,17 @@ const RESPONSE_CONFIG = {
       Authorization: 'Authorization',
       Deposit: 'Deposit',
       Game: 'Game',
+      ExternalAPIs: 'External APIs',
+      Register: 'Register',
+      EnvVariablesMissing: 'Environment Variables Missing',
     },
 
     SYSTEM_ERROR_MSGS: {
-      DOCUMENT_NOT_IN_DB_MSG: 'Documento(s) não encontrado(s) no DB',
-      INVALID_PAYLOAD: 'Payload inválido',
-      REDIS: 'Erro no Redis',
+      DOCUMENT_NOT_IN_DB_MSG: 'Document not in DB',
+      INVALID_PAYLOAD: 'Invalid payload',
+      REDIS: 'Error at redis',
       NO_JACKPOT: 'No jackpot at the moment...',
+      ENV_VARIABLES_MISSING: 'You forgot some environment variables: ',
     },
 
     CLIENT_ERROR_MSGS: {

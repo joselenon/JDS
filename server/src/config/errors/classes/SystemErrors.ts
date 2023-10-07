@@ -66,3 +66,28 @@ export class JackpotWinnerProcessingError extends SystemError {
     super(message, RESPONSE_CONFIG.ERROR.TYPES.Game);
   }
 }
+
+export class YoutubeAPIError extends SystemError {
+  constructor(message: string) {
+    super(message, RESPONSE_CONFIG.ERROR.TYPES.ExternalAPIs);
+  }
+}
+
+export class RegisterError extends SystemError {
+  constructor(message: string) {
+    super(message, RESPONSE_CONFIG.ERROR.TYPES.Register);
+  }
+}
+
+export class EnvVariablesMissingError extends SystemError {
+  constructor(
+    variables: string[],
+    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS
+      .ENV_VARIABLES_MISSING,
+  ) {
+    super(
+      `${message}${variables.join(', ')}`,
+      RESPONSE_CONFIG.ERROR.TYPES.EnvVariablesMissing,
+    );
+  }
+}

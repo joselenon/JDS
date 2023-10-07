@@ -30,6 +30,7 @@ class FirebaseService {
   }
 
   // Specific query (if the document doesn't exists, it throws an error)
+  //  - It throws error in case a docRef.get is requested with an nonexistent docId in db
   async updateDocument<T>(
     collection: TDBCollections,
     docId: string,
@@ -49,6 +50,7 @@ class FirebaseService {
   }
 
   // Specific query (if the document doesn't exists, it throws an error)
+  //  - It throws error in case a docRef.get is requested with an nonexistent docId in db
   async getDocumentRef(collection: TDBCollections, docId: string) {
     try {
       const docRef = this.firestore.collection(collection).doc(docId);
@@ -68,7 +70,7 @@ class FirebaseService {
     try {
       const docRef = this.firestore.collection(collection).doc(docId);
       const docSnapshot = await docRef.get();
-      if (!docSnapshot.exists) throw new DocumentNotFoundError();
+      if (!docSnapshot.exists) return null;
 
       const docData = docSnapshot.data();
       return { docId, body: { ...docData } as T };

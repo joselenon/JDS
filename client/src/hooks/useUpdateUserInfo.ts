@@ -16,7 +16,7 @@ export default function useUpdateUserInfo() {
       URLS.ENDPOINTS.USER.update,
       payload,
     );
-    if (res) {
+    if (res && res.data.success) {
       const setCookieHeader = res.headers['set-cookie'] || [];
 
       const newTokenValue = setCookieHeader
@@ -28,6 +28,7 @@ export default function useUpdateUserInfo() {
         Cookies.set('token', newTokenValue, JWTCookie.config);
         dispatch(setToken(newTokenValue));
       }
+
       return res;
     }
   };

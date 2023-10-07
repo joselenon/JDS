@@ -1,6 +1,6 @@
 // Arrumar input que ao colocar como vazio e ir para outra aba, ao voltar ele retorna o valor desatualizado
-
 import React from 'react';
+import validator from 'validator';
 
 import * as styles from './styles';
 
@@ -15,7 +15,7 @@ export default function InfoForm() {
   const handleUpdateUserInfo = useUpdateUserInfo();
 
   const validateEmail = (value: string) => {
-    if (!validateEmail(value) && value.length !== 0) {
+    if (!validator.isEmail(value) && value.length !== 0) {
       return { valid: false, errorMsg: 'E-mail inválido.' };
     }
     return { valid: true, errorMsg: '' };

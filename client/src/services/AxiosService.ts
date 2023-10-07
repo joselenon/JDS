@@ -35,7 +35,9 @@ class AxiosService {
         payload,
         { withCredentials: true },
       );
+
       toast.success(res.data.message);
+
       return res;
     } catch (err: any) {
       if (err instanceof AxiosError) {
@@ -54,6 +56,9 @@ class AxiosService {
         payload,
         { withCredentials: true },
       );
+
+      if (res.data.success) toast.success(res.data.message);
+
       return res;
     } catch (err: any) {
       if (err.code === 'ERR_NETWORK') {

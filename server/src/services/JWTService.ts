@@ -7,7 +7,6 @@ import { AuthError } from '../config/errors/classes/ClientErrors';
 
 class JWTService implements IJWTService {
   signJWT(payload: IJWTPayload) {
-    if (!JWTConfig.secret) throw new Error('JWT secret is not defined.');
     const token = jwt.sign(payload, JWTConfig.secret, {
       expiresIn: JWTConfig.expiration,
     });
@@ -15,9 +14,10 @@ class JWTService implements IJWTService {
   }
 
   validateJWT(token: string): IJWTPayload {
-    if (!JWTConfig.secret) throw new Error('JWT secret is not defined.');
     const validated = jwt.verify(token, JWTConfig.secret) as IJWTPayload;
+
     if (!validated) throw new AuthError();
+
     return validated;
   }
 }

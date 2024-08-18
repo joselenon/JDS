@@ -1,7 +1,7 @@
 // Jackpot system
 import * as admin from 'firebase-admin';
 
-import { IBetRedisCreate } from '../../config/interfaces/IBet';
+import { IBetDB, IBetRedisCreate } from '../../config/interfaces/IBet';
 import {
   IGameDBUpdate,
   IGameDB,
@@ -62,16 +62,23 @@ class JackpotService {
     // checkthis ------------------------------------------------------------------
     if (Array.isArray(payload.bets) && !payload.winningBetRef) {
       const { docId } = payload.bets[0];
-      const betRef = await FirebaseInstance.getDocumentRef('bets', docId);
-      payloadToDB.bets = admin.firestore.FieldValue.arrayUnion(betRef);
+
+      const { result } = await FirebaseInstance.getDocumentRef<
+        FirebaseFirestore.DocumentReference,
+        IBetDB
+      >('bets', docId);
+
+      payloadToDB.bets = admin.firestore.FieldValue.arrayUnion(result);
     }
+
     if (payload.winningBetRef) {
       const { docId } = payload.winningBetRef;
-      const winningBetRef = await FirebaseInstance.getDocumentRef(
-        'bets',
-        docId,
-      );
-      payloadToDB.winningBetRef = winningBetRef;
+      const { result } = await FirebaseInstance.getDocumentRef<
+        FirebaseFirestore.DocumentReference,
+        IBetDB
+      >('bets', docId);
+
+      payloadToDB.winningBetRef = result;
     }
     await FirebaseInstance.updateDocument('games', jackpotDocId, payloadToDB);
 

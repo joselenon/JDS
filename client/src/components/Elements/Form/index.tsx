@@ -23,24 +23,27 @@ export default function Form(props: IFormProps) {
 
   useEffect(() => {
     inputArray.forEach((input) => {
-      if (input.defaultValue) setValue(input.id, input.defaultValue);
+      if (input.options.defaultValue) setValue(input.id, input.options.defaultValue);
     });
   }, [setValue, inputArray]);
 
-  const inputArrayHTML = inputArray.map((input) => (
-    <Input
-      key={input.id}
-      type={input.type}
-      id={input.id}
-      multiple={input.multiple}
-      defaultValue={input.defaultValue}
-      required={input.required}
-      label={input.label}
-      validationFn={input.validationFn}
-      rhfRegister={register}
-      rhfErrors={errors}
-    />
-  ));
+  const inputArrayHTML = inputArray.map((input) => {
+    const { options } = input;
+
+    return (
+      <Input
+        key={input.id}
+        id={input.id}
+        options={options}
+        label={input.label}
+        rhfConfig={{
+          rhfValidationFn: input.rhfConfig?.rhfValidationFn,
+          rhfRegister: register,
+          rhfErrors: errors,
+        }}
+      />
+    );
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)} noValidate>

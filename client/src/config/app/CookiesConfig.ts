@@ -1,8 +1,10 @@
+import ENVIRONMENT from '../constants/ENVIRONMENT';
+
 export const JWTCookie = {
   key: 'token',
   config: {
-    maxAge: 5 * 24 * 60 * 60, // 5 days (in seconds)
+    expires: 5 * 24 * 60 * 60, // 5 days (in seconds)
     secure: true,
-    domain: '.gamblance.com',
+    domain: ENVIRONMENT.REACT_APP_SERVER_DOMAIN /* Check this later*/,
   },
 };

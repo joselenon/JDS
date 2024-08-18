@@ -3,6 +3,6 @@ import React from 'react';
 
 import * as styles from './styles';
 
-export default function RedSkeleton() {
-  return <styles.SkeletonContainer />;
+export default function RedSkeleton({ children }: any) {
+  return <styles.SkeletonContainer id="red">{children}</styles.SkeletonContainer>;
 }

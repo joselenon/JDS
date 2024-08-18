@@ -7,10 +7,12 @@ class DepositController {
   async code(req: Request, res: Response, next: NextFunction) {
     try {
       const { authorization = null } = req.headers;
-      const { userDocId } = await validateAuth(authorization);
+      const payload = req.body;
+
+      const { validatedJWTPayload } = await validateAuth(authorization);
 
       // Code validation and claim
-      await DepositService.redeemCode(userDocId, req.body);
+      await DepositService.redeemCode(validatedJWTPayload.userDocId, payload);
 
       return res.status(200).json(responseBody(true, 'REDEEM_CODE_MSG'));
     } catch (err) {

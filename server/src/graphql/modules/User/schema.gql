@@ -1,10 +1,17 @@
+type IEmail {
+  lastEmail: String
+  updatedAt: Float
+  value: String
+  verified: Boolean
+}
+
 type UserData {
   username: String
   steamid: String
   avatar: String
   balance: Float
   tradeLink: String
-  email: String
+  email: IEmail
 }
 type User {
   success: Boolean!

@@ -1,10 +1,10 @@
-import { AuthError } from '../config/errors/classes/ClientErrors';
-import { IBetDBCreate } from '../config/interfaces/IBet';
+import { IBetDB } from '../config/interfaces/IBet';
 import ITransaction from '../config/interfaces/ITransaction';
 
 import getRedisKeyHelper from '../helpers/redisHelper';
 import pSubEventHelper from '../helpers/pSubEventHelper';
 import { FirebaseInstance, RedisInstance } from '..';
+import IUser from '../config/interfaces/IUser';
 
 class BalanceService {
   static async calculateTransactions(
@@ -17,82 +17,62 @@ class BalanceService {
         userRef,
       );
     if (!userTransactions) return 0;
+
     const calc = userTransactions.reduce((acc, transaction) => {
-      switch (transaction.body?.type) {
+      switch (transaction.result.type) {
         case 'deposit':
-          acc += transaction.body.value;
+          acc += transaction.result.value;
           break;
         case 'withdraw':
-          acc -= transaction.body.value;
+          acc -= transaction.result.value;
           break;
       }
       return acc;
     }, 0);
-    if (calc === null || calc === undefined) {
-      throw new Error('algo deu errado aqui');
-    }
+
     return calc;
+
+    // Potential Errors: UnexpectedDatabaseError
   }
 
   static async calculateBets(userRef: FirebaseFirestore.DocumentReference) {
-    const userBets =
-      await FirebaseInstance.getManyDocumentsByParam<IBetDBCreate>(
-        'bets',
-        'userRef',
-        userRef,
-      );
-
+    const userBets = await FirebaseInstance.getManyDocumentsByParam<IBetDB>(
+      'bets',
+      'userRef',
+      userRef,
+    );
     if (!userBets || userBets.length <= 0) return 0;
+
     const calc = userBets.reduce((acc, bet) => {
-      const amountBet = bet.body.amountBet;
-      const amountReceived = bet.body.amountReceived;
-      return (acc += amountReceived - amountBet);
+      const difference = bet.result.amountReceived - bet.result.amountBet;
+      return (acc += difference);
     }, 0);
 
-    if (calc === null || calc === undefined) {
-      throw new Error('algo deu errado aca');
-    }
     return calc;
+
+    // Potential Errors: UnexpectedDatabaseError
   }
 
   // Recalculate all the transactions and bets in order to update the balance (DB, Cache, Client???)
   static async hardUpdateBalances(userDocId: string) {
-    try {
-      const userRef = await FirebaseInstance.getDocumentRef('users', userDocId);
-      if (!userRef) throw new AuthError();
-      const balanceCalc =
-        (await BalanceService.calculateTransactions(userRef)) +
-        (await BalanceService.calculateBets(userRef));
-      const balanceObj = { balance: balanceCalc };
+    const { result } = await FirebaseInstance.getDocumentRef<
+      FirebaseFirestore.DocumentReference,
+      IUser
+    >('users', userDocId);
 
-      // DB Update
-      await FirebaseInstance.updateDocument('users', userDocId, balanceObj);
-      // Cache Update
-      const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
-      await RedisInstance.set(cacheKey, balanceObj, { inJSON: true });
+    const balanceCalc =
+      (await BalanceService.calculateTransactions(result)) +
+      (await BalanceService.calculateBets(result));
+    const balanceObj = { balance: balanceCalc };
 
-      return balanceObj;
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  }
+    await FirebaseInstance.updateDocument('users', userDocId, balanceObj);
 
-  // Do not recalculate all the transaction, only adds a value received to the in cache saved balance (Cache, Client)
-  static async softUpdateBalances(userDocId: string, valueToAdd: number) {
-    const { balance } = await BalanceService.getBalance(userDocId);
-    const newBalance = { balance: balance + valueToAdd };
-
-    // Client update
-    pSubEventHelper(
-      'GET_LIVE_BALANCE',
-      'getLiveBalance',
-      { success: true, message: 'GET_MSG', data: { ...newBalance } },
-      userDocId,
-    );
-    // Cache update
     const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
-    await RedisInstance.set(cacheKey, newBalance, { inJSON: true });
+    await RedisInstance.set(cacheKey, balanceObj, { inJSON: true });
+
+    return balanceObj;
+
+    // Potential Errors: UnexpectedDatabaseError || RedisError
   }
 
   // Function to display the balance (not trustable since if there's any value in cache, it will delivery it)
@@ -101,10 +81,30 @@ class BalanceService {
     const balance = await RedisInstance.get<{ balance: number }>(cacheKey, {
       inJSON: true,
     });
-    if (!balance) {
-      return await BalanceService.hardUpdateBalances(userDocId);
-    }
-    return balance;
+
+    return balance
+      ? balance
+      : await BalanceService.hardUpdateBalances(userDocId);
+
+    // Potential Errors: RedisError || UnexpectedDatabaseError
+  }
+
+  // Do not recalculate all the transaction, only adds a value received to the in cache saved balance (Cache, Client)
+  static async softUpdateBalances(userDocId: string, valueToAdd: number) {
+    const { balance } = await BalanceService.getBalance(userDocId);
+    const newBalance = { balance: balance + valueToAdd };
+
+    pSubEventHelper(
+      'GET_LIVE_BALANCE',
+      'getLiveBalance',
+      { success: true, message: 'GET_MSG', data: { ...newBalance } },
+      userDocId,
+    );
+
+    const cacheKey = getRedisKeyHelper('last_balance_att', userDocId);
+    await RedisInstance.set(cacheKey, newBalance, { inJSON: true });
+
+    // Potential Errors: RedisError || UnexpectedDatabaseError
   }
 }
 

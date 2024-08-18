@@ -32,6 +32,21 @@ export class AuthError extends ClientError {
   }
 }
 
+export class EmailAlreadyExistsError extends ClientError {
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS
+      .EMAIL_ALREADY_EXISTS,
+  ) {
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.UserInfo);
+  }
+}
+
+export class UserUpdateInfoError extends ClientError {
+  constructor(message: string) {
+    super(400, message, RESPONSE_CONFIG.ERROR.TYPES.UserInfo);
+  }
+}
+
 export class CodeNotFound extends ClientError {
   constructor(
     message: string = RESPONSE_CONFIG.ERROR.CLIENT_ERROR_MSGS.CODE_NOT_FOUND,

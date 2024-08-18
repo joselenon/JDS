@@ -10,7 +10,7 @@ import GraphQLClientService from './services/GraphQLClientService';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <Provider store={reduxStore}>
-    <ApolloProvider client={GraphQLClientService}>
+    <ApolloProvider client={GraphQLClientService.getClient()}>
       <React.StrictMode>
         <App />
       </React.StrictMode>

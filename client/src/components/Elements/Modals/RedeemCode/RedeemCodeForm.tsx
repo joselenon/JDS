@@ -19,15 +19,14 @@ export default function RedeemCodeForm() {
 
   const redeemCodeInput: ICreateInput = {
     id: 'code',
-    type: 'text',
+    options: { type: 'text', required: true },
     label: '',
-    required: true,
-    validationFn: (arg) => validate(arg),
+    rhfConfig: { rhfValidationFn: (arg) => validate(arg) },
   };
 
   const redeemButton = (
     <styles.RedeemButtonContainer>
-      <Button btnType="CTA" label="Resgatar" type="submit" />
+      <Button btnType="CTA" label="Resgatar" attributes={{ type: 'submit' }} />
     </styles.RedeemButtonContainer>
   );
 

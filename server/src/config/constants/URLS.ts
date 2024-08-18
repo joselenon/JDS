@@ -37,6 +37,7 @@ const API_ENDPOINTS = {
       initial: `${ENDPOINTS.AUTH}/steam`,
       callback: `${ENDPOINTS.AUTH}/steam/callback`,
     },
+    google: `${ENDPOINTS.AUTH}/google`,
   },
   USER: {
     update: `${ENDPOINTS.USER}/update`,

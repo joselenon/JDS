@@ -5,13 +5,14 @@ import {
   GameAlreadyStartedError,
   InsufficientBalanceError,
 } from '../../config/errors/classes/ClientErrors';
-import { IBetDBCreate, IBetRedisCreate } from '../../config/interfaces/IBet';
+import { IBetDB, IBetRedisCreate } from '../../config/interfaces/IBet';
 import { IGameInfo, IGameInfoUpdate } from '../../config/interfaces/IGame';
 import {
   JackpotServiceClass,
   jackpotBetsQueueCacheKey,
 } from './JackpotService';
 import BalanceService from '../BalanceService';
+import IUser from '../../config/interfaces/IUser';
 
 class JackpotBetsService {
   constructor(
@@ -53,15 +54,16 @@ class JackpotBetsService {
     const { amountBet, createdAt, gameId, userInfo } = this.betInfo;
     const intervals = await this.processIntervals();
 
-    const userRef = await FirebaseInstance.getDocumentRef(
-      'users',
-      userInfo.userDocId,
-    );
-    const betDBCreatePayload: IBetDBCreate = {
+    const { result } = await FirebaseInstance.getDocumentRef<
+      FirebaseFirestore.DocumentReference,
+      IUser
+    >('users', userInfo.userDocId);
+
+    const betDBCreatePayload: IBetDB = {
       amountBet,
       createdAt,
       gameId,
-      userRef,
+      userRef: result,
       intervals,
       amountReceived: 0,
     };

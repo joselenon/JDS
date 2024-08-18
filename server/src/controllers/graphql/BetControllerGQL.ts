@@ -8,15 +8,18 @@ import {
   IBetControllerGQL,
   IBetRedisCreate,
 } from '../../config/interfaces/IBet';
-import { IJWTPayload } from '../../config/interfaces/IJWT';
 import { IJackpotBetPayload } from '../../config/interfaces/IPayloads';
+import { IUserJWTPayload } from '../../config/interfaces/IUser';
 
 import getRedisKeyHelper from '../../helpers/redisHelper';
 import BalanceService from '../../services/BalanceService';
 import { JackpotServiceClass } from '../../services/GamesServices/JackpotService';
 
 class BetControllerGQL implements IBetControllerGQL {
-  async makeBetOnJackpot(userInfo: IJWTPayload, payload: IJackpotBetPayload) {
+  async makeBetOnJackpot(
+    userInfo: IUserJWTPayload,
+    payload: IJackpotBetPayload,
+  ) {
     const { amountBet } = payload;
     const { userDocId } = userInfo;
     const { balance: userBalance } = await BalanceService.getBalance(userDocId);

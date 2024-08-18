@@ -19,6 +19,9 @@ function MakeBet() {
   const handleMakeBet = useMakeBet();
 
   const validateInput = (value: number) => {
+    if (!updatedBalance) {
+      return { valid: false, errorMsg: ERROR_MSGS.SERVER_OFFLINE_MSG };
+    }
     if (!userInfo) {
       return { valid: false, errorMsg: ERROR_MSGS.NOT_LOGGED };
     }
@@ -34,15 +37,15 @@ function MakeBet() {
   const makeBetInput: ICreateInput = {
     id: 'amountBet',
     label: 'Quantia',
-    type: 'number',
-    defaultValue: 0,
-    required: true,
-    validationFn: (value) => validateInput(value), // Bet must be over 0 coins
+    options: { type: 'number', defaultValue: 0, required: true },
+    rhfConfig: {
+      rhfValidationFn: (value) => validateInput(value), // Bet must be over 0 coins
+    },
   };
 
   const makeBetButton = (
     <DefaultDivButton>
-      <Button btnType="CTA" label="aposta" type="submit" />
+      <Button btnType="CTA" label="aposta" attributes={{ type: 'submit' }} />
     </DefaultDivButton>
   );
   return (

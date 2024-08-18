@@ -7,8 +7,6 @@ import Cookies from 'js-cookie';
 import { JWTCookie } from '../config/app/CookiesConfig';
 import URLS from '../config/constants/URLS';
 
-const tokenFromCookies = Cookies.get(JWTCookie.key);
-
 class GraphQLClientService {
   private httpLink;
   private wsLink;
@@ -19,13 +17,7 @@ class GraphQLClientService {
     this.httpLink = new HttpLink({
       uri: `${URLS.MAIN_URLS.API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
     });
-    this.wsLink = new GraphQLWsLink(
-      createClient({
-        url: `${URLS.MAIN_URLS.WS_API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
-        // Set field 'connectionParams' in websocket connections
-        connectionParams: { Authorization: `Bearer ${tokenFromCookies}` },
-      }),
-    );
+    this.wsLink = new GraphQLWsLink(this.createWsClient());
     this.splitLink = split(
       ({ query }) => {
         const definition = getMainDefinition(query);
@@ -64,9 +56,19 @@ class GraphQLClientService {
     });
   }
 
+  private createWsClient() {
+    const token = Cookies.get(JWTCookie.key);
+
+    // Crie o cliente WS com o token atual
+    return createClient({
+      url: `${URLS.MAIN_URLS.WS_API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
+      connectionParams: { Authorization: `Bearer ${token}` },
+    });
+  }
+
   getClient() {
     return this.apolloClient;
   }
 }
 
-export default new GraphQLClientService().getClient();
+export default new GraphQLClientService();

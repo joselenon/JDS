@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 
 import USER_QUERIES from '../graphql/UserInfoGQL';
 import { gqlQuery, gqlSubscription } from '../hooks/useGraphQLService';
@@ -19,7 +19,7 @@ const BalanceContext = React.createContext<{
   balance: { data: undefined, liveData: undefined, refetch: undefined },
 });
 
-export default function BalanceContextProvider({ children }: any) {
+export default function BalanceContextProvider({ children }: { children: ReactNode }) {
   const { data, refetch } = gqlQuery<{ balance: number }, 'getBalance'>({
     gql: USER_QUERIES.GET_BALANCE,
   });

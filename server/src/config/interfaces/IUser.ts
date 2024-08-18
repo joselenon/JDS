@@ -6,7 +6,12 @@ export default interface IUser {
   avatar: string;
   balance: number;
   tradeLink?: string;
-  email?: string;
+  email: {
+    value: string;
+    verified: boolean;
+    lastEmail: string;
+    updatedAt: number;
+  };
 }
 
 export interface IUserUpdatePayload {

@@ -1,4 +1,4 @@
-import { UseFormRegister } from 'react-hook-form/dist/types/form';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/form';
 import { FieldValues } from 'react-hook-form/dist/types/fields';
 import { FieldErrors } from 'react-hook-form/dist/types/errors';
 import { AxiosResponse } from 'axios';
@@ -25,28 +25,22 @@ Captions
   submitButton: used to pass a custom styled button to the form
 */
 
-export interface IInputRHF {
-  id: ICreateInput['id'];
-  type: ICreateInput['type'];
-  multiple?: ICreateInput['multiple'];
-  defaultValue?: ICreateInput['defaultValue'];
-  label: ICreateInput['label'];
-  required: ICreateInput['required'];
-  rhfRegister: UseFormRegister<FieldValues>;
-  rhfErrors: FieldErrors;
-  validationFn?: ICreateInput['validationFn'];
+interface IInputAttributes {
+  type: 'number' | 'text' | 'file';
+  multiple?: boolean;
+  defaultValue?: string | number;
+  required?: boolean;
+  disabled?: boolean;
 }
 
 export interface ICreateInput {
   id: string;
-  type: 'number' | 'text' | 'file';
-  multiple?: boolean;
-  defaultValue?: string | number;
+  options: IInputAttributes;
   label: string;
-  required: boolean;
-  validationFn?: (value: any) => { valid: boolean; errorMsg: string };
+  rhfConfig?: {
+    rhfValidationFn: (value: any) => { valid: boolean; errorMsg: string };
+  };
 }
-
 /*
 Captions
   id: used as an identifier for RHF
@@ -57,3 +51,27 @@ Captions
   required: used to define if the input fill is required
   validationFn: used to validate input value before being sent (if there's any error, it sets and returns the message to 'errorMsg')
 */
+
+export interface IInputRHF {
+  id: ICreateInput['id'];
+  label: ICreateInput['label'];
+  options: IInputAttributes;
+  rhfConfig: {
+    rhfRegister: UseFormRegister<FieldValues>;
+    rhfErrors: FieldErrors;
+    rhfValidationFn?: (value: any) => { valid: boolean; errorMsg: string };
+  };
+}
+
+export interface IFileInputRHF {
+  id: ICreateInput['id'];
+  options: IInputAttributes;
+  label: ICreateInput['label'];
+  rhfConfig: {
+    rhfRegister: UseFormRegister<FieldValues>;
+    rhfErrors: FieldErrors;
+    rhfValidationFn?: (value: any) => { valid: boolean; errorMsg: string };
+  };
+  setValue: UseFormSetValue<FieldValues>;
+  resetCalled: boolean;
+}

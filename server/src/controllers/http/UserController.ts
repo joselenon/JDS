@@ -12,6 +12,8 @@ class UserController {
   async updateInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const { authorization = null } = req.headers;
+      const authValidation = await validateAuth(authorization);
+
       const payload: IUserUpdatePayload = req.body;
 
       const isUserUploadInfoPayload = (obj: any): obj is IUserUpdatePayload => {
@@ -21,9 +23,7 @@ class UserController {
       };
       if (!isUserUploadInfoPayload(payload)) throw new InvalidPayloadError();
 
-      const { userDocId } = await validateAuth(authorization);
-      const docUpdated = await UserService.updateInfo(userDocId, payload);
-
+      const docUpdated = await UserService.updateInfo(authValidation, payload);
       const newJWT = JWTService.signJWT(docUpdated);
 
       res.cookie(JWTCookie.key, newJWT, JWTCookie.config);

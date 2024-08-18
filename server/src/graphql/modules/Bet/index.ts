@@ -11,8 +11,8 @@ const resolvers = {
     ) => {
       try {
         const { validateAuth, jwtToken, BetControllerGQL } = context;
-        const userInfo = await validateAuth(jwtToken);
-        await BetControllerGQL.makeBetOnJackpot(userInfo, payload);
+        const { validatedJWTPayload } = await validateAuth(jwtToken);
+        await BetControllerGQL.makeBetOnJackpot(validatedJWTPayload, payload);
         return true;
       } catch (err) {
         validateAndCaptureError(err);

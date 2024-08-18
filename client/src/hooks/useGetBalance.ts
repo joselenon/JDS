@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 export default function useGetBalance() {
   const errorAlreadyDisplayed = useRef(false);
-  const [updatedBalance, setUpdatedBalance] = useState(0);
+  const [updatedBalance, setUpdatedBalance] = useState<null | number>(null);
 
   const { balance } = useBalanceContext();
   const { data, liveData } = balance;

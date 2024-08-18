@@ -7,11 +7,11 @@ import * as styles from './styles';
 import Button from '../../Elements/Button';
 import useUpdateUserInfo from '../../../hooks/useUpdateUserInfo';
 import Form from '../../Elements/Form';
-import useGetUserInfo from '../../../hooks/useGetUserInfo';
 import { ICreateInput } from '../../../config/interfaces/IForm';
+import { useUserInfoContext } from '../../../contexts/UserProfileInfoContext';
 
 export default function InfoForm() {
-  const userInfo = useGetUserInfo();
+  const userInfo = useUserInfoContext();
   const handleUpdateUserInfo = useUpdateUserInfo();
 
   const validateEmail = (value: string) => {
@@ -23,37 +23,38 @@ export default function InfoForm() {
 
   const emailInput: ICreateInput = {
     id: 'email',
-    type: 'text',
-    defaultValue: userInfo?.email,
+    options: {
+      type: 'text',
+      defaultValue: userInfo?.email?.value,
+      required: false,
+      //disabled: userInfo?.email?.value ? true : false,
+    },
     label: 'E-mail',
-    required: false,
-    validationFn: (value: string) => validateEmail(value),
+    rhfConfig: { rhfValidationFn: (value: string) => validateEmail(value) },
   };
 
   const tradeLinkInput: ICreateInput = {
     id: 'tradeLink',
-    type: 'text',
-    defaultValue: userInfo?.tradeLink,
+    options: { type: 'text', defaultValue: userInfo?.tradeLink, required: false },
     label: 'Trade-Link',
-    required: false,
   };
 
   const saveButton = (
     <styles.SaveButtonContainer>
       <div>
-        <Button btnType="CTA" label="Salvar" type={'submit'} />
+        <Button btnType="CTA" label="Salvar" attributes={{ type: 'submit' }} />
       </div>
     </styles.SaveButtonContainer>
   );
 
-  const form = (
-    <Form
-      axiosCallHook={handleUpdateUserInfo}
-      InputContainer={styles.InputsContainer}
-      inputArray={[emailInput, tradeLinkInput]}
-      submitButton={saveButton}
-    />
+  return (
+    <styles.FormContainer>
+      <Form
+        axiosCallHook={handleUpdateUserInfo}
+        InputContainer={styles.InputsContainer}
+        inputArray={[emailInput, tradeLinkInput]}
+        submitButton={saveButton}
+      />
+    </styles.FormContainer>
   );
-
-  return <styles.FormContainer>{form}</styles.FormContainer>;
 }

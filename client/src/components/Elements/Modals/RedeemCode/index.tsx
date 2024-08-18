@@ -23,8 +23,7 @@ export default function RedeemCode() {
         <Button
           label={<FontAwesomeIcon icon={faPlus} />}
           btnType="CTA"
-          onClickFn={toggleModal}
-          id={'redeem'}
+          attributes={{ id: 'redeem', onClick: toggleModal }}
         />
       </div>
       {modalOpen && (

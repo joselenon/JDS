@@ -36,6 +36,7 @@ const API_ENDPOINTS = {
     steam: {
       initial: `${ENDPOINTS.AUTH}/steam`,
     },
+    google: `${ENDPOINTS.AUTH}/google`,
   },
   USER: {
     update: `${ENDPOINTS.USER}/update`,

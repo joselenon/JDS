@@ -1,6 +1,7 @@
-export default interface IFirebaseQueryResponse<T> {
+export default interface IFirebaseQueryResponse<R, D = undefined> {
   docId: string;
-  body: T;
+  result: R;
+  data?: D;
 }
 
 // Custom (modify when needed)

@@ -17,6 +17,7 @@ import { JWTCookie } from './config/app/CookiesConfig';
 import BalanceContextProvider from './contexts/BalanceContext';
 import { useSelector } from 'react-redux';
 import IReduxStore from './config/interfaces/IReduxStore';
+import UserInfoContextProvider from './contexts/UserProfileInfoContext';
 
 function App() {
   const initialCallCompleted = useRef(false);
@@ -40,12 +41,14 @@ function App() {
   return (
     <BrowserRouter>
       {userInfo ? (
-        <BalanceContextProvider>
-          <Header />
-          {/*       <NewsBar /> */}
-          <AppRoutes />
-          <Footer />
-        </BalanceContextProvider>
+        <UserInfoContextProvider>
+          <BalanceContextProvider>
+            <Header />
+            {/*       <NewsBar /> */}
+            <AppRoutes />
+            <Footer />
+          </BalanceContextProvider>
+        </UserInfoContextProvider>
       ) : (
         <>
           <Header />

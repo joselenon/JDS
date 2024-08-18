@@ -14,8 +14,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action: PayloadAction<string | null>) => {
-      action.payload && AxiosService.setToken(action.payload);
       if (!action.payload) return (state.userInfo = undefined);
+
+      action.payload && AxiosService.setToken(action.payload);
+
       const userInfo: IUserJWTPayload | undefined = decodeJWT<IAuthState['userInfo']>(
         action.payload,
       );

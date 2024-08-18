@@ -21,4 +21,6 @@ authRoutes.get(
   AuthController.steamCallback,
 );
 
+authRoutes.post(URLS.ENDPOINTS.AUTH.google, AuthController.google);
+
 export default authRoutes;

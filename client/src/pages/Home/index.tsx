@@ -4,14 +4,16 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 import LastVideos from '../../components/Sections/LastVideos';
 import HomeBanner from '../../components/Sections/HomeBanner';
-import HomeWelcome from '../../components/Sections/HomeWelcome';
 import IconedSection from '../../components/Utils/IconedSection';
 import GamesHub from '../../components/Sections/GamesHub';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import HomeWelcome from '../../components/Sections/HomeWelcome';
 
 export default function Home() {
   return (
     <div className="main-wrapper">
-      <HomeWelcome />
+      {/* <HomeWelcome /> */}
       <IconedSection icon={faDice} title="Jogos" Content={<GamesHub />} />
       <div />
       <div />

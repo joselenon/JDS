@@ -1,20 +1,24 @@
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { IconType } from 'react-icons/lib';
 
-export type BtnTypes = 'TEXT' | 'CTA' | 'DANGER' | 'IMG' | 'DEFAULT' | 'BLUE';
+export type BtnTypes = 'TEXT' | 'CTA' | 'DANGER' | 'ELEMENT' | 'DEFAULT' | 'BLUE';
 
 export type IButtonTypeConfig = {
   [key in BtnTypes]: React.CSSProperties;
 };
 
-export interface IButton {
+export interface IButtonAtributtes {
   id?: string;
+  type?: 'button' | 'submit' | undefined;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}
+
+export interface IButton {
   btnType: BtnTypes;
   icon?: { provider: 'fontAwesome' | 'reactIcons'; element: IconDefinition | IconType };
   label?: string | JSX.Element;
-  img?: string;
-  type?: 'button' | 'submit' | undefined;
-  onClickFn?: (e?: any) => any;
+  element?: JSX.Element;
+  attributes?: IButtonAtributtes;
 }
 
 const BTN_TYPES: IButtonTypeConfig = {
@@ -38,7 +42,9 @@ const BTN_TYPES: IButtonTypeConfig = {
     background: 'var(--default-red)',
   },
 
-  IMG: {},
+  ELEMENT: {
+    width: '100%',
+  },
 
   BLUE: {
     padding: '14px 10px',

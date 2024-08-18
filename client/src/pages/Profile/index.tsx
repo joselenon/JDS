@@ -10,7 +10,7 @@ export default function Profile() {
   return (
     <div className="main-wrapper">
       <ProfileInfo />
-      <Button btnType="DANGER" label="Sair" onClickFn={handleLogout} />
+      <Button btnType="DANGER" label="Sair" attributes={{ onClick: handleLogout }} />
     </div>
   );
 }

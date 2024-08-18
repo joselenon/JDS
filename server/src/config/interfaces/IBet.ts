@@ -1,22 +1,22 @@
-import { IJWTPayload } from './IJWT';
 import { IJackpotBetPayload } from './IPayloads';
+import { IUserJWTPayload } from './IUser';
 
 export interface IBetControllerGQL {
   makeBetOnJackpot(
-    userInfo: IJWTPayload,
+    userInfo: IUserJWTPayload,
     payload: IJackpotBetPayload,
   ): Promise<void>;
 }
 
 export interface IBetRedisCreate {
-  userInfo: IJWTPayload;
+  userInfo: IUserJWTPayload;
   intervals?: number[];
   amountBet: number;
   gameId: string;
   createdAt: number;
 }
 
-export interface IBetDBCreate {
+export interface IBetDB {
   amountBet: number;
   amountReceived: number;
   createdAt: number;
@@ -32,5 +32,5 @@ export interface IBetRedis {
   amountBet: number;
   createdAt: number;
   gameId: string;
-  userInfo: IJWTPayload;
+  userInfo: IUserJWTPayload;
 }

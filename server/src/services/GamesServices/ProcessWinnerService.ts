@@ -1,7 +1,7 @@
 import { FirebaseInstance } from '../..';
 import { JackpotWinnerProcessingError } from '../../config/errors/classes/SystemErrors';
-import { DEV_FEE } from '../../config/gameLogic/config';
-import { IBetDBCreate, IBetRedis } from '../../config/interfaces/IBet';
+import { DEV_FEE } from '../../config/logics/gameLogics';
+import { IBetDB, IBetRedis } from '../../config/interfaces/IBet';
 import { IGameDB } from '../../config/interfaces/IGame';
 
 function getRandomInt(max: number) {
@@ -48,7 +48,7 @@ class ProcessWinnerService {
     const winnerPrize = Math.round(
       totalTickets - (totalTickets * DEV_FEE.JACKPOT) / 100,
     );
-    await FirebaseInstance.updateDocument<IBetDBCreate>(
+    await FirebaseInstance.updateDocument<IBetDB>(
       'bets',
       winnerBet.docId,
       { amountReceived: winnerPrize },

@@ -22,11 +22,12 @@ export const Header = styled.div`
 export const UserContainer = styled.div`
   display: flex;
   align-items: center;
+  width: 37px;
+  height: 37px;
 
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--default-br);
+  a {
+    width: 100%;
+    height: 100%;
   }
 `;
 

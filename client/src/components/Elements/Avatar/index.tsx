@@ -14,15 +14,13 @@ function Avatar() {
   };
 
   return (
-    <styles.AvatarContainer>
+    <styles.AvatarContainer $imageLoaded={imageLoaded}>
+      <img
+        src={userInfo?.avatar}
+        alt={`user-avatar: ${userInfo?.username}`}
+        onLoad={handleOnLoad}
+      />
       {!userInfo?.avatar || !imageLoaded ? <RedSkeleton /> : null}
-      {userInfo?.avatar ? (
-        <img
-          src={userInfo?.avatar}
-          alt={`user-avatar: ${userInfo?.username}`}
-          onLoad={handleOnLoad}
-        />
-      ) : null}
     </styles.AvatarContainer>
   );
 }

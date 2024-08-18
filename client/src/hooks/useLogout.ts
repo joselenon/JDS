@@ -14,6 +14,7 @@ export default function useLogout() {
     const logout = dispatch(setToken(null));
     Cookies.remove(JWTCookie.key);
     navigate('/');
+    window.location.reload();
     return logout;
   };
 

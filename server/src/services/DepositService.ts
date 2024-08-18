@@ -15,6 +15,7 @@ import IFirebaseQueryResponse from '../config/interfaces/IFirebase';
 
 import BalanceService from './BalanceService';
 import { FirebaseInstance } from '..';
+import IUser from '../config/interfaces/IUser';
 
 class DepositService {
   private async validateCodeUsage(code: string, userDocId: string) {
@@ -24,9 +25,9 @@ class DepositService {
       code,
     );
 
-    if (!codeInfo) throw new CodeNotFound();
+    if (!codeInfo || !codeInfo.result) throw new CodeNotFound();
 
-    const { nUsers, claims, value } = codeInfo.body;
+    const { nUsers, claims, value } = codeInfo.result;
     if (claims.length >= nUsers) throw new CodeUsageLimitError();
 
     const userAlreadyClaimed = claims.some(
@@ -49,12 +50,16 @@ class DepositService {
     await FirebaseInstance.updateDocument('codes', codeDocId, payload);
   }
 
-  async createNewTransaction(userDocId: string, codeValue: number) {
-    const userRef = await FirebaseInstance.getDocumentRef('users', userDocId);
+  async createUserTransaction(userDocId: string, codeValue: number) {
+    const { result } = await FirebaseInstance.getDocumentRef<
+      FirebaseFirestore.DocumentReference,
+      IUser
+    >('users', userDocId);
+
     const transactionFullPayload: ICreateTransactionPayload = {
       method: 'code',
       type: 'deposit',
-      userRef: userRef,
+      userRef: result,
       value: codeValue,
       createdAt: Date.now(),
     };
@@ -73,14 +78,12 @@ class DepositService {
       userDocId,
     );
 
-    // Update code info in DB
     await this.updateCodeInDB(userDocId, codeInfo);
-
-    // Create new transaction in DB
-    await this.createNewTransaction(userDocId, codeValue);
-
+    await this.createUserTransaction(userDocId, codeValue);
     // ! Soft update (not trustable)
     await BalanceService.softUpdateBalances(userDocId, codeValue);
+
+    // Potential Errors: UnexpectedDatabaseError || RedisError
   }
 }
 

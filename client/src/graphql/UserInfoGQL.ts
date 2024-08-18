@@ -4,7 +4,12 @@ export const GET_USER_INFO = gql`
   query getUser {
     getUser {
       data {
-        email
+        email {
+          lastEmail
+          updatedAt
+          value
+          verified
+        }
         balance
         steamid
         tradeLink

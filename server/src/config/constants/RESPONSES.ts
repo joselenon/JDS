@@ -1,8 +1,9 @@
 const RESPONSE_CONFIG = {
   SUCCESS: {
-    GET_MSG: 'Dados recebidos com sucesso.',
-    UPDATE_MSG: 'Dados atualizados com sucesso.',
-    REDEEM_CODE_MSG: 'Código resgatado com sucesso.',
+    GET_MSG: 'Dados recebidos com sucesso',
+    UPDATE_MSG: 'Dados atualizados com sucesso',
+    REDEEM_CODE_MSG: 'Código resgatado com sucesso',
+    LOGGED_IN: 'Você se logou',
   },
 
   ERROR: {
@@ -16,6 +17,7 @@ const RESPONSE_CONFIG = {
       Game: 'Game',
       ExternalAPIs: 'External APIs',
       Register: 'Register',
+      UserInfo: 'User Info',
       EnvVariablesMissing: 'Environment Variables Missing',
     },
 
@@ -25,6 +27,7 @@ const RESPONSE_CONFIG = {
       REDIS: 'Error at redis',
       NO_JACKPOT: 'No jackpot at the moment...',
       ENV_VARIABLES_MISSING: 'You forgot some environment variables: ',
+      UNAVAILABLE_AUTH_METHOD: 'Unavailable auth method',
     },
 
     CLIENT_ERROR_MSGS: {
@@ -36,6 +39,8 @@ const RESPONSE_CONFIG = {
       INVALID_AMOUNT_BET: 'Valor inválido',
       INSUFFICIENT_BALANCE: 'Saldo insuficiente',
       GAME_ALREADY_STARTED: 'Jogo já começou',
+      EMAIL_ALREADY_EXISTS: 'E-mail já existe',
+      EMAIL_NOT_UPDATABLE: 'E-mail não pode ser atualizado',
     },
   },
 };

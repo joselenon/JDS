@@ -1,26 +1,33 @@
 import { AuthError } from '../config/errors/classes/ClientErrors';
-import { IJWTPayload } from '../config/interfaces/IJWT';
+import IUser, { IUserJWTPayload } from '../config/interfaces/IUser';
 import JWTService from '../services/JWTService';
-import checkIfUserAlreadyExistsByDocId from './checkIfUserAlreadyExistsByDocId';
+import { checkIfUserAlreadyExistsByDocId } from './checkIfUserAlreadyExists';
 
 export type TValidateAuthFn = (
   authorization: string | null,
-) => Promise<IJWTPayload>;
+) => Promise<{ validatedJWTPayload: IUserJWTPayload; userInfo: IUser }>;
 
-const validateAuth: TValidateAuthFn = async (authorization: string | null) => {
-  try {
-    // JWT Verification
-    if (!authorization) throw new AuthError();
-    const userValidated = JWTService.validateJWT(
-      authorization?.replace('Bearer ', ''),
-    );
+export interface IAuthValidation {
+  validatedJWTPayload: IUserJWTPayload;
+  userInfo: IUser;
+}
 
-    // DB Verification
-    await checkIfUserAlreadyExistsByDocId(userValidated.userDocId);
-    return userValidated;
-  } catch (err: any) {
-    throw new AuthError();
-  }
+const validateAuth: TValidateAuthFn = async (
+  authorization: string | null,
+): Promise<IAuthValidation> => {
+  if (!authorization) throw new AuthError();
+
+  // Throws an AuthError in case is invalid
+  const validatedJWTPayload = JWTService.validateJWT<IUserJWTPayload>(
+    authorization?.replace('Bearer ', ''),
+  );
+
+  const userExists = await checkIfUserAlreadyExistsByDocId(
+    validatedJWTPayload.userDocId,
+  );
+  if (!userExists.data) throw new AuthError();
+
+  return { validatedJWTPayload, userInfo: userExists.data };
 };
 
 export default validateAuth;

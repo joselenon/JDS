@@ -15,6 +15,7 @@ const resolvers = {
         validateAndCaptureError(err);
       }
     },
+
     getLastJackpots: async () => {
       try {
         const lastJackpots = await JackpotService.getLastJackpotsInRedis();

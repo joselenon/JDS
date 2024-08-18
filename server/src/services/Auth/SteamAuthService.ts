@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import express from 'express';
 
-import URLS, { API_BASE } from '../config/constants/URLS';
-import ENVIRONMENT from '../config/constants/ENVIRONMENT';
+import URLS, { API_BASE } from '../../config/constants/URLS';
+import ENVIRONMENT from '../../config/constants/ENVIRONMENT';
 
 const session = require('express-session');
 const passport = require('passport');

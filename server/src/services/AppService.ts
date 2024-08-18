@@ -19,7 +19,7 @@ import serverWillStartPlugin from '../config/app/server/serverWillStartPlugin';
 import webSocketServerConfig from '../config/app/server/webSocketServerConfig';
 import SentryConfig from '../config/app/SentryConfig';
 import formatError from '../config/graphql/formatError';
-import SteamAuthService from './SteamAuthService';
+import SteamAuthService from './Auth/SteamAuthService';
 
 import routes from '../routes';
 import graphQLRoute from '../routes/graphQLRoute';

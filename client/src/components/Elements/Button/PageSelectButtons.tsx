@@ -24,14 +24,15 @@ export default function PageSelectButtons({
       <Button
         btnType="TEXT"
         label={'Anterior'}
-        onClickFn={() => setPage(page > 0 ? page - 1 : page)}
-        id="return"
+        attributes={{ onClick: () => setPage(page > 0 ? page - 1 : page), id: 'return' }}
       />
       <Button
         btnType="TEXT"
         label="Próximo"
-        onClickFn={() => setPage(page + 1 >= pagesLength ? page : page + 1)}
-        id="next"
+        attributes={{
+          onClick: () => setPage(page + 1 >= pagesLength ? page : page + 1),
+          id: 'next',
+        }}
       />
     </styles.PageSelectButtons>
   );

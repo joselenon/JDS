@@ -21,6 +21,16 @@ export abstract class DatabaseError extends SystemError {
   }
 }
 
+export class UnavailableAuthMethod extends SystemError {
+  constructor(
+    message: string = RESPONSE_CONFIG.ERROR.SYSTEM_ERROR_MSGS
+      .UNAVAILABLE_AUTH_METHOD,
+    type: string = RESPONSE_CONFIG.ERROR.TYPES.Authorization,
+  ) {
+    super(message, type);
+  }
+}
+
 export class UnexpectedDatabaseError extends DatabaseError {
   constructor(
     message: string,

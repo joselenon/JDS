@@ -1,11 +1,16 @@
+import * as admin from 'firebase-admin';
+
 import FirebaseCredentials from './config/app/FirebaseCredentials';
 import ENVIRONMENT from './config/constants/ENVIRONMENT';
 import AppService from './services/AppService';
-import FirebaseService from './services/FirebaseService';
+import FirestoreService from './services/FirestoreService';
 import startGamesServices from './services/GamesServices/startGamesServices';
 import RedisService from './services/RedisService';
 
-const FirebaseInstance = new FirebaseService(FirebaseCredentials);
+const firebaseApp = admin.initializeApp({
+  credential: admin.credential.cert(FirebaseCredentials),
+});
+const FirebaseInstance = new FirestoreService();
 
 const RedisInstance = new RedisService(
   ENVIRONMENT.REDIS_HOST,
@@ -13,7 +18,7 @@ const RedisInstance = new RedisService(
   ENVIRONMENT.REDIS_PASSWORD,
 );
 
-async function initializeApp() {
+async function init() {
   await AppService.initialize();
 
   startGamesServices();
@@ -21,6 +26,6 @@ async function initializeApp() {
   return { FirebaseInstance, RedisInstance };
 }
 
-initializeApp();
+init();
 
-export { FirebaseInstance, RedisInstance };
+export { FirebaseInstance, RedisInstance, firebaseApp };

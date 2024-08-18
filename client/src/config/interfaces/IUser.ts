@@ -1,11 +1,20 @@
-export interface IUserInfo {
-  userDocId: string;
+export default interface IUser {
   username: string;
-  email: string;
   steamid: string;
-  balance: number;
   avatar: string;
-  tradeLink: string;
+  balance: number;
+  tradeLink?: string;
+  email?: {
+    value: string;
+    verified: boolean;
+    lastEmail: string;
+    updatedAt: number;
+  };
+}
+
+export interface IUserUpdatePayload {
+  email?: string;
+  tradeLink?: string;
 }
 
 export interface IUserJWTPayload {

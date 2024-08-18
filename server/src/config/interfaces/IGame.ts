@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 
-import { GameModeProtocol, GameStatusProtocol } from '../gameLogic/config';
+import { GameModeProtocol, GameStatusProtocol } from '../logics/gameLogics';
 import { IBetRedis } from './IBet';
 
 export interface IGameDB {

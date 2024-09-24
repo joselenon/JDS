@@ -114,7 +114,6 @@ export default class UserService {
       } as IUser['email'];
     }
 
-    console.log(filteredPayload);
     const docUpdated = await FirebaseInstance.updateDocument<IUser>(
       'users',
       userDocId,

@@ -160,10 +160,7 @@ class JackpotService {
   //  - should be allowed to run only with JackpotService.jackpot. Throws error in case it's undefined
   async processJackpotBetsQueue() {
     while (JackpotService.shouldListenBets) {
-      console.log('entrou');
-
       const jackpot = JackpotService.jackpot;
-      console.log('jack', jackpot);
       if (!jackpot) throw new NoJackpotError();
 
       const task = await RedisInstance.lPop<IBetRedisCreate>(

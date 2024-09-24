@@ -42,7 +42,6 @@ const requiredVariables = [
   'GOOGLE_API_KEY',
   'STEAM_CLIENT_SECRET',
   'JWT_SECRET',
-  'API_BASE',
 ];
 
 const missingVariables = requiredVariables.filter(

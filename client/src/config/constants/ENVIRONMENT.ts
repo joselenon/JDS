@@ -80,12 +80,9 @@ const validateEnv = () => {
       `Invalid value for REACT_APP_CLIENT_URL. Expected a non-empty string, got '${ENVIRONMENT.REACT_APP_CLIENT_URL}'.`,
     );
   }
-  if (
-    typeof ENVIRONMENT.REACT_APP_API_BASE !== 'string' ||
-    ENVIRONMENT.REACT_APP_API_BASE.trim() === ''
-  ) {
+  if (typeof ENVIRONMENT.REACT_APP_API_BASE !== 'string') {
     errors.push(
-      `Invalid value for REACT_APP_API_BASE. Expected a non-empty string, got '${ENVIRONMENT.REACT_APP_API_BASE}'.`,
+      `Invalid value for REACT_APP_API_BASE. Expected a  string, got '${ENVIRONMENT.REACT_APP_API_BASE}'.`,
     );
   }
 

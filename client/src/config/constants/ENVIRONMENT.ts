@@ -8,6 +8,7 @@ const ENVIRONMENT = {
   REACT_APP_CLIENT_PORT: parseInt(process.env.REACT_APP_CLIENT_PORT || '', 10), // Converta para número
   REACT_APP_SERVER_URL: process.env.REACT_APP_SERVER_URL || '', // Certifique-se de que é uma string
   REACT_APP_CLIENT_URL: process.env.REACT_APP_CLIENT_URL || '', // Certifique-se de que é uma string
+  REACT_APP_API_BASE: process.env.REACT_APP_API_BASE || '', // Certifique-se de que é uma string
 };
 
 // Validação das variáveis de ambiente
@@ -77,6 +78,14 @@ const validateEnv = () => {
   ) {
     errors.push(
       `Invalid value for REACT_APP_CLIENT_URL. Expected a non-empty string, got '${ENVIRONMENT.REACT_APP_CLIENT_URL}'.`,
+    );
+  }
+  if (
+    typeof ENVIRONMENT.REACT_APP_API_BASE !== 'string' ||
+    ENVIRONMENT.REACT_APP_API_BASE.trim() === ''
+  ) {
+    errors.push(
+      `Invalid value for REACT_APP_API_BASE. Expected a non-empty string, got '${ENVIRONMENT.REACT_APP_API_BASE}'.`,
     );
   }
 

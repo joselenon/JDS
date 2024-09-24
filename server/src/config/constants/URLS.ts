@@ -16,7 +16,7 @@ const CLIENT_FULL_URL =
     ? `${CLIENT_URL}:${CLIENT_PORT}`
     : CLIENT_URL;
 
-export const API_BASE = '/api';
+export const API_BASE = ENVIRONMENT.API_BASE;
 const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
 
 const ENDPOINTS = {

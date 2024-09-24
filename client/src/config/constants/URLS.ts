@@ -16,7 +16,7 @@ const SERVER_FULL_URL =
     : SERVER_URL_WITH_PROTOCOL;
 
 // https://serverdomain.com/api OU http://localhost:PORT/api
-export const API_BASE = '';
+export const API_BASE = ENVIRONMENT.REACT_APP_API_BASE;
 export const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
 
 // CLIENT

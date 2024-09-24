@@ -133,7 +133,7 @@ export default class RedisService {
   ): Promise<T | null> {
     const syncLPop = this.promisifyCommand('lpop');
 
-    const fn = async () => await syncLPop(key, count);
+    const fn = async () => await syncLPop(key);
     const data = await this.retryWithBackoff(fn);
 
     if (data && options?.inJSON) {

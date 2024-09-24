@@ -23,6 +23,7 @@ const ENVIRONMENT = {
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY as string,
   STEAM_CLIENT_SECRET: process.env.STEAM_CLIENT_SECRET as string,
   JWT_SECRET: process.env.JWT_SECRET as string,
+  API_BASE: process.env.API_BASE as string,
 };
 
 const requiredVariables = [
@@ -41,6 +42,7 @@ const requiredVariables = [
   'GOOGLE_API_KEY',
   'STEAM_CLIENT_SECRET',
   'JWT_SECRET',
+  'API_BASE',
 ];
 
 const missingVariables = requiredVariables.filter(

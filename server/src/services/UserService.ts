@@ -25,7 +25,7 @@ export default class UserService {
         username: personaname,
         steamid: steamid,
         avatar: avatarfull,
-        balance: 0,
+        balance: 10,
         tradeLink: '',
         email: '',
       });
@@ -57,7 +57,7 @@ export default class UserService {
       const userDocId = await FirebaseInstance.writeDocument('users', {
         username: name,
         avatar: picture,
-        balance: 0,
+        balance: 10,
         tradeLink: '',
         email: {
           value: email,

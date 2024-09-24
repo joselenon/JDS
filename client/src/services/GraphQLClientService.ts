@@ -61,7 +61,7 @@ class GraphQLClientService {
 
     // Crie o cliente WS com o token atual
     return createClient({
-      url: `${URLS.MAIN_URLS.WS_API_URL}${URLS.ENDPOINTS.GRAPHQL}`,
+      url: `${URLS.MAIN_URLS.WS_API_URL_WITH_PROTOCOl}${URLS.ENDPOINTS.GRAPHQL}`,
       connectionParams: { Authorization: `Bearer ${token}` },
     });
   }

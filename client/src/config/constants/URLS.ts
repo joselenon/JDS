@@ -1,23 +1,39 @@
 import ENVIRONMENT from './ENVIRONMENT';
 
-export const HTTP_PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'https://' : 'http://';
-export const WS_PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'wss://' : 'ws://';
+const PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'https://' : 'http://';
 
-// 'localhost' | 'jds.gamblance'
-const SERVER_DOMAIN = `${ENVIRONMENT.REACT_APP_SERVER_DOMAIN}`;
+// SERVER
+// https://serverdomain.com OU http://localhost
+const SERVER_URL_WITH_PROTOCOL = `${PROTOCOL}${ENVIRONMENT.REACT_APP_SERVER_URL}`;
 
-// '4000'
+// SERVER PORT
 const SERVER_PORT = ENVIRONMENT.REACT_APP_SERVER_PORT;
 
-// 'http://localhost:4000' | 'https://jds.gamblance.com'
+// https://serverdomain.com OU http://localhost:PORT
 const SERVER_FULL_URL =
-  ENVIRONMENT.REACT_APP_MODE === 'PRODUCTION'
-    ? `${SERVER_DOMAIN}.com`
-    : `${SERVER_DOMAIN}:${SERVER_PORT}`;
+  ENVIRONMENT.REACT_APP_MODE === 'DEVELOPMENT'
+    ? `${SERVER_URL_WITH_PROTOCOL}:${SERVER_PORT}`
+    : SERVER_URL_WITH_PROTOCOL;
 
-export const API_BASE = '/api';
-const API_URL = `${HTTP_PROTOCOL}${SERVER_FULL_URL}${API_BASE}`;
-const WS_API_URL = `${WS_PROTOCOL}${SERVER_FULL_URL}${API_BASE}`;
+// https://serverdomain.com/api OU http://localhost:PORT/api
+export const API_BASE = '';
+export const API_URL = `${SERVER_FULL_URL}${API_BASE}`;
+
+// CLIENT
+// https://clientdomain.com OU http://localhost
+const CLIENT_URL_WITH_PROTOCOL = `${PROTOCOL}${ENVIRONMENT.REACT_APP_CLIENT_URL}`;
+// CLIENT PORT
+const CLIENT_PORT = ENVIRONMENT.REACT_APP_CLIENT_PORT;
+// https://client.domain.com OU http://localhost:PORT
+export const CLIENT_FULL_URL =
+  ENVIRONMENT.REACT_APP_MODE === 'PRODUCTION'
+    ? CLIENT_URL_WITH_PROTOCOL
+    : `${CLIENT_URL_WITH_PROTOCOL}:${CLIENT_PORT}`;
+
+export const WS_PROTOCOL = ENVIRONMENT.REACT_APP_HTTPS ? 'wss://' : 'ws://';
+const WS_API_URL_WITH_PROTOCOl = `${WS_PROTOCOL}${ENVIRONMENT.REACT_APP_SERVER_URL}:${
+  ENVIRONMENT.REACT_APP_MODE === 'PRODUCTION' ? '' : SERVER_PORT
+}${API_BASE}`;
 
 const ENDPOINTS = {
   GRAPHQL: '/graphql',
@@ -48,7 +64,7 @@ const API_ENDPOINTS = {
 
 const URLS = {
   ENDPOINTS: API_ENDPOINTS,
-  MAIN_URLS: { SERVER_DOMAIN, API_URL, WS_API_URL },
+  MAIN_URLS: { API_URL, WS_API_URL_WITH_PROTOCOl },
 };
 
 export default URLS;

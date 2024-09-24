@@ -1,13 +1,13 @@
 const ENVIRONMENT = {
-  REACT_APP_MODE: (import.meta.env.REACT_APP_MODE || 'DEVELOPMENT') as
+  REACT_APP_MODE: (process.env.REACT_APP_MODE || 'DEVELOPMENT') as
     | 'DEVELOPMENT'
     | 'PRODUCTION',
-  REACT_APP_HTTPS: import.meta.env.REACT_APP_HTTPS === 'true', // Converta para booleano
-  REACT_APP_SERVER_DOMAIN: import.meta.env.REACT_APP_SERVER_DOMAIN,
-  REACT_APP_SERVER_PORT: parseInt(import.meta.env.REACT_APP_SERVER_PORT || '', 10), // Converta para número
-  REACT_APP_CLIENT_PORT: parseInt(import.meta.env.REACT_APP_CLIENT_PORT || '', 10), // Converta para número
-  REACT_APP_SERVER_URL: import.meta.env.REACT_APP_SERVER_URL || '', // Certifique-se de que é uma string
-  REACT_APP_CLIENT_URL: import.meta.env.REACT_APP_CLIENT_URL || '', // Certifique-se de que é uma string
+  REACT_APP_HTTPS: process.env.REACT_APP_HTTPS === 'true', // Converta para booleano
+  REACT_APP_SERVER_DOMAIN: process.env.REACT_APP_SERVER_DOMAIN,
+  REACT_APP_SERVER_PORT: parseInt(process.env.REACT_APP_SERVER_PORT || '', 10), // Converta para número
+  REACT_APP_CLIENT_PORT: parseInt(process.env.REACT_APP_CLIENT_PORT || '', 10), // Converta para número
+  REACT_APP_SERVER_URL: process.env.REACT_APP_SERVER_URL || '', // Certifique-se de que é uma string
+  REACT_APP_CLIENT_URL: process.env.REACT_APP_CLIENT_URL || '', // Certifique-se de que é uma string
 };
 
 // Validação das variáveis de ambiente
@@ -24,13 +24,11 @@ const validateEnv = () => {
 
   // Validação para REACT_APP_HTTPS
   if (
-    typeof import.meta.env.REACT_APP_HTTPS !== 'string' ||
-    !['true', 'false'].includes(import.meta.env.REACT_APP_HTTPS.toLowerCase())
+    typeof process.env.REACT_APP_HTTPS !== 'string' ||
+    !['true', 'false'].includes(process.env.REACT_APP_HTTPS.toLowerCase())
   ) {
     errors.push(
-      `Invalid value for REACT_APP_HTTPS. Expected 'true' or 'false', got '${
-        import.meta.env.REACT_APP_HTTPS
-      }'.`,
+      `Invalid value for REACT_APP_HTTPS. Expected 'true' or 'false', got '${process.env.REACT_APP_HTTPS}'.`,
     );
   }
 
@@ -40,9 +38,7 @@ const validateEnv = () => {
     ENVIRONMENT.REACT_APP_SERVER_PORT <= 0
   ) {
     errors.push(
-      `Invalid value for REACT_APP_SERVER_PORT. Expected a positive integer, got '${
-        import.meta.env.REACT_APP_SERVER_PORT
-      }'.`,
+      `Invalid value for REACT_APP_SERVER_PORT. Expected a positive integer, got '${process.env.REACT_APP_SERVER_PORT}'.`,
     );
   }
 
@@ -51,9 +47,7 @@ const validateEnv = () => {
     ENVIRONMENT.REACT_APP_CLIENT_PORT <= 0
   ) {
     errors.push(
-      `Invalid value for REACT_APP_CLIENT_PORT. Expected a positive integer, got '${
-        import.meta.env.REACT_APP_CLIENT_PORT
-      }'.`,
+      `Invalid value for REACT_APP_CLIENT_PORT. Expected a positive integer, got '${process.env.REACT_APP_CLIENT_PORT}'.`,
     );
   }
 

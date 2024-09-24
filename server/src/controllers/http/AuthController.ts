@@ -89,7 +89,6 @@ class AuthController {
 
       return res.status(200).json(responseBody(true, 'LOGGED_IN', genJWT));
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

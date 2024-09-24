@@ -48,11 +48,9 @@ class ProcessWinnerService {
     const winnerPrize = Math.round(
       totalTickets - (totalTickets * DEV_FEE.JACKPOT) / 100,
     );
-    await FirebaseInstance.updateDocument<IBetDB>(
-      'bets',
-      winnerBet.docId,
-      { amountReceived: winnerPrize },
-    );
+    await FirebaseInstance.updateDocument<IBetDB>('bets', winnerBet.docId, {
+      amountReceived: winnerPrize,
+    });
 
     return { winnerBet, winnerPrize, ticketDrawn };
     // Potential errors:  JackpotWinnerProcessingError || UnexpectedDatabaseError
